@@ -1,0 +1,291 @@
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/My%20Documents > 200 OK","timestamp":"2020-11-30 18:35:55"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-11-30 18:35:55"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-11-30 18:35:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-11-30 18:35:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-11-30 18:36:00"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-11-30 18:36:02"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-11-30 18:36:13"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-11-30 18:36:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 11:15:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:15:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:16:34"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 11:16:46"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:16:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:16:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 11:16:55"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 11:17:43"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:17:43"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 11:17:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 12:38:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 12:38:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 12:43:19"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 12:43:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 12:43:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 12:43:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:24:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:24:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:25:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:25:28"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:25:28"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:33:30"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:35:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:35:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:35:22"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:35:40"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:35:40"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:36:36"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:36:46"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:36:46"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:36:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:36:55"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:36:55"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:38:42"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:38:42"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:39:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:39:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:39:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:39:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:39:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:40:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:40:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:40:36"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:40:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:40:39"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:40:43"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/My%20Documents/ONLYOFFICE%20Sample%20Spreadsheets.xlsx > 500 OK","timestamp":"2020-12-01 13:40:52"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/My%20Documents/New%20Document.docx > 500 OK","timestamp":"2020-12-01 13:40:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/My%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:41:00"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:41:11"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:11"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:12"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:13"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:41:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:41:19"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:41:26"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:26"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:26"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:41:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:41:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:01"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:42:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:06"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:42:12"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/Common%20Documents/ONLYOFFICE%20Sample%20Document.docx > 200 OK","timestamp":"2020-12-01 13:42:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:42:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:42:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:42:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:44:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:44:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:44:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/Common%20Documents > 200 OK","timestamp":"2020-12-01 13:44:37"}
+{"level":"error","message":"Error JSONparse response from api Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client","timestamp":"2020-12-01 13:44:37"}
+{"level":"error","message":"Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client","timestamp":"2020-12-01 13:44:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:44:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:44:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:44:39"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:45:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:12"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:45:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:45:41"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:41"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:42"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:45:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:45:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/Common%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 13:45:51"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:55:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:55:38"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:55:38"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:55:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:55:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:55:59"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:55:59"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:55:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:56:20"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:56:20"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:56:21"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:56:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:57:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:05"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:05"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:57:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:09"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:09"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:09"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:57:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:35"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:35"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:57:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:57:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:57:59"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:58:00"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:00"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:00"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:58:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:58:45"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:45"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:45"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:45"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:58:45"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 13:58:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:58:49"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:49"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 13:58:49"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:49"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 13:58:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:03:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:03:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:03:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 14:03:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:03:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:03:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:05:14"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:05:14"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:05:14"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 14:05:15"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:05:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:05:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:10:32"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:32"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:32"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:36"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/My%20Documents/New%20Folder/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 14:10:37"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:49:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:49:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:47"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:49:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:50:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:50:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:51:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:51:25"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:25"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:25"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:27"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 14:51:27"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:53:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:53:49"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'title' of undefined","timestamp":"2020-12-01 14:53:49"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 14:55:30"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:55:30"}
+{"level":"error","message":"Error JSONparse response from api SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 14:55:30"}
+{"level":"error","message":"SyntaxError: Unexpected token < in JSON at position 0","timestamp":"2020-12-01 14:55:30"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 14:55:30"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:06:12"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:06:12"}
+{"level":"error","message":"Error JSONparse response from api ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:13"}
+{"level":"error","message":"ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:13"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:06:13"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:06:18"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:06:18"}
+{"level":"error","message":"Error JSONparse response from api ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:18"}
+{"level":"error","message":"ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:18"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:06:18"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:06:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:06:38"}
+{"level":"error","message":"Error JSONparse response from api ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:38"}
+{"level":"error","message":"ReferenceError: webdav is not defined","timestamp":"2020-12-01 15:06:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:08:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:20:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:20:44"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'title' of undefined","timestamp":"2020-12-01 15:20:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:21:39"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:21:39"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'title' of undefined","timestamp":"2020-12-01 15:22:02"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:23:17"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:23:17"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:23:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:23:50"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:24:27"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:24:27"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'title' of undefined","timestamp":"2020-12-01 15:24:42"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:24:53"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:24:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:27:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:27:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:28:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:28:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:30:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:30:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:30:13"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:30:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:30:21"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:30:22"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:31:05"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:06"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:06"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:31:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:10"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:31:33"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:33"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:31:58"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:32:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:32:07"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:34:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:34:38"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'constructor' of undefined","timestamp":"2020-12-01 15:34:46"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:41:04"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:41:04"}
+{"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'constructor' of undefined","timestamp":"2020-12-01 15:41:16"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:42:01"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:42:01"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 15:42:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:42:56"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:03"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:08"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:25"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9f%d0%be%d1%81%d0%bb%d0%b5%d0%b4%d0%bd%d0%b8%d0%b5/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:27"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9f%d0%be%d1%81%d0%bb%d0%b5%d0%b4%d0%bd%d0%b8%d0%b5/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:27"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9f%d1%80%d0%b8%d0%b2%d0%b0%d1%82%d0%bd%d0%b0%d1%8f%20%d0%ba%d0%be%d0%bc%d0%bd%d0%b0%d1%82%d0%b0/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9f%d1%80%d0%b8%d0%b2%d0%b0%d1%82%d0%bd%d0%b0%d1%8f%20%d0%ba%d0%be%d0%bc%d0%bd%d0%b0%d1%82%d0%b0/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:29"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9a%d0%be%d1%80%d0%b7%d0%b8%d0%bd%d0%b0/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9a%d0%be%d1%80%d0%b7%d0%b8%d0%bd%d0%b0/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%98%d0%b7%d0%b1%d1%80%d0%b0%d0%bd%d0%bd%d0%be%d0%b5/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:33"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%98%d0%b7%d0%b1%d1%80%d0%b0%d0%bd%d0%bd%d0%be%d0%b5/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:33"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%94%d0%be%d1%81%d1%82%d1%83%d0%bf%d0%bd%d0%be%20%d0%b4%d0%bb%d1%8f%20%d0%bc%d0%b5%d0%bd%d1%8f/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%94%d0%be%d1%81%d1%82%d1%83%d0%bf%d0%bd%d0%be%20%d0%b4%d0%bb%d1%8f%20%d0%bc%d0%b5%d0%bd%d1%8f/ > 207 Multi-Status","timestamp":"2020-12-01 15:43:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 16:15:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 16:15:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 16:15:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-01 16:42:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 16:42:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-01 16:42:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%94%d0%be%d1%81%d1%82%d1%83%d0%bf%d0%bd%d0%be%20%d0%b4%d0%bb%d1%8f%20%d0%bc%d0%b5%d0%bd%d1%8f/ > 207 Multi-Status","timestamp":"2020-12-01 16:42:53"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9f%d1%80%d0%b8%d0%b2%d0%b0%d1%82%d0%bd%d0%b0%d1%8f%20%d0%ba%d0%be%d0%bc%d0%bd%d0%b0%d1%82%d0%b0/ > 207 Multi-Status","timestamp":"2020-12-01 16:43:24"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 16:44:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 16:44:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 16:44:35"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/New%20Folder/%d0%9d%d0%be%d0%b2%d1%8b%d0%b9%20%d1%84%d0%b0%d0%b9%d0%bb.docx > 404 Not Found","timestamp":"2020-12-01 16:44:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/New%20Folder/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 16:44:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/New%20Folder/New%20Folder/ > 207 Multi-Status","timestamp":"2020-12-01 16:44:54"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-01 16:45:04"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com GET http://127.0.0.1:1900/%d0%9e%d0%b1%d1%89%d0%b8%d0%b5%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ONLYOFFICE%20Sample%20Document.docx > 500 OK","timestamp":"2020-12-01 16:45:08"}

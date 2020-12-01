@@ -14,7 +14,7 @@ module.exports = {
   cleanTrashInterval: 900000,
 
   // Adress of community server OnlyOffice */
-  domen: 'http://127.0.0.1:80/',
+  domen: 'http://127.0.0.1:8092/',
 
   // Api constant
   api: 'api/2.0/',
@@ -28,10 +28,13 @@ module.exports = {
   method: {
 
     // Get root directory in "My documents"
-    pathRootDirectory: '@my',
+    pathMyDirectory: '@my',
 
     // Get root directory in "Common Folder"
     pathCommonDirectory: '@common',
+    
+    // Get root directory in "Root"
+    pathRootDirectory: '@root',
 
     // Operations with folders
     folder: 'folder/',

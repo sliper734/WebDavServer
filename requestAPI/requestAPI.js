@@ -1,12 +1,12 @@
 var request = require('request');
-const {getHeader, exceptionResponse} = require('./helper.js')
+const {getHeader, exceptionResponse} = require('./helper.js');
 const {
     domen,
     api,
     apiFiles,
     apiAuth,
     method
-} = require('../config.js')
+} = require('../config.js');
 
 var requestAuth = function(username, password, callback)
 {
@@ -29,8 +29,8 @@ var requestAuth = function(username, password, callback)
                 }
             });
         }
-    )
-}
+    );
+};
 
 var getStructDirectory = function(folderId, token, callback)
 {
@@ -48,8 +48,8 @@ var getStructDirectory = function(folderId, token, callback)
                 }
             });
         }
-    )
-}
+    );
+};
 
 var createDirectory = function(parentId, title, token, callback)
 {
@@ -64,15 +64,15 @@ var createDirectory = function(parentId, title, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback(null, JSON.parse(body).response);
                 }
             });
         }
-    )
-}
+    );
+};
 
 var deleteDirectory = function(folderId, token, callback)
 {
@@ -88,15 +88,15 @@ var deleteDirectory = function(folderId, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var getFileDownloadUrl = function(parentId, fileId, token, callback)
 {
@@ -107,7 +107,7 @@ var getFileDownloadUrl = function(parentId, fileId, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     let streamFile = request.get(
@@ -121,8 +121,8 @@ var getFileDownloadUrl = function(parentId, fileId, token, callback)
                 }
             });
         }
-    )
-}
+    );
+};
 
 var createFile = function(folderId, title, token, callback)
 {
@@ -137,15 +137,15 @@ var createFile = function(folderId, title, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback(null, JSON.parse(body).response);
                 }
             });
         }
-    )
-}
+    );
+};
 
 var createFiletxt = function(folderId, title, token, callback)
 {
@@ -161,15 +161,15 @@ var createFiletxt = function(folderId, title, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback(null, JSON.parse(body).response);
                 }
             });
         }
-    )
-}
+    );
+};
 
 var createFilehtml = function(folderId, title, token, callback)
 {
@@ -185,15 +185,15 @@ var createFilehtml = function(folderId, title, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback(null, JSON.parse(body).response);
                 }
             });
         }
-    )
-}
+    );
+};
 
 var deleteFile = function(fileId, token, callback)
 {
@@ -209,15 +209,15 @@ var deleteFile = function(fileId, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
                     callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var rewritingFile = function(folderId, title, content, token, callback)
 {
@@ -231,15 +231,15 @@ var rewritingFile = function(folderId, title, content, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var  copyFileToFolder = function(folderId, files, token, callback)
 {
@@ -257,15 +257,15 @@ var  copyFileToFolder = function(folderId, files, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var  copyDirToFolder = function(folderId, folders, token, callback)
 {
@@ -283,15 +283,15 @@ var  copyDirToFolder = function(folderId, folders, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var  moveDirToFolder = function(folderId, folders, token, callback)
 {
@@ -309,15 +309,15 @@ var  moveDirToFolder = function(folderId, folders, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var  moveFileToFolder = function(folderId, files, token, callback)
 {
@@ -335,15 +335,15 @@ var  moveFileToFolder = function(folderId, files, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var renameFolder = function(folderId, newName, token, callback)
 {
@@ -358,15 +358,15 @@ var renameFolder = function(folderId, newName, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 var renameFile = function(fileId, newName, token, callback)
 {
@@ -381,15 +381,15 @@ var renameFile = function(fileId, newName, token, callback)
         }, (err, response, body) => {
             exceptionResponse(err, body, (err) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    callback()
+                    callback();
                 }
             });
         }
-    )
-}
+    );
+};
 
 module.exports = {
     getStructDirectory,

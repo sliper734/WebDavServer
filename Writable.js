@@ -13,4 +13,4 @@ class streamWrite extends Writable
     }
 }
 
-module.exports = streamWrite
+module.exports = streamWrite;

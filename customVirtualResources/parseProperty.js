@@ -3,33 +3,33 @@ class parseProperty{
         let pathArray = path.split('/');
         let targetElement = pathArray.pop();
         if(pathArray.length <= 1){
-            pathArray[0] = '/'
+            pathArray[0] = '/';
         }
         let parentPath = pathArray.join('/');
         return{
             element: targetElement,
             parentFolder: parentPath
-        }
+        };
     }
 
     static parsePathTo(pathTo){
-        let pathArray = pathTo.split('/')
+        let pathArray = pathTo.split('/');
         if(pathArray[pathArray.length - 1] == '' && pathTo !== '/'){
             pathArray.pop();
-            var newPath = pathArray.join('/')
+            var newPath = pathArray.join('/');
         }
         else{
             var newPath = pathTo;
         }
-        return newPath
+        return newPath;
     }
 
     static parseDate(dateString){
         let dateArray = dateString.split('.');
-        dateArray = dateArray[0].split('T')
+        dateArray = dateArray[0].split('T');
         let date = dateArray[0].split('-');
         let time = dateArray[1].split(':');
-        return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2])
+        return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
     }
 
     static parseSize(sizeString){
@@ -39,33 +39,33 @@ class parseProperty{
         size=size.replace(",",".");
         switch(dimension){
             case 'bytes':
-                return parseFloat(size)
-                break
+                return parseFloat(size);
+                break;
             case 'KB':
-                return (parseFloat(size) * 1000)
-                break
+                return (parseFloat(size) * 1000);
+                break;
             case 'MB':
-                return (parseFloat(size) * 1000000)
-                break
+                return (parseFloat(size) * 1000000);
+                break;
         }
     }
 
     static parseFileExst(fileName){
-        let nameArray = fileName.split('.')
+        let nameArray = fileName.split('.');
         let exst = nameArray[nameArray.length - 1];
         if(exst == 'txt' || exst == 'html'){
-            return exst
+            return exst;
         }
         else if(exst == 'docx' || exst == 'xlsx' || exst == 'pptx'){
-            return 'OFFICE_DOCX_PPTX_XLSX'
+            return 'OFFICE_DOCX_PPTX_XLSX';
         }
     }
 
     static isExst(fileName){
-        let nameArray = fileName.split('.')
+        let nameArray = fileName.split('.');
         let exst = nameArray[nameArray.length - 1];
-        const element = exst == fileName ? `${fileName}.txt` : fileName
-        return element
+        const element = exst == fileName ? `${fileName}.txt` : fileName;
+        return element;
     }
 }
 

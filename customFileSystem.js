@@ -6,18 +6,18 @@ const VirtualResources = require('./customVirtualResources/customVirtualResource
 class customFileSystem extends webdav.FileSystem
 {
     constructor(){
-        super()
+        super();
         this.props = new webdav.LocalPropertyManager();
         this.locks = new webdav.LocalLockManager();
         this.manageResource = new VirtualResources();
     }
 
     _lockManager(path, ctx, callback){
-        callback(null, this.locks)
+        callback(null, this.locks);
     }
 
     _propertyManager(path, ctx, callback){
-        callback(null, this.props)
+        callback(null, this.props);
     }
 
     _fastExistCheck(ctx, path, callback){
@@ -25,8 +25,8 @@ class customFileSystem extends webdav.FileSystem
         const sPath = path.toString();
 
         this.manageResource.fastExistCheck(sPath, ctx, (exist) => {
-            callback(exist)  
-        })
+            callback(exist);
+        });
     }
 
     _create(path, ctx, callback){
@@ -34,7 +34,7 @@ class customFileSystem extends webdav.FileSystem
 
         this.manageResource.create(sPath, ctx, (err) => {
             if(err){
-                callback(err)
+                callback(err);
             }
             callback();
         });
@@ -45,7 +45,7 @@ class customFileSystem extends webdav.FileSystem
 
         this.manageResource.delete(sPath, ctx, (err) => {
             if(err){
-                callback(err)
+                callback(err);
             }
             callback();
         })
@@ -53,44 +53,44 @@ class customFileSystem extends webdav.FileSystem
 
     _move(pathFrom, pathTo, ctx, callback){
         if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
-            delete pathTo.paths[pathTo.paths.length - 1]
+            delete pathTo.paths[pathTo.paths.length - 1];
         }
         const sPathFrom = pathFrom.toString();
         const sPathTo = pathTo.toString();
 
         this.manageResource.move(sPathFrom, sPathTo, ctx, (err, isMove) => {
             if(err){
-                callback(err, isMove)
+                callback(err, isMove);
             }
             else{
-                callback(null, isMove)
+                callback(null, isMove);
             }
-        })
+        });
     }
 
     _copy(pathFrom, pathTo, ctx, callback){
         if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
-            delete pathTo.paths[pathTo.paths.length - 1]
+            delete pathTo.paths[pathTo.paths.length - 1];
         }
         const sPathFrom = pathFrom.toString();
         const sPathTo = pathTo.toString();
 
         this.manageResource.copy(sPathFrom, sPathTo, ctx, (err, isCopy) => {
             if(err){
-                callback(err, isCopy)
+                callback(err, isCopy);
             }
             else{
-                callback(null, isCopy)
+                callback(null, isCopy);
             }
-        })
+        });
     }
 
     _size(path, ctx, callback){
         const sPath = path.toString();
 
         this.manageResource.getSize(sPath, ctx, (size) => {
-            callback(null, size)
-        })
+            callback(null, size);
+        });
     }
 
     _openWriteStream(path, ctx, callback){
@@ -98,12 +98,12 @@ class customFileSystem extends webdav.FileSystem
 
         this.manageResource.writeFile(sPath, ctx, (err, streamWrite) => {
             if(err){
-                callback(err, null)
+                callback(err, null);
             }
             else{
-                callback(null, streamWrite)
+                callback(null, streamWrite);
             }
-        })
+        });
     }
 
     _openReadStream(path, ctx, callback){
@@ -111,28 +111,28 @@ class customFileSystem extends webdav.FileSystem
 
         this.manageResource.downloadFile(sPath, ctx, (err, streamRead) => {
             if(err){
-                callback(err, null)
+                callback(err, null);
             }
             else{
-                callback(null, streamRead)
+                callback(null, streamRead);
             }
-        })
+        });
     }
 
     _type(path, ctx, callback) {
         const sPath = path.toString();
 
         this.manageResource.getType(sPath, ctx, (type) => {
-                callback(null, type)
-        })
+                callback(null, type);
+        });
     }
 
     _lastModifiedDate(path, ctx, callback){
         const sPath = path.toString();
 
         this.manageResource.getlastModifiedDate(sPath, ctx, (date) => {
-            callback(null, date)
-        })
+            callback(null, date);
+        });
     }
 
     _readDir(path, ctx, callback){
@@ -141,7 +141,7 @@ class customFileSystem extends webdav.FileSystem
 
         this.manageResource.readDir(sPath, ctx, (err, struct) => {
             if(err){
-                callback(err)
+                callback(err);
             }
             else{
                 struct.folders.forEach(el => {
@@ -150,9 +150,9 @@ class customFileSystem extends webdav.FileSystem
                 struct.files.forEach(el => {
                     elemOfDir.push(el.title);
                 });
-                callback(null, elemOfDir)
+                callback(null, elemOfDir);
             }
-        })
+        });
     }
 }
 
