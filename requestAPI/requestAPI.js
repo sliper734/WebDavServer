@@ -1,4 +1,5 @@
 var request = require('request');
+var axios = require('axios');
 const {getHeader, exceptionResponse} = require('./helper.js');
 const {
     domen,
@@ -8,9 +9,19 @@ const {
     method
 } = require('../config.js');
 
-var requestAuth = function(username, password, callback)
+var requestAuth = async function(username, password)
 {
-    request.post(
+    const instance=axios.create({
+        baseURL:`${domen}${api}`,
+            timeout: 1000,
+            headers: getHeader('application/json')
+    });
+    var response=await instance.post(`${apiAuth}`,{
+        "userName": username,
+        "password": password
+    });
+    return response.data.response.token;
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiAuth}`,
@@ -29,12 +40,20 @@ var requestAuth = function(username, password, callback)
                 }
             });
         }
-    );
+    );*/
 };
 
-var getStructDirectory = function(folderId, token, callback)
+var getStructDirectory = async function(folderId, token)
 {
-    request.get(
+    const instance=axios.create({
+        baseURL:`${domen}${api}`,
+            timeout: 1000,
+            headers: getHeader('application/json',token)
+    });
+    var response=await instance.get(`${apiFiles}${folderId}`);
+    response1=response.data.response;
+    return response.data.response;
+    /*request.get(
         {
             url: `${domen}${api}${apiFiles}${folderId}`,
             headers: getHeader('application/json', token),
@@ -48,7 +67,7 @@ var getStructDirectory = function(folderId, token, callback)
                 }
             });
         }
-    );
+    );*/
 };
 
 var createDirectory = function(parentId, title, token, callback)

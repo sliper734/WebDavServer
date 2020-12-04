@@ -2,6 +2,8 @@
   "name": "web-dav_server",
   "version": "1.0.0",
   "dependencies": {
+    "axios": "^0.21.0",
+    "help": "^3.0.2",
     "request": "^2.88.0",
     "webdav-server": "2.6.2",
     "winston": "^3.2.1"
