@@ -53,6 +53,7 @@ var getStructDirectory = async function(folderId, token)
     var response=await instance.get(`${apiFiles}${folderId}`);
     response1=response.data.response;
     return response.data.response;
+    //#region old code
     /*request.get(
         {
             url: `${domen}${api}${apiFiles}${folderId}`,
@@ -68,6 +69,7 @@ var getStructDirectory = async function(folderId, token)
             });
         }
     );*/
+    //#endregion
 };
 
 var createDirectory = function(parentId, title, token, callback)

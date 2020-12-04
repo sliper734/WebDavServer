@@ -41,13 +41,16 @@ class CustomVirtualResources
             }
             return structRoot;
         } catch (error) {
+            //#region er
             /*if(structRoot.folders.length == 0){
                 callback(webdav.Errors.ResourceNotFound, null);
             }
             else{
                 callback(null, structRoot);
             }*/
+            //#endregion
         }
+        //#region old code
         /*getStructDirectory(method.pathRootDirectory, user.token, (err, structDir) => {
             if(err){
                 if(structRoot.folders.length == 0){
@@ -66,6 +69,7 @@ class CustomVirtualResources
                 callback(null, structRoot);
             }
         });*/
+        //#endregion
     }
 
     fastExistCheck(path, ctx, callback){
@@ -225,7 +229,7 @@ class CustomVirtualResources
             } catch (error) {
                 callback(webdav.Errors.ResourceNotFound,null);
             }
-            
+            //#region old code
             /*this.getRootFolder(user, (err, structDir) => {
                 if(err){
                     callback(webdav.Errors.ResourceNotFound, null);
@@ -235,6 +239,7 @@ class CustomVirtualResources
                     callback(null, this.structСache.getStruct(path, user.username));
                 }
             });*/
+            //#endregion
         }
         else{
             const {element, parentFolder} = parse.parsePath(path);
@@ -260,6 +265,7 @@ class CustomVirtualResources
                                         } catch (error) {
                                             callback(webdav.Errors.ResourceNotFound, null);
                                         }
+                                        //#region old code
                                         /*getStructDirectory(folderId, user.token, (err, structDir) => {
                                             if(err){
                                                 callback(webdav.Errors.ResourceNotFound, null);
@@ -267,6 +273,7 @@ class CustomVirtualResources
                                             this.structСache.setStruct(path, user.username, structDir);
                                             callback(null, this.structСache.getStruct(path, user.username));
                                         });*/
+                                        //#endregion
                                     }
                                 });
                             }
@@ -288,6 +295,7 @@ class CustomVirtualResources
                                 } catch (error) {
                                     callback(webdav.Errors.ResourceNotFound, null);
                                 }
+                                //#region old code
                                 /*getStructDirectory(folderId, user.token, (err, structDir) => {
                                     if(err){
                                         callback(webdav.Errors.ResourceNotFound, null);
@@ -297,6 +305,7 @@ class CustomVirtualResources
                                         callback(null, this.structСache.getStruct(path, user.username));
                                     }
                                 });*/
+                                //#endregion
                             }
                         }
                     });
@@ -310,6 +319,7 @@ class CustomVirtualResources
                 } catch (error) {
                     callback(error, null);
                 }
+                //#region old code
                 /*this.getRootFolder(user, (err, st) => {
                     if(err){
                         callback(err, null);
@@ -319,6 +329,7 @@ class CustomVirtualResources
                         this.readDir(path, ctx, callback);
                     }
                 });*/
+                //#endregion
             }           
         }
     }
@@ -342,6 +353,7 @@ class CustomVirtualResources
                     } catch (error) {
                         callback(webdav.Errors.ResourceNotFound);
                     }
+                    //#region old code
                     /*getStructDirectory(folderId, user.token, (err, structDir) => {
                         if(err){
                             callback(webdav.Errors.ResourceNotFound);
@@ -351,6 +363,7 @@ class CustomVirtualResources
                             callback();
                         }
                     });*/
+                    //#endregion
                 }
             });
         }
