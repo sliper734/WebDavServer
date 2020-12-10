@@ -24,6 +24,17 @@ class customUserManager extends webdav.SimpleUserManager
                     callback(webdav.Errors.UserNotFound);
                 }
             })();
+            //#region old code
+            /*requestAuth(username, password, (err, token) => {
+                if(err){
+                    callback(webdav.Errors.UserNotFound)
+                }
+                else{
+                    this.storeUser.setUser(username, password, token);
+                    callback(null, this.storeUser.getUser(username))
+                } 
+            });*/
+            //#endregion
         }
     }
 }

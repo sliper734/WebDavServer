@@ -125,28 +125,45 @@ class CustomVirtualResources
         }
     }
 
-    create(path, ctx, callback){
+    async create(path, ctx, callback){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(path);
         let parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
             
         if(ctx.type.isDirectory){
-            createDirectory(parentId, element, user.token, (err, createdObj) => {
+            var createdObj1= await createDirectory(parentId, element, user.token);
+            try {
+                this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
+                callback();
+            } catch (error) {
+                callback(error);
+            }
+            //#region old code
+            /*createDirectory(parentId, element, user.token, (err, createdObj) => {
                 if(err){
-                    callback(err)
+                    callback(err);
                 }
                 else{
-                    this.structСache.setFolderObject(parentFolder, user.username, createdObj)
-                    callback()
+                    this.structСache.setFolderObject(parentFolder, user.username, createdObj);
+                    callback();
                 }
-            });
+            });*/
+            //#endregion
         }
         else if(ctx.type.isFile){
             element = parse.isExst(element);
             switch(parse.parseFileExst(element)){
                 case 'OFFICE_DOCX_PPTX_XLSX':
-                    createFile(parentId, element, user.token, (err, createdObj) => {
+                    var createdObj= await createFile(parentId,element,user.token);
+                    try {
+                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                        callback();
+                    } catch (error) {
+                        callback(error);
+                    }
+                    //#region old code
+                    /*createFile(parentId, element, user.token, (err, createdObj) => {
                         if(err){
                             callback(err);
                         }
@@ -154,10 +171,19 @@ class CustomVirtualResources
                             this.structСache.setFileObject(parentFolder, user.username, createdObj);
                             callback();
                         }
-                    });
+                    });*/
+                    //#endregion
                     break;
                 case 'html':
-                    createFilehtml(parentId, element, user.token, (err, createdObj) => {
+                    var createdObj= await createFilehtml(parentId, element, user.token);
+                    try {
+                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                        callback();
+                    } catch (error) {
+                        callback(error);
+                    }
+                    //#region old code
+                    /*createFilehtml(parentId, element, user.token, (err, createdObj) => {
                         if(err){
                             callback(err);
                         }
@@ -165,10 +191,19 @@ class CustomVirtualResources
                             this.structСache.setFileObject(parentFolder, user.username, createdObj);
                             callback();
                         }
-                    });
+                    });*/
+                    //#endregion
                     break;
                 default:
-                    createFiletxt(parentId, element, user.token, (err, createdObj) => {
+                    var createdObj = await createFiletxt(parentId,element,user.token);
+                    try {
+                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                        callback();
+                    } catch (error) {
+                        callback(error);
+                    }
+                    //#region old code
+                    /*createFiletxt(parentId, element, user.token, (err, createdObj) => {
                         if(err){
                             callback(err);
                         }
@@ -176,7 +211,8 @@ class CustomVirtualResources
                             this.structСache.setFileObject(parentFolder, user.username, createdObj);
                             callback();
                         }
-                    });
+                    });*/
+                    //#endregion
                     break;
             }
         }
@@ -187,24 +223,42 @@ class CustomVirtualResources
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
             if(element == el.title){
-                deleteDirectory(el.id, user.token, (err) => {
+                await deleteDirectory(el.id,user.token);
+                try {
+                    this.structСache.dropFolderObject(parentFolder, user.username, el);
+                    this.structСache.dropPath(path, user.username);
+                    callback(null);
+                } catch (error) {
+                    callback(error);
+                }
+                //#region old code
+                /*deleteDirectory(el.id, user.token, (err) => {
                     if(err){
                         callback(err);
                     }
                     else{
                         this.structСache.dropFolderObject(parentFolder, user.username, el);
                         this.structСache.dropPath(path, user.username);
-                        callback(null)
+                        callback(null);
                     }
-                });
+                });*/
+                //#endregion
             }
         });
 
-        this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                deleteFile(el.id, user.token, (err) => {
+                await deleteFile(el.id,user.token);
+                try {
+                    this.structСache.dropFileObject(parentFolder, user.username, el);
+                    callback(null);
+                } catch (error) {
+                    callback(error);
+                }
+                //#region old code
+                /*deleteFile(el.id, user.token, (err) => {
                     if(err){
                         callback(err);
                     }
@@ -212,7 +266,8 @@ class CustomVirtualResources
                         this.structСache.dropFileObject(parentFolder, user.username, el);
                         callback(null);
                     }
-                });
+                });*/
+                //#endregion
             }
         });
     }
@@ -374,16 +429,24 @@ class CustomVirtualResources
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                getFileDownloadUrl(el.folderId, el.id, user.token, (err, streamFile) => {
+                var streamFile= await getFileDownloadUrl(el.id,user.token);
+                try {
+                    callback(null,streamFile);
+                } catch (error) {
+                    callback(error,null);
+                }
+            //#region old code
+                /*getFileDownloadUrl(el.id, user.token, (err, streamFile) => {
                     if(err){
                         callback(err, null);
                     }
                     else{
                         callback(null, streamFile);
                     }
-                });
+                });*/
+               //#endregion 
             }
         });
     }
@@ -398,13 +461,21 @@ class CustomVirtualResources
         const stream = new streamWrite(content);
 
         stream.on('finish', () => {
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+            this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
-                    rewritingFile(folderId, el.title, content, user.token, (err) => {
+                    await rewritingFile(folderId,el.title,content,user.token);
+                    try {
+                        
+                    } catch (error) {
+                        callback(error, null);
+                    }
+                    //#region old code
+                    /*rewritingFile(folderId, el.title, content, user.token, (err) => {
                         if(err){
                             callback(err, null);
                         }
-                    });
+                    });*/
+                    //#endregion
                 }
             });
         });
@@ -419,28 +490,44 @@ class CustomVirtualResources
 
         if(this.structСache.getStruct(pathTo, user.username)){
             const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
-            this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+            this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
                 if(element == el.title){
-                    copyDirToFolder(folderId, el.id, user.token, (err) => {
+                    await copyDirToFolder(folderId,el.id,user.token);
+                    try {
+                        callback(null, true);
+                    } catch (error) {
+                        callback(error, null);
+                    }
+                    //#region old code
+                    /*copyDirToFolder(folderId, el.id, user.token, (err) => {
                         if(err){
                             callback(err, null);
                         }
                         else{
                             callback(null, true);
                         }
-                    });
+                    });*/
+                    //#endregion
                 }
             });
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+            this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
-                    copyFileToFolder(folderId, el.id, user.token, (err) => {
+                    await copyFileToFolder(folderId,el.id,user.token);
+                    try {
+                        callback(null, true);
+                    } catch (error) {
+                        callback(error, null);
+                    }
+                    //#region old code
+                    /*copyFileToFolder(folderId, el.id, user.token, (err) => {
                         if(err){
                             callback(err, null);
                         }
                         else{
                             callback(null, true);
                         }
-                    });
+                    });*/
+                    //#endregion
                 }
             });
         }
@@ -461,9 +548,17 @@ class CustomVirtualResources
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
             if(element == el.title){
-                renameFolder(el.id, newName, user.token, (err) => {
+                await renameFolder(el.id,newName,user.token);
+                try {
+                    this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
+                    callback(null, true);
+                } catch (error) {
+                    callback(error, null);
+                }
+                //#region old code
+                /*renameFolder(el.id, newName, user.token, (err) => {
                     if(err){
                         callback(err, null);
                     }
@@ -471,12 +566,21 @@ class CustomVirtualResources
                         this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
                         callback(null, true);
                     }
-                });
+                });*/
+                //#endregion
             }
         });
-        this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                renameFile(el.id, newName, user.token, (err) => {
+                await renameFile(el.id,newName,user.token);
+                try {
+                    this.structСache.renameFileObject(element, newName, parentFolder, user.username);
+                    callback(null, true);
+                } catch (error) {
+                    callback(err, null);
+                }
+                //#region old code
+                /*renameFile(el.id, newName, user.token, (err) => {
                     if(err){
                         callback(err, null);
                     }
@@ -484,7 +588,8 @@ class CustomVirtualResources
                         this.structСache.renameFileObject(element, newName, parentFolder, user.username);
                         callback(null, true);
                     }
-                });
+                });*/
+                //#endregion
             }
         });
     }
@@ -514,9 +619,17 @@ class CustomVirtualResources
         else{
             if(this.structСache.getStruct(pathTo, user.username)){
                 const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
-                this.structСache.getStruct(parentFolderFrom, user.username).folders.forEach((el) => {
+                this.structСache.getStruct(parentFolderFrom, user.username).folders.forEach(async (el) => {
                     if(elementFrom == el.title){
-                        moveDirToFolder(folderId, el.id, user.token, (err) => {
+                        await moveDirToFolder(folderId,el.id,user.token);
+                        try {
+                            this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
+                            callback(null, true);
+                        } catch (error) {
+                            callback(error, null);
+                        }
+                        //#region old code
+                        /*moveDirToFolder(folderId, el.id, user.token, (err) => {
                             if(err){
                                 callback(err, null);
                             }
@@ -524,12 +637,21 @@ class CustomVirtualResources
                                 this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
                                 callback(null, true);
                             }
-                        });
+                        });*/
+                        //#endregion
                     }
                 });
-                this.structСache.getStruct(parentFolderFrom, user.username).files.forEach((el) => {
+                this.structСache.getStruct(parentFolderFrom, user.username).files.forEach(async (el) => {
                     if(elementFrom == el.title){
-                        moveFileToFolder(folderId, el.id, user.token, (err) => {
+                        await moveFileToFolder(folderId,el.id,user.token);
+                        try {
+                            this.structСache.dropFileObject(parentFolderFrom, user.username, el);
+                            callback(null, true);
+                        } catch (error) {
+                            callback(error, null);
+                        }
+                        //#region old code
+                        /*moveFileToFolder(folderId, el.id, user.token, (err) => {
                             if(err){
                                 callback(err, null);
                             }
@@ -537,7 +659,8 @@ class CustomVirtualResources
                                 this.structСache.dropFileObject(parentFolderFrom, user.username, el);
                                 callback(null, true);
                             }
-                        });
+                        });*/
+                        //#endregion
                     }
                 });
             }

@@ -9,18 +9,25 @@ const {
     method
 } = require('../config.js');
 
+function instanceFunc(token=null, header='application/json',url=`${domen}${api}`, content)
+{
+    return axios.create({
+        baseURL: url,
+        timeout: 1000,
+        headers: getHeader(header,token),
+        data: content
+    });
+}
+
 var requestAuth = async function(username, password)
 {
-    const instance=axios.create({
-        baseURL:`${domen}${api}`,
-            timeout: 1000,
-            headers: getHeader('application/json')
-    });
+    const instance=await instanceFunc();
     var response=await instance.post(`${apiAuth}`,{
         "userName": username,
         "password": password
     });
     return response.data.response.token;
+    //#region old code
     /*request.post(
         {
             method: 'POST',
@@ -41,17 +48,13 @@ var requestAuth = async function(username, password)
             });
         }
     );*/
+    //#endregion
 };
 
 var getStructDirectory = async function(folderId, token)
 {
-    const instance=axios.create({
-        baseURL:`${domen}${api}`,
-            timeout: 1000,
-            headers: getHeader('application/json',token)
-    });
+    const instance=await instanceFunc(token);
     var response=await instance.get(`${apiFiles}${folderId}`);
-    response1=response.data.response;
     return response.data.response;
     //#region old code
     /*request.get(
@@ -72,9 +75,15 @@ var getStructDirectory = async function(folderId, token)
     //#endregion
 };
 
-var createDirectory = function(parentId, title, token, callback)
+var createDirectory = async function(parentId, title, token)
 {
-    request.post(
+    const instance=await instanceFunc(token);
+    var response=await instance.post(`${apiFiles}${method.folder}${parentId}`,{
+        "title": title
+    });
+    return response.data.response;
+//#region old code
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiFiles}${method.folder}${parentId}`,
@@ -92,12 +101,19 @@ var createDirectory = function(parentId, title, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var deleteDirectory = function(folderId, token, callback)
+var deleteDirectory = async function(folderId, token)
 {
-    request.delete(
+    const instance= await instanceFunc(token);
+    var response=await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
+        "deleteAfter": true,
+        "immediately": true
+    });
+    //#region old code
+    /*request.delete(
         {
             method: 'DELETE',
             url: `${domen}${api}${apiFiles}${method.folder}${folderId}`,
@@ -116,12 +132,28 @@ var deleteDirectory = function(folderId, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var getFileDownloadUrl = function(parentId, fileId, token, callback)
+var getFileDownloadUrl = async function(fileId, token)
 {
-    request.get(
+    const instance= await instanceFunc(token);
+    var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`);
+    let streamFile=await request.get(
+        {
+            url:response.data.response.document.url,
+            headers: getHeader('application/octet-stream', token)
+        }
+    );
+    streamFile.end();
+    //#region пока не понял как изменить этот момент(let streamFile...) пытался менятьна это
+    //const instanceStreamFile= await instanceFunc(token,'application/octet-stream','');
+    //var streamFile= await instanceStreamFile.get(response.data.response.document.url);
+    //#endregion
+    return streamFile;
+    //#region old code
+    /*request.get(
         {
             url: `${domen}${api}${apiFiles}${method.file}${fileId}${method.openedit}`,
             headers: getHeader('application/json', token),
@@ -142,12 +174,19 @@ var getFileDownloadUrl = function(parentId, fileId, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var createFile = function(folderId, title, token, callback)
+var createFile = async function(folderId, title, token)
 {
-    request.post(
+    const instance = await instanceFunc(token);
+    var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
+        "title": title
+    });
+    return response.data.response;
+    //#region old code
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiFiles}${folderId}/${method.file}`,
@@ -165,12 +204,20 @@ var createFile = function(folderId, title, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var createFiletxt = function(folderId, title, token, callback)
+var createFiletxt = async function(folderId, title, token)
 {
-    request.post(
+    const instance = await instanceFunc(token);
+    var response = await instance.post(`${apiFiles}${folderId}${method.text}`,{
+        "title": title,
+        "content": ' '
+    });
+    return response.data.response;
+    //#region old code
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiFiles}${folderId}${method.text}`,
@@ -189,12 +236,20 @@ var createFiletxt = function(folderId, title, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var createFilehtml = function(folderId, title, token, callback)
+var createFilehtml = async function(folderId, title, token)
 {
-    request.post(
+    const instance = await instanceFunc(token);
+    var response = await instance.post(`${apiFiles}${folderId}${method.html}`,{
+        "title": title,
+        "content": ' '
+    });
+    return response.data.response;
+    //#region old code
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiFiles}${folderId}${method.html}`,
@@ -213,12 +268,19 @@ var createFilehtml = function(folderId, title, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var deleteFile = function(fileId, token, callback)
+var deleteFile = async function(fileId, token)
 {
-    request.delete(
+    const instance = await instanceFunc(token);
+    var response = await instance.delete(`${apiFiles}${method.file}${fileId}`,{
+        "deleteAfter": true,
+        "immediately": true
+    });
+    //#region old code
+    /*request.delete(
         {
             method: 'DELETE',
             url: `${domen}${api}${apiFiles}${method.file}${fileId}`,
@@ -237,13 +299,18 @@ var deleteFile = function(fileId, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
-
-var rewritingFile = function(folderId, title, content, token, callback)
+//спросить
+var rewritingFile = async function(folderId, title, content, token)
 {
-    const encode_title = encodeURIComponent(`${title}`);
-    request.post(
+    const encode_title = await encodeURIComponent(`${title}`);
+    const instance = await instanceFunc(token,undefined,undefined,content);
+    var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
+    //instance.data=content;
+    //#region old code
+    /*request.post(
         {
             method: 'POST',
             url: `${domen}${api}${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`,
@@ -259,12 +326,21 @@ var rewritingFile = function(folderId, title, content, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var  copyFileToFolder = function(folderId, files, token, callback)
+var  copyFileToFolder = async function(folderId, files, token)
 {
-    request.put(
+    const instance=await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.copy}`,{
+        "destFolderId": folderId,
+        "fileIds": files,
+        "conflictResolveType": "Skip",
+        "deleteAfter": true
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.copy}`,
@@ -285,12 +361,21 @@ var  copyFileToFolder = function(folderId, files, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var  copyDirToFolder = function(folderId, folders, token, callback)
+var  copyDirToFolder = async function(folderId, folders, token)
 {
-    request.put(
+    const instance = await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.copy}`,{
+        "destFolderId": folderId,
+        "folderIds": folders,
+        "conflictResolveType": "Skip",
+        "deleteAfter": true
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.copy}`,
@@ -311,12 +396,21 @@ var  copyDirToFolder = function(folderId, folders, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var  moveDirToFolder = function(folderId, folders, token, callback)
+var  moveDirToFolder = async function(folderId, folders, token)
 {
-    request.put(
+    const instance = await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.move}`,{
+        "destFolderId": folderId,
+        "folderIds": folders,
+        "conflictResolveType": "Skip",
+        "deleteAfter": true
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.move}`,
@@ -337,12 +431,21 @@ var  moveDirToFolder = function(folderId, folders, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var  moveFileToFolder = function(folderId, files, token, callback)
+var  moveFileToFolder = async function(folderId, files, token)
 {
-    request.put(
+    const instance = await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.move}`,{
+        "destFolderId": folderId,
+        "fileIds": files,
+        "conflictResolveType": "Skip",
+        "deleteAfter": true
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.move}`,
@@ -363,12 +466,18 @@ var  moveFileToFolder = function(folderId, files, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var renameFolder = function(folderId, newName, token, callback)
+var renameFolder = async function(folderId, newName, token)
 {
-    request.put(
+    const instance = await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
+        "title": newName
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.folder}${folderId}`,
@@ -386,12 +495,18 @@ var renameFolder = function(folderId, newName, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
-var renameFile = function(fileId, newName, token, callback)
+var renameFile = async function(fileId, newName, token)
 {
-    request.put(
+    const instance = await instanceFunc(token);
+    var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
+        "title": newName
+    });
+    //#region old code
+    /*request.put(
         {
             method: 'PUT',
             url: `${domen}${api}${apiFiles}${method.file}${fileId}`,
@@ -409,7 +524,8 @@ var renameFile = function(fileId, newName, token, callback)
                 }
             });
         }
-    );
+    );*/
+    //#endregion
 };
 
 module.exports = {
