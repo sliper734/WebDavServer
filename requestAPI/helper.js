@@ -11,7 +11,42 @@ var getHeader = function(contentType, token){
     });
 };
 
-var exceptionResponse = function(err, body, callback){
+
+var isCorrectName = function(name)
+{
+    var pattern = ["<", ">", ":", '"', "|", "?", "*", "/"];
+    var correct=true;
+    for(var i=0;i<pattern.length;i++)
+    {
+        if (name.includes(pattern[i])){
+            correct = false;
+        }
+    }
+    return correct;
+};
+
+var exceptionResponse = function(error,content)
+{
+    try {
+        const statusCode = error.response.status;
+        if(error){
+            logger.log('warn', error.response.data.error.message);
+        }
+        else if(!content){
+            logger.log('warn', webdav.Error.Forbidden);
+        }else if(statusCode == 403){
+            logger.log('warn', error.response.data.error.message);
+        } 
+        else if(statusCode !== 201 && statusCode !== 200){
+            logger.log('warn', error.response.data.error.message);
+        }
+    } catch (e) {
+        logger.log('error', `Error JSONparse response from api ${e}`);
+        logger.log('error', `${e}`);
+    }
+};
+//#region old code
+/*var exceptionResponse1 = function(err, body, callback){
     try{
         if(err){
             logger.log('warn', `${JSON.parse(body).error.message}`);
@@ -36,9 +71,10 @@ var exceptionResponse = function(err, body, callback){
         logger.log('error', `${e}`);
         callback(new Error('Error JSONparse response from api'), null);
     }
-};
-
+};*/
+//#endregion
 module.exports = {
     getHeader,
-    exceptionResponse
+    exceptionResponse,
+    isCorrectName
 };

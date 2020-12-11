@@ -1,6 +1,6 @@
 var request = require('request');
 var axios = require('axios');
-const {getHeader, exceptionResponse} = require('./helper.js');
+const {getHeader, exceptionResponse, isCorrectName} = require('./helper.js');
 const {
     domen,
     api,
@@ -21,12 +21,16 @@ function instanceFunc(token=null, header='application/json',url=`${domen}${api}`
 
 var requestAuth = async function(username, password)
 {
-    const instance=await instanceFunc();
-    var response=await instance.post(`${apiAuth}`,{
-        "userName": username,
-        "password": password
-    });
-    return response.data.response.token;
+    try {
+        const instance=await instanceFunc();
+        var response=await instance.post(`${apiAuth}`,{
+            "userName": username,
+            "password": password
+        });
+        return response.data.response.token;
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.post(
         {
@@ -51,11 +55,16 @@ var requestAuth = async function(username, password)
     //#endregion
 };
 
+//не знаю как добиться ошибок от этой функции
 var getStructDirectory = async function(folderId, token)
 {
-    const instance=await instanceFunc(token);
-    var response=await instance.get(`${apiFiles}${folderId}`);
-    return response.data.response;
+    try {
+        const instance=await instanceFunc(token);
+        var response=await instance.get(`${apiFiles}${folderId}`);
+        return response.data.response;
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.get(
         {
@@ -75,13 +84,23 @@ var getStructDirectory = async function(folderId, token)
     //#endregion
 };
 
+//как заставить ловить спецсимволы?
 var createDirectory = async function(parentId, title, token)
 {
-    const instance=await instanceFunc(token);
-    var response=await instance.post(`${apiFiles}${method.folder}${parentId}`,{
-        "title": title
-    });
-    return response.data.response;
+    try {
+        const instance=await instanceFunc(token);
+        if(await isCorrectName(title)){
+            var response=await instance.post(`${apiFiles}${method.folder}${parentId}`,{
+                "title": title
+            });
+            return response.data.response;
+        }
+        else{
+            throw "incorrect folder name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
 //#region old code
     /*request.post(
         {
@@ -105,13 +124,18 @@ var createDirectory = async function(parentId, title, token)
     //#endregion
 };
 
+//почему-то не падает и не выдает ошибки когда пытаюсь удалить папки на подобие "корзина", "мои документы" и тд
 var deleteDirectory = async function(folderId, token)
 {
-    const instance= await instanceFunc(token);
-    var response=await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
-        "deleteAfter": true,
-        "immediately": true
-    });
+    try {
+        const instance= await instanceFunc(token);
+        var response=await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
+            "deleteAfter": true,
+            "immediately": true
+        }); 
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.delete(
         {
@@ -136,6 +160,7 @@ var deleteDirectory = async function(folderId, token)
     //#endregion
 };
 
+//РАЗОБРАТЬСЯ!
 var getFileDownloadUrl = async function(fileId, token)
 {
     const instance= await instanceFunc(token);
@@ -178,13 +203,23 @@ var getFileDownloadUrl = async function(fileId, token)
     //#endregion
 };
 
+//надо доработать. Не обрабатывает исключение, если попробовать создать файл в корневой дирректории "@root"
 var createFile = async function(folderId, title, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
-        "title": title
-    });
-    return response.data.response;
+    try {
+        const instance = await instanceFunc(token);
+        if(isCorrectName(title)){
+            var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
+                "title": title
+            });
+            return response.data.response;
+        }
+        else{
+            throw "incorrect file name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.post(
         {
@@ -208,14 +243,24 @@ var createFile = async function(folderId, title, token)
     //#endregion
 };
 
+//не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .txt соответсвенно не работает
 var createFiletxt = async function(folderId, title, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.post(`${apiFiles}${folderId}${method.text}`,{
-        "title": title,
-        "content": ' '
-    });
-    return response.data.response;
+    try {
+        const instance = await instanceFunc(token);
+        if(isCorrectName(title)){
+            var response = await instance.post(`${apiFiles}${folderId}${method.text}`,{
+                "title": title,
+                "data": ' '
+            });
+            return response.data.response;
+        }
+        else{
+            throw "incorrect file name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.post(
         {
@@ -240,14 +285,24 @@ var createFiletxt = async function(folderId, title, token)
     //#endregion
 };
 
+//не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .html соответсвенно не работает
 var createFilehtml = async function(folderId, title, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.post(`${apiFiles}${folderId}${method.html}`,{
-        "title": title,
-        "content": ' '
-    });
-    return response.data.response;
+    try {
+        const instance = await instanceFunc(token);
+        if(isCorrectName(title)){
+            var response = await instance.post(`${apiFiles}${folderId}${method.html}`,{
+                "title": title,
+                "data": ' '
+            });
+            return response.data.response;
+        }
+        else{
+            throw "incorrect file name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.post(
         {
@@ -272,13 +327,18 @@ var createFilehtml = async function(folderId, title, token)
     //#endregion
 };
 
+//работает хорошо без проблем, единственное не знаю как можно добиться ошибки при удалении файла
 var deleteFile = async function(fileId, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.delete(`${apiFiles}${method.file}${fileId}`,{
-        "deleteAfter": true,
-        "immediately": true
-    });
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.delete(`${apiFiles}${method.file}${fileId}`,{
+            "deleteAfter": true,
+            "immediately": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.delete(
         {
@@ -302,12 +362,17 @@ var deleteFile = async function(fileId, token)
     );*/
     //#endregion
 };
-//спросить
+
+//спросить как тестить. Что эта функция что старая не рабочие, либо я не знаю как проверить этот метод
 var rewritingFile = async function(folderId, title, content, token)
 {
-    const encode_title = await encodeURIComponent(`${title}`);
-    const instance = await instanceFunc(token,undefined,undefined,content);
-    var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
+    try {
+        const encode_title = await encodeURIComponent(`${title}`);
+        const instance = await instanceFunc(token,undefined,undefined,content);
+        var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //instance.data=content;
     //#region old code
     /*request.post(
@@ -330,15 +395,20 @@ var rewritingFile = async function(folderId, title, content, token)
     //#endregion
 };
 
+//что этот что старый не работают надо переосмысливать функцию. Мои ошибки не исключены
 var  copyFileToFolder = async function(folderId, files, token)
 {
-    const instance=await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.copy}`,{
-        "destFolderId": folderId,
-        "fileIds": files,
-        "conflictResolveType": "Skip",
-        "deleteAfter": true
-    });
+    try {
+        const instance=await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.copy}`,{
+            "destFolderId": folderId,
+            "fileIds": files,
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {
@@ -365,15 +435,20 @@ var  copyFileToFolder = async function(folderId, files, token)
     //#endregion
 };
 
+//что этот что старый не работают надо переосмысливать функцию. Мои ошибки не исключены
 var  copyDirToFolder = async function(folderId, folders, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.copy}`,{
-        "destFolderId": folderId,
-        "folderIds": folders,
-        "conflictResolveType": "Skip",
-        "deleteAfter": true
-    });
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.copy}`,{
+            "destFolderId": folderId,
+            "folderIds": folders,
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {
@@ -400,15 +475,20 @@ var  copyDirToFolder = async function(folderId, folders, token)
     //#endregion
 };
 
+//что этот что старый не работают надо переосмысливать функцию. Мои ошибки не исключены
 var  moveDirToFolder = async function(folderId, folders, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.move}`,{
-        "destFolderId": folderId,
-        "folderIds": folders,
-        "conflictResolveType": "Skip",
-        "deleteAfter": true
-    });
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.move}`,{
+            "destFolderId": folderId,
+            "folderIds": folders,
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {
@@ -435,15 +515,20 @@ var  moveDirToFolder = async function(folderId, folders, token)
     //#endregion
 };
 
+//что этот что старый не работают надо переосмысливать функцию. Мои ошибки не исключены
 var  moveFileToFolder = async function(folderId, files, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.move}`,{
-        "destFolderId": folderId,
-        "fileIds": files,
-        "conflictResolveType": "Skip",
-        "deleteAfter": true
-    });
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.move}`,{
+            "destFolderId": folderId,
+            "fileIds": files,
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {
@@ -470,12 +555,22 @@ var  moveFileToFolder = async function(folderId, files, token)
     //#endregion
 };
 
+//работает хорошо, но проблема с отловом спецсимволов
 var renameFolder = async function(folderId, newName, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
-        "title": newName
-    });
+    try {
+        const instance = await instanceFunc(token);
+        if(isCorrectName(newName)){
+            var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
+                "title": newName
+            });
+        }
+        else{
+            throw "incorrect folder name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {
@@ -499,12 +594,22 @@ var renameFolder = async function(folderId, newName, token)
     //#endregion
 };
 
+//работает хорошо, но проблема с отловом спецсимволов
 var renameFile = async function(fileId, newName, token)
 {
-    const instance = await instanceFunc(token);
-    var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
-        "title": newName
-    });
+    try {
+        const instance = await instanceFunc(token);
+        if(isCorrectName(newName)){
+            var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
+                "title": newName
+            });
+        }
+        else{
+            throw "incorrect file name";
+        }
+    } catch (error) {
+        exceptionResponse(error);
+    }
     //#region old code
     /*request.put(
         {

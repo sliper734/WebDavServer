@@ -16,6 +16,7 @@ const {
     renameFile,
     createFilehtml
 } = require('../requestAPI/requestAPI.js');
+const {exceptionResponse, isCorrectName} = require('../requestAPI/helper.js');
 const {method} = require('../config.js');
 const streamWrite = require('../Writable.js');
 const SimpleStruct = require('./SimpleStruct.js');
@@ -33,8 +34,8 @@ class CustomVirtualResources
             folders: [],
             current: {}
         };
-        var structDir= await getStructDirectory(method.pathRootDirectory,user.token);
         try {
+            var structDir= await getStructDirectory(method.pathRootDirectory,user.token);
             for(var i=0;i<structDir.length;i++)
             {
                 structRoot.folders.push(structDir[i].current);
@@ -132,10 +133,15 @@ class CustomVirtualResources
         let parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
             
         if(ctx.type.isDirectory){
-            var createdObj1= await createDirectory(parentId, element, user.token);
             try {
-                this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
-                callback();
+                var createdObj1= await createDirectory(parentId, element, user.token);
+                if(await isCorrectName(element)){
+                    this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
+                    callback();
+                }
+                else{
+                    throw "incorrect folder name";
+                }
             } catch (error) {
                 callback(error);
             }
@@ -155,10 +161,15 @@ class CustomVirtualResources
             element = parse.isExst(element);
             switch(parse.parseFileExst(element)){
                 case 'OFFICE_DOCX_PPTX_XLSX':
-                    var createdObj= await createFile(parentId,element,user.token);
                     try {
-                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                        callback();
+                        if(isCorrectName(element)){
+                            var createdObj= await createFile(parentId,element,user.token);
+                            this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                            callback();
+                        }
+                        else{
+                            throw "incorrect file name";
+                        }
                     } catch (error) {
                         callback(error);
                     }
@@ -175,10 +186,15 @@ class CustomVirtualResources
                     //#endregion
                     break;
                 case 'html':
-                    var createdObj= await createFilehtml(parentId, element, user.token);
                     try {
-                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                        callback();
+                        if(isCorrectName(element)){
+                            var createdObj= await createFilehtml(parentId, element, user.token);
+                            this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                            callback();
+                        }
+                        else{
+                            throw "incorrect file name";
+                        }
                     } catch (error) {
                         callback(error);
                     }
@@ -195,10 +211,15 @@ class CustomVirtualResources
                     //#endregion
                     break;
                 default:
-                    var createdObj = await createFiletxt(parentId,element,user.token);
                     try {
-                        this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                        callback();
+                        if(isCorrectName(element)){
+                            var createdObj = await createFiletxt(parentId,element,user.token);
+                            this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                            callback();
+                        }
+                        else{
+                            throw "incorrect file name";
+                        }
                     } catch (error) {
                         callback(error);
                     }
@@ -225,8 +246,8 @@ class CustomVirtualResources
 
         this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
             if(element == el.title){
-                await deleteDirectory(el.id,user.token);
                 try {
+                    await deleteDirectory(el.id,user.token);
                     this.structСache.dropFolderObject(parentFolder, user.username, el);
                     this.structСache.dropPath(path, user.username);
                     callback(null);
@@ -250,8 +271,8 @@ class CustomVirtualResources
 
         this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                await deleteFile(el.id,user.token);
                 try {
+                    await deleteFile(el.id,user.token);
                     this.structСache.dropFileObject(parentFolder, user.username, el);
                     callback(null);
                 } catch (error) {
@@ -313,8 +334,8 @@ class CustomVirtualResources
                                 this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
                                     if(element == el.title){
                                         let folderId = el.id;
-                                        var structDirectory=await getStructDirectory(folderId,user.token);
                                         try {
+                                            var structDirectory=await getStructDirectory(folderId,user.token);
                                             this.structСache.setStruct(path, user.username, structDirectory);
                                             callback(null, this.structСache.getStruct(path, user.username));
                                         } catch (error) {
@@ -343,8 +364,8 @@ class CustomVirtualResources
                                 callback(null, this.structСache.getStruct(path, user.username));
                             }
                             else {
-                                var structDirectory = await getStructDirectory(folderId, user.token);
                                 try {
+                                    var structDirectory = await getStructDirectory(folderId, user.token);
                                     this.structСache.setStruct(path, user.username, structDirectory);
                                     callback(null, this.structСache.getStruct(path, user.username));
                                 } catch (error) {
@@ -401,8 +422,8 @@ class CustomVirtualResources
             this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
                 if(element == el.title){
                     let folderId = el.id;
-                    var structDirectory= await this.getStructDirectory(folderId,user.token);
                     try {
+                        var structDirectory= await this.getStructDirectory(folderId,user.token);
                         this.structСache.setStruct(path, user.username, structDirectory);
                         callback();
                     } catch (error) {
@@ -463,9 +484,9 @@ class CustomVirtualResources
         stream.on('finish', () => {
             this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
-                    await rewritingFile(folderId,el.title,content,user.token);
                     try {
-                        
+                        await rewritingFile(folderId,el.title,content,user.token);
+                        //не знаю что засовывать
                     } catch (error) {
                         callback(error, null);
                     }
@@ -492,8 +513,8 @@ class CustomVirtualResources
             const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
             this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
                 if(element == el.title){
-                    await copyDirToFolder(folderId,el.id,user.token);
                     try {
+                        await copyDirToFolder(folderId,el.id,user.token);
                         callback(null, true);
                     } catch (error) {
                         callback(error, null);
@@ -512,8 +533,8 @@ class CustomVirtualResources
             });
             this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
-                    await copyFileToFolder(folderId,el.id,user.token);
                     try {
+                        await copyFileToFolder(folderId,el.id,user.token);
                         callback(null, true);
                     } catch (error) {
                         callback(error, null);
@@ -550,10 +571,15 @@ class CustomVirtualResources
 
         this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
             if(element == el.title){
-                await renameFolder(el.id,newName,user.token);
                 try {
-                    this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
-                    callback(null, true);
+                    if(isCorrectName(newName)){
+                        await renameFolder(el.id,newName,user.token);
+                        this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
+                        callback(null, true);
+                    }
+                    else{
+                        throw "incorrect folder name";
+                    }
                 } catch (error) {
                     callback(error, null);
                 }
@@ -572,10 +598,15 @@ class CustomVirtualResources
         });
         this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                await renameFile(el.id,newName,user.token);
                 try {
-                    this.structСache.renameFileObject(element, newName, parentFolder, user.username);
-                    callback(null, true);
+                    if(isCorrectName(newName)){
+                        await renameFile(el.id,newName,user.token);
+                        this.structСache.renameFileObject(element, newName, parentFolder, user.username);
+                        callback(null, true);
+                    }
+                    else{
+                        throw "incorrect file name";
+                    }
                 } catch (error) {
                     callback(err, null);
                 }
@@ -621,8 +652,8 @@ class CustomVirtualResources
                 const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
                 this.structСache.getStruct(parentFolderFrom, user.username).folders.forEach(async (el) => {
                     if(elementFrom == el.title){
-                        await moveDirToFolder(folderId,el.id,user.token);
                         try {
+                            await moveDirToFolder(folderId,el.id,user.token);
                             this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
                             callback(null, true);
                         } catch (error) {
@@ -643,8 +674,8 @@ class CustomVirtualResources
                 });
                 this.structСache.getStruct(parentFolderFrom, user.username).files.forEach(async (el) => {
                     if(elementFrom == el.title){
-                        await moveFileToFolder(folderId,el.id,user.token);
                         try {
+                            await moveFileToFolder(folderId,el.id,user.token);
                             this.structСache.dropFileObject(parentFolderFrom, user.username, el);
                             callback(null, true);
                         } catch (error) {
