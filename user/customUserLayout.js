@@ -1,5 +1,5 @@
 const customSimpleUser = require('./customSimpleUser.js');
-const {timeIsCleanTrash} = require('../config.js');
+const {timeIsCleanTrash} = require('../server/config.js');
 
 class customUserLayout{
     constructor(){

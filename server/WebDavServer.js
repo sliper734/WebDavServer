@@ -1,10 +1,10 @@
 const webdav = require('webdav-server').v2;
-const FileSystem = require('./customFileSystem');
-const customUserManager = require('./userManage/customUserManager');
+const FileSystem = require('../manager/customFileSystem');
+const customUserManager = require('../user/customUserManager');
 const {
     portListener,
     cleanTrashInterval} = require('./config.js');
-const logger = require('./logger.js');
+const logger = require('../helper/logger.js');
 
 const userManager = new customUserManager();
 

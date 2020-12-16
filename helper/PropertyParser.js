@@ -1,4 +1,4 @@
-class parseProperty{
+class PropertyPerser{
     static parsePath(path){
         let pathArray = path.split('/');
         let targetElement = pathArray.pop();
@@ -41,6 +41,12 @@ class parseProperty{
             case 'bytes':
                 return parseFloat(size);
                 break;
+            case 'Кб':
+                return (parseFloat(size) * 1000);
+                break;
+            case 'Мб':
+                return (parseFloat(size) * 1000000);
+                break;
             case 'KB':
                 return (parseFloat(size) * 1000);
                 break;
@@ -69,4 +75,4 @@ class parseProperty{
     }
 }
 
-module.exports = parseProperty;
+module.exports = PropertyPerser;

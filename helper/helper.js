@@ -1,4 +1,4 @@
-const logger = require('../logger.js');
+const logger = require('./logger.js');
 
 var getHeader = function(contentType, token){
     const ContentType = contentType;

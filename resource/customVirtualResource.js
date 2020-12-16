@@ -1,26 +1,21 @@
 const webdav = require('webdav-server').v2;
 const {
     getStructDirectory,
-    createDirectory,
-    deleteDirectory,
     getFileDownloadUrl,
-    createFile,
-    createFiletxt,
-    deleteFile,
+    //createFiletxt,
     rewritingFile,
-    copyDirToFolder,
-    copyFileToFolder,
-    moveDirToFolder,
-    moveFileToFolder,
-    renameFolder,
-    renameFile,
-    createFilehtml
-} = require('../requestAPI/requestAPI.js');
-const {exceptionResponse, isCorrectName} = require('../requestAPI/helper.js');
-const {method} = require('../config.js');
-const streamWrite = require('../Writable.js');
+    moveFileOrFolder,
+    copyFileOrFolder,
+    renameFileOrFolder,
+    createFileOrFolder,
+    deleteFileOrFolder
+    //createFilehtml
+} = require('../server/requestAPI.js');
+const {exceptionResponse, isCorrectName} = require('../helper/helper.js');
+const {method} = require('../server/config.js');
+const streamWrite = require('../helper/Writable.js');
 const SimpleStruct = require('./SimpleStruct.js');
-const parse = require('./parseProperty.js');
+const parse = require('../helper/PropertyParser.js');
 
 class CustomVirtualResources
 {
@@ -129,12 +124,12 @@ class CustomVirtualResources
     async create(path, ctx, callback){
 
         const user = ctx.context.user;
-        let {element, parentFolder} = parse.parsePath(path);
+        let {element, parentFolder} = await parse.parsePath(path);
         let parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
             
         if(ctx.type.isDirectory){
             try {
-                var createdObj1= await createDirectory(parentId, element, user.token);
+                var createdObj1 = await createFileOrFolder(undefined, parentId, element, user.token);
                 if(await isCorrectName(element)){
                     this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
                     callback();
@@ -145,17 +140,6 @@ class CustomVirtualResources
             } catch (error) {
                 callback(error);
             }
-            //#region old code
-            /*createDirectory(parentId, element, user.token, (err, createdObj) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    this.structСache.setFolderObject(parentFolder, user.username, createdObj);
-                    callback();
-                }
-            });*/
-            //#endregion
         }
         else if(ctx.type.isFile){
             element = parse.isExst(element);
@@ -163,7 +147,7 @@ class CustomVirtualResources
                 case 'OFFICE_DOCX_PPTX_XLSX':
                     try {
                         if(isCorrectName(element)){
-                            var createdObj= await createFile(parentId,element,user.token);
+                            var createdObj = await createFileOrFolder(parentId, undefined, element, user.token);
                             this.structСache.setFileObject(parentFolder, user.username, createdObj);
                             callback();
                         }
@@ -173,19 +157,9 @@ class CustomVirtualResources
                     } catch (error) {
                         callback(error);
                     }
-                    //#region old code
-                    /*createFile(parentId, element, user.token, (err, createdObj) => {
-                        if(err){
-                            callback(err);
-                        }
-                        else{
-                            this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                            callback();
-                        }
-                    });*/
-                    //#endregion
                     break;
-                case 'html':
+                    //#region create html
+                /*case 'html':
                     try {
                         if(isCorrectName(element)){
                             var createdObj= await createFilehtml(parentId, element, user.token);
@@ -197,7 +171,8 @@ class CustomVirtualResources
                         }
                     } catch (error) {
                         callback(error);
-                    }
+                    }*/
+                    //#endregion
                     //#region old code
                     /*createFilehtml(parentId, element, user.token, (err, createdObj) => {
                         if(err){
@@ -209,8 +184,9 @@ class CustomVirtualResources
                         }
                     });*/
                     //#endregion
-                    break;
-                default:
+                    //break;
+               //#region create txt
+                    /*default:
                     try {
                         if(isCorrectName(element)){
                             var createdObj = await createFiletxt(parentId,element,user.token);
@@ -222,7 +198,8 @@ class CustomVirtualResources
                         }
                     } catch (error) {
                         callback(error);
-                    }
+                    }*/
+                    //#endregion
                     //#region old code
                     /*createFiletxt(parentId, element, user.token, (err, createdObj) => {
                         if(err){
@@ -234,7 +211,7 @@ class CustomVirtualResources
                         }
                     });*/
                     //#endregion
-                    break;
+                    //break;
             }
         }
     }
@@ -247,48 +224,25 @@ class CustomVirtualResources
         this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
             if(element == el.title){
                 try {
-                    await deleteDirectory(el.id,user.token);
+                    await deleteFileOrFolder(undefined, el.id, user.token);
                     this.structСache.dropFolderObject(parentFolder, user.username, el);
                     this.structСache.dropPath(path, user.username);
                     callback(null);
                 } catch (error) {
                     callback(error);
                 }
-                //#region old code
-                /*deleteDirectory(el.id, user.token, (err) => {
-                    if(err){
-                        callback(err);
-                    }
-                    else{
-                        this.structСache.dropFolderObject(parentFolder, user.username, el);
-                        this.structСache.dropPath(path, user.username);
-                        callback(null);
-                    }
-                });*/
-                //#endregion
             }
         });
 
         this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
                 try {
-                    await deleteFile(el.id,user.token);
+                    await deleteFileOrFolder(el.id, undefined, user.token);
                     this.structСache.dropFileObject(parentFolder, user.username, el);
                     callback(null);
                 } catch (error) {
                     callback(error);
                 }
-                //#region old code
-                /*deleteFile(el.id, user.token, (err) => {
-                    if(err){
-                        callback(err);
-                    }
-                    else{
-                        this.structСache.dropFileObject(parentFolder, user.username, el);
-                        callback(null);
-                    }
-                });*/
-                //#endregion
             }
         });
     }
@@ -514,41 +468,21 @@ class CustomVirtualResources
             this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
                 if(element == el.title){
                     try {
-                        await copyDirToFolder(folderId,el.id,user.token);
+                        await copyFileOrFolder(folderId, undefined, el.id, user.token);
                         callback(null, true);
                     } catch (error) {
                         callback(error, null);
                     }
-                    //#region old code
-                    /*copyDirToFolder(folderId, el.id, user.token, (err) => {
-                        if(err){
-                            callback(err, null);
-                        }
-                        else{
-                            callback(null, true);
-                        }
-                    });*/
-                    //#endregion
                 }
             });
             this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
                     try {
-                        await copyFileToFolder(folderId,el.id,user.token);
+                        await copyFileOrFolder(folderId, el.id, undefined, user.token);
                         callback(null, true);
                     } catch (error) {
                         callback(error, null);
                     }
-                    //#region old code
-                    /*copyFileToFolder(folderId, el.id, user.token, (err) => {
-                        if(err){
-                            callback(err, null);
-                        }
-                        else{
-                            callback(null, true);
-                        }
-                    });*/
-                    //#endregion
                 }
             });
         }
@@ -573,7 +507,7 @@ class CustomVirtualResources
             if(element == el.title){
                 try {
                     if(isCorrectName(newName)){
-                        await renameFolder(el.id,newName,user.token);
+                        await renameFileOrFolder(undefined, el.id, newName, user.token);
                         this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
                         callback(null, true);
                     }
@@ -583,24 +517,13 @@ class CustomVirtualResources
                 } catch (error) {
                     callback(error, null);
                 }
-                //#region old code
-                /*renameFolder(el.id, newName, user.token, (err) => {
-                    if(err){
-                        callback(err, null);
-                    }
-                    else{
-                        this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
-                        callback(null, true);
-                    }
-                });*/
-                //#endregion
             }
         });
         this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
                 try {
                     if(isCorrectName(newName)){
-                        await renameFile(el.id,newName,user.token);
+                        await renameFileOrFolder(el.id, undefined, newName, user.token);
                         this.structСache.renameFileObject(element, newName, parentFolder, user.username);
                         callback(null, true);
                     }
@@ -610,17 +533,6 @@ class CustomVirtualResources
                 } catch (error) {
                     callback(err, null);
                 }
-                //#region old code
-                /*renameFile(el.id, newName, user.token, (err) => {
-                    if(err){
-                        callback(err, null);
-                    }
-                    else{
-                        this.structСache.renameFileObject(element, newName, parentFolder, user.username);
-                        callback(null, true);
-                    }
-                });*/
-                //#endregion
             }
         });
     }
@@ -653,45 +565,23 @@ class CustomVirtualResources
                 this.structСache.getStruct(parentFolderFrom, user.username).folders.forEach(async (el) => {
                     if(elementFrom == el.title){
                         try {
-                            await moveDirToFolder(folderId,el.id,user.token);
+                            await moveFileOrFolder(folderId, undefined, el.id, user.token);
                             this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
                             callback(null, true);
                         } catch (error) {
                             callback(error, null);
                         }
-                        //#region old code
-                        /*moveDirToFolder(folderId, el.id, user.token, (err) => {
-                            if(err){
-                                callback(err, null);
-                            }
-                            else{
-                                this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
-                                callback(null, true);
-                            }
-                        });*/
-                        //#endregion
                     }
                 });
                 this.structСache.getStruct(parentFolderFrom, user.username).files.forEach(async (el) => {
                     if(elementFrom == el.title){
                         try {
-                            await moveFileToFolder(folderId,el.id,user.token);
+                            await moveFileOrFolder(folderId,el.id,undefined,user.token);
                             this.structСache.dropFileObject(parentFolderFrom, user.username, el);
                             callback(null, true);
                         } catch (error) {
                             callback(error, null);
                         }
-                        //#region old code
-                        /*moveFileToFolder(folderId, el.id, user.token, (err) => {
-                            if(err){
-                                callback(err, null);
-                            }
-                            else{
-                                this.structСache.dropFileObject(parentFolderFrom, user.username, el);
-                                callback(null, true);
-                            }
-                        });*/
-                        //#endregion
                     }
                 });
             }

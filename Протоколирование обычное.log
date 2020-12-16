@@ -1,0 +1,128 @@
+. 2020-12-15 15:05:02.841 Moving file "rgdhhdfsg" to "/Мои документы/Новая папкаwwdfasd/rgdhhdfsg".
+. 2020-12-15 15:05:02.841 ah_create, for WWW-Authenticate
+. 2020-12-15 15:05:02.841 auth: Sending 'Basic' response.
+. 2020-12-15 15:05:02.841 Sending request headers:
+. 2020-12-15 15:05:02.841 MOVE /%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/rgdhhdfsg HTTP/1.1
+. 2020-12-15 15:05:02.841 User-Agent: WinSCP/5.17.8 neon/0.31.1
+. 2020-12-15 15:05:02.841 Connection: TE
+. 2020-12-15 15:05:02.841 TE: trailers
+. 2020-12-15 15:05:02.841 Host: 127.0.0.1:1900
+. 2020-12-15 15:05:02.842 Destination: http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/%d0%9d%d0%be%d0%b2%d0%b0%d1%8f%20%d0%bf%d0%b0%d0%bf%d0%ba%d0%b0wwdfasd/rgdhhdfsg
+. 2020-12-15 15:05:02.842 Overwrite: F
+. 2020-12-15 15:05:02.842 Authorization: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+. 2020-12-15 15:05:02.842 Sending request-line and headers:
+. 2020-12-15 15:05:02.842 Request sent; retry is 1.
+. 2020-12-15 15:05:02.842 Aborted request (-4): Could not read status line
+. 2020-12-15 15:05:02.842 sess: Closing connection.
+. 2020-12-15 15:05:02.842 sess: Connection closed.
+. 2020-12-15 15:05:02.842 Persistent connection timed out, retrying.
+. 2020-12-15 15:05:02.842 Sending request-line and headers:
+. 2020-12-15 15:05:02.842 req: Connecting to 127.0.0.1:1900
+. 2020-12-15 15:05:02.842 Request sent; retry is 0.
+. 2020-12-15 15:05:06.479 [status-line] < HTTP/1.1 204 No Content
+. 2020-12-15 15:05:06.479 Header Name: [dav], Value: [1,2]
+. 2020-12-15 15:05:06.479 Header Name: [access-control-allow-origin], Value: [*]
+. 2020-12-15 15:05:06.479 Header Name: [access-control-allow-credentials], Value: [true]
+. 2020-12-15 15:05:06.479 Header Name: [access-control-expose-headers], Value: [DAV, content-length, Allow]
+. 2020-12-15 15:05:06.479 Header Name: [ms-author-via], Value: [DAV]
+. 2020-12-15 15:05:06.479 Header Name: [server], Value: [webdav-server/2.6.2]
+. 2020-12-15 15:05:06.479 Header Name: [www-authenticate], Value: [Basic realm="realm"]
+. 2020-12-15 15:05:06.479 Header Name: [allow], Value: [PROPPATCH,PROPFIND,OPTIONS,DELETE,UNLOCK,COPY,LOCK,MOVE]
+. 2020-12-15 15:05:06.479 Header Name: [date], Value: [Tue, 15 Dec 2020 12:05:06 GMT]
+. 2020-12-15 15:05:06.479 Header Name: [connection], Value: [keep-alive]
+. 2020-12-15 15:05:06.479 Header Name: [keep-alive], Value: [timeout=5]
+. 2020-12-15 15:05:06.479 End of headers.
+. 2020-12-15 15:05:06.479 ah_post_send (#0), code is 204 (want 401), WWW-Authenticate is Basic realm="realm"
+. 2020-12-15 15:05:06.480 Request ends, status 204 class 2xx, error line:
+. 2020-12-15 15:05:06.480 204 No Content
+. 2020-12-15 15:05:06.480 Request ends.
+. 2020-12-15 15:05:06.501 ah_create, for WWW-Authenticate
+. 2020-12-15 15:05:06.501 auth: Sending 'Basic' response.
+> 2020-12-15 15:05:06.501 <?xml version="1.0" encoding="utf-8"?>
+> 2020-12-15 15:05:06.501 <propfind xmlns="DAV:"><allprop/></propfind>
+. 2020-12-15 15:05:06.501 Sending request headers:
+. 2020-12-15 15:05:06.501 PROPFIND /%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ HTTP/1.1
+. 2020-12-15 15:05:06.501 User-Agent: WinSCP/5.17.8 neon/0.31.1
+. 2020-12-15 15:05:06.501 Connection: TE
+. 2020-12-15 15:05:06.501 TE: trailers
+. 2020-12-15 15:05:06.501 Host: 127.0.0.1:1900
+. 2020-12-15 15:05:06.501 Depth: 1
+. 2020-12-15 15:05:06.501 Content-Length: 84
+. 2020-12-15 15:05:06.501 Content-Type: application/xml
+. 2020-12-15 15:05:06.501 Authorization: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+. 2020-12-15 15:05:06.501 Sending request-line and headers:
+. 2020-12-15 15:05:06.501 Sending request body:
+. 2020-12-15 15:05:06.501 Request sent; retry is 1.
+. 2020-12-15 15:05:06.534 [status-line] < HTTP/1.1 207 Multi-Status
+. 2020-12-15 15:05:06.534 Header Name: [dav], Value: [1,2]
+. 2020-12-15 15:05:06.534 Header Name: [access-control-allow-origin], Value: [*]
+. 2020-12-15 15:05:06.534 Header Name: [access-control-allow-credentials], Value: [true]
+. 2020-12-15 15:05:06.534 Header Name: [access-control-expose-headers], Value: [DAV, content-length, Allow]
+. 2020-12-15 15:05:06.534 Header Name: [ms-author-via], Value: [DAV]
+. 2020-12-15 15:05:06.534 Header Name: [server], Value: [webdav-server/2.6.2]
+. 2020-12-15 15:05:06.534 Header Name: [www-authenticate], Value: [Basic realm="realm"]
+. 2020-12-15 15:05:06.534 Header Name: [allow], Value: [PROPPATCH,PROPFIND,OPTIONS,DELETE,UNLOCK,COPY,LOCK,MOVE]
+. 2020-12-15 15:05:06.534 Header Name: [content-type], Value: [application/xml;charset=utf-8]
+. 2020-12-15 15:05:06.534 Header Name: [content-length], Value: [6264]
+. 2020-12-15 15:05:06.534 Header Name: [date], Value: [Tue, 15 Dec 2020 12:05:06 GMT]
+. 2020-12-15 15:05:06.534 Header Name: [connection], Value: [keep-alive]
+. 2020-12-15 15:05:06.534 Header Name: [keep-alive], Value: [timeout=5]
+. 2020-12-15 15:05:06.534 End of headers.
+. 2020-12-15 15:05:06.534 ah_post_send (#0), code is 207 (want 401), WWW-Authenticate is Basic realm="realm"
+< 2020-12-15 15:05:06.534 <?xml version="1.0" encoding="utf-8"?><D:multistatus xmlns:D="DAV:"><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Tue, 15 Dec 2020 09:35:54 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-15T09:35:54-03:00</D:creationdate><D:resourcetype><D:collection/></D:resourcetype><D:displayname>Мои документы</D:displayname><D:getetag>"65724ab5646e74ef95bdcfb983f9e43f"</D:getetag></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/%D0%9D%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%BF%D0%B0%D0%BF%D0%BA%D0%B0wwdfasd/</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Tue, 15 Dec 2020 09:30:39 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-15T09:30:39-03:00</D:creationdate><D:resourcetype><D:collection/></D:resourcetype><D:displayname>Новая папкаwwdfasd</D:displayname><D:getetag>"0368fc3c35486f4193c988fc38c7f4be"</D:getetag></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Mon, 14 Dec 2020 11:12:07 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-14T11:12:07-03:00</D:creationdate><D:resourcetype/><D:displayname>.pptx</D:displayname><D:getetag>"6d631cdad4530aa5cd81ae9b52497932"</D:getetag><D:getcontentlength>32729.999999999996</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/aasdfasdfaqdf.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Mon, 14 Dec 2020 11:01:58 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-14T11:01:58-03:00</D:creationdate><D:resourcetype/><D:displayname>aasdfasdfaqdf.pptx</D:displayname><D:getetag>"526516eb6411a1df56bc66227e50c099"</D:getetag><D:getcontentlength>32729.999999999996</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Document.docx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Document.docx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>55880</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.wordprocessingml.document</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Presentation.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Presentation.pptx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>1080000</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Spreadsheets.xlsx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Spreadsheets.xlsx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>139990</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</D:getcontenttype></D:prop></D:propstat></D:response></D:multistatus>
+. 2020-12-15 15:05:06.534 Request ends, status 207 class 2xx, error line:
+. 2020-12-15 15:05:06.534 207 Multi-Status
+. 2020-12-15 15:05:06.534 Request ends.
+. 2020-12-15 15:05:06.534 ..;D;0;2020-12-15T09:35:54.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:06.535 Новая папкаwwdfasd;D;0;2020-12-15T09:30:39.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:06.535 .pptx;-;0;2020-12-14T11:12:07.000Z;3;"" [0];"" [0];---------;2
+. 2020-12-15 15:05:06.535 aasdfasdfaqdf.pptx;-;0;2020-12-14T11:01:58.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:06.535 ONLYOFFICE Sample Document.docx;-;55880;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:06.535 ONLYOFFICE Sample Presentation.pptx;-;1080000;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:06.535 ONLYOFFICE Sample Spreadsheets.xlsx;-;139990;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.538 Getting current directory name.
+. 2020-12-15 15:05:18.538 ah_create, for WWW-Authenticate
+. 2020-12-15 15:05:18.538 auth: Sending 'Basic' response.
+> 2020-12-15 15:05:18.538 <?xml version="1.0" encoding="utf-8"?>
+> 2020-12-15 15:05:18.538 <propfind xmlns="DAV:"><allprop/></propfind>
+. 2020-12-15 15:05:18.538 Sending request headers:
+. 2020-12-15 15:05:18.538 PROPFIND /%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ HTTP/1.1
+. 2020-12-15 15:05:18.538 User-Agent: WinSCP/5.17.8 neon/0.31.1
+. 2020-12-15 15:05:18.538 Connection: TE
+. 2020-12-15 15:05:18.538 TE: trailers
+. 2020-12-15 15:05:18.538 Host: 127.0.0.1:1900
+. 2020-12-15 15:05:18.538 Depth: 1
+. 2020-12-15 15:05:18.538 Content-Length: 84
+. 2020-12-15 15:05:18.538 Content-Type: application/xml
+. 2020-12-15 15:05:18.538 Authorization: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+. 2020-12-15 15:05:18.538 Sending request-line and headers:
+. 2020-12-15 15:05:18.538 Sending request body:
+. 2020-12-15 15:05:18.538 Request sent; retry is 1.
+. 2020-12-15 15:05:18.599 [status-line] < HTTP/1.1 207 Multi-Status
+. 2020-12-15 15:05:18.599 Header Name: [dav], Value: [1,2]
+. 2020-12-15 15:05:18.599 Header Name: [access-control-allow-origin], Value: [*]
+. 2020-12-15 15:05:18.599 Header Name: [access-control-allow-credentials], Value: [true]
+. 2020-12-15 15:05:18.599 Header Name: [access-control-expose-headers], Value: [DAV, content-length, Allow]
+. 2020-12-15 15:05:18.599 Header Name: [ms-author-via], Value: [DAV]
+. 2020-12-15 15:05:18.599 Header Name: [server], Value: [webdav-server/2.6.2]
+. 2020-12-15 15:05:18.599 Header Name: [www-authenticate], Value: [Basic realm="realm"]
+. 2020-12-15 15:05:18.599 Header Name: [allow], Value: [PROPPATCH,PROPFIND,OPTIONS,DELETE,UNLOCK,COPY,LOCK,MOVE]
+. 2020-12-15 15:05:18.599 Header Name: [content-type], Value: [application/xml;charset=utf-8]
+. 2020-12-15 15:05:18.599 Header Name: [content-length], Value: [7019]
+. 2020-12-15 15:05:18.599 Header Name: [date], Value: [Tue, 15 Dec 2020 12:05:18 GMT]
+. 2020-12-15 15:05:18.599 Header Name: [connection], Value: [keep-alive]
+. 2020-12-15 15:05:18.599 Header Name: [keep-alive], Value: [timeout=5]
+. 2020-12-15 15:05:18.599 End of headers.
+. 2020-12-15 15:05:18.599 ah_post_send (#0), code is 207 (want 401), WWW-Authenticate is Basic realm="realm"
+< 2020-12-15 15:05:18.599 <?xml version="1.0" encoding="utf-8"?><D:multistatus xmlns:D="DAV:"><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Tue, 15 Dec 2020 09:35:54 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-15T09:35:54-03:00</D:creationdate><D:resourcetype><D:collection/></D:resourcetype><D:displayname>Мои документы</D:displayname><D:getetag>"65724ab5646e74ef95bdcfb983f9e43f"</D:getetag></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/rgdhhdfsg/</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Tue, 15 Dec 2020 09:34:55 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-15T09:34:55-03:00</D:creationdate><D:resourcetype><D:collection/></D:resourcetype><D:displayname>rgdhhdfsg</D:displayname><D:getetag>"8f81c9d1c6b38db97f01fa3c1b34e9ce"</D:getetag></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/%D0%9D%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%BF%D0%B0%D0%BF%D0%BA%D0%B0wwdfasd/</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Tue, 15 Dec 2020 09:30:39 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-15T09:30:39-03:00</D:creationdate><D:resourcetype><D:collection/></D:resourcetype><D:displayname>Новая папкаwwdfasd</D:displayname><D:getetag>"0368fc3c35486f4193c988fc38c7f4be"</D:getetag></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Mon, 14 Dec 2020 11:12:07 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-14T11:12:07-03:00</D:creationdate><D:resourcetype/><D:displayname>.pptx</D:displayname><D:getetag>"6d631cdad4530aa5cd81ae9b52497932"</D:getetag><D:getcontentlength>32729.999999999996</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/aasdfasdfaqdf.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Mon, 14 Dec 2020 11:01:58 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-14T11:01:58-03:00</D:creationdate><D:resourcetype/><D:displayname>aasdfasdfaqdf.pptx</D:displayname><D:getetag>"526516eb6411a1df56bc66227e50c099"</D:getetag><D:getcontentlength>32729.999999999996</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Document.docx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Document.docx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>55880</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.wordprocessingml.document</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Presentation.pptx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Presentation.pptx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>1080000</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.presentationml.presentation</D:getcontenttype></D:prop></D:propstat></D:response><D:response><D:href>http://127.0.0.1:1900/%D0%9C%D0%BE%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/ONLYOFFICE%20Sample%20Spreadsheets.xlsx</D:href><D:propstat><D:status>HTTP/1.1 200 OK</D:status><D:prop><D:getlastmodified>Wed, 09 Dec 2020 13:44:03 GMT</D:getlastmodified><D:lockdiscovery/><D:supportedlock><D:lockentry><D:lockscope><D:exclusive/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry><D:lockentry><D:lockscope><D:shared/></D:lockscope><D:locktype><D:write/></D:locktype></D:lockentry></D:supportedlock><D:creationdate>2020-12-09T13:44:03-03:00</D:creationdate><D:resourcetype/><D:displayname>ONLYOFFICE Sample Spreadsheets.xlsx</D:displayname><D:getetag>"82761220afa14d6dc2d8ebb4d24f3c27"</D:getetag><D:getcontentlength>139990</D:getcontentlength><D:getcontenttype>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</D:getcontenttype></D:prop></D:propstat></D:response></D:multistatus>
+. 2020-12-15 15:05:18.599 Request ends, status 207 class 2xx, error line:
+. 2020-12-15 15:05:18.599 207 Multi-Status
+. 2020-12-15 15:05:18.599 Request ends.
+. 2020-12-15 15:05:18.599 ..;D;0;2020-12-15T09:35:54.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 rgdhhdfsg;D;0;2020-12-15T09:34:55.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 Новая папкаwwdfasd;D;0;2020-12-15T09:30:39.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 .pptx;-;0;2020-12-14T11:12:07.000Z;3;"" [0];"" [0];---------;2
+. 2020-12-15 15:05:18.599 aasdfasdfaqdf.pptx;-;0;2020-12-14T11:01:58.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 ONLYOFFICE Sample Document.docx;-;55880;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 ONLYOFFICE Sample Presentation.pptx;-;1080000;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0
+. 2020-12-15 15:05:18.599 ONLYOFFICE Sample Spreadsheets.xlsx;-;139990;2020-12-09T13:44:03.000Z;3;"" [0];"" [0];---------;0

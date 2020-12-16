@@ -1,4 +1,4 @@
-const {timeIsCleanTrash} = require('../config.js');
+const {timeIsCleanTrash} = require('../server/config.js');
 
 class SimpleStruct
 {
