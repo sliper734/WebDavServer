@@ -11,20 +11,6 @@ var getHeader = function(contentType, token){
     });
 };
 
-
-var isCorrectName = function(name)
-{
-    var pattern = ["<", ">", ":", '"', "|", "?", "*", "/"];
-    var correct=true;
-    for(var i=0;i<pattern.length;i++)
-    {
-        if (name.includes(pattern[i])){
-            correct = false;
-        }
-    }
-    return correct;
-};
-
 var exceptionResponse = function(error,content)
 {
     try {
@@ -75,6 +61,5 @@ var exceptionResponse = function(error,content)
 //#endregion
 module.exports = {
     getHeader,
-    exceptionResponse,
-    isCorrectName
+    exceptionResponse
 };

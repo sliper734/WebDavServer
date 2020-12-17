@@ -32,30 +32,6 @@ class PropertyPerser{
         return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
     }
 
-    static parseSize(sizeString){
-        let sizeArray = sizeString.split(' ');
-        let dimension = sizeArray[sizeArray.length -1];
-        let size = sizeArray[sizeArray.length -2];
-        size=size.replace(",",".");
-        switch(dimension){
-            case 'bytes':
-                return parseFloat(size);
-                break;
-            case 'Кб':
-                return (parseFloat(size) * 1000);
-                break;
-            case 'Мб':
-                return (parseFloat(size) * 1000000);
-                break;
-            case 'KB':
-                return (parseFloat(size) * 1000);
-                break;
-            case 'MB':
-                return (parseFloat(size) * 1000000);
-                break;
-        }
-    }
-
     static parseFileExst(fileName){
         let nameArray = fileName.split('.');
         let exst = nameArray[nameArray.length - 1];

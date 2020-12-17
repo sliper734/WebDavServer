@@ -1,6 +1,6 @@
 var request = require('request');
 var axios = require('axios');
-const {getHeader, exceptionResponse, isCorrectName} = require('../helper/helper.js');
+const {getHeader, exceptionResponse} = require('../helper/helper.js');
 const {
     domen,
     api,
@@ -55,7 +55,6 @@ var requestAuth = async function(username, password)
     //#endregion
 };
 
-//не знаю как добиться ошибок от этой функции
 var getStructDirectory = async function(folderId, token)
 {
     try {
@@ -84,48 +83,152 @@ var getStructDirectory = async function(folderId, token)
     //#endregion
 };
 
-var createFileOrFolder = async function(folderId, parentId, title, token)
+var createFile = async function(folderId, title, token)
 {
     try {
-        let changeUrl;
-        if (folderId != undefined && parentId === undefined){
-            changeUrl= `${apiFiles}${folderId}/${method.file}`;
-        } else if (parentId != undefined && folderId === undefined){
-            changeUrl= `${apiFiles}${method.folder}${parentId}`;
-        } else{
-            throw "Something went wrong...";
-        }
-        const instance=await instanceFunc(token);
-        if(await isCorrectName(title)){
-            var response=await instance.post(changeUrl,{
-                "title": title
-            }); 
-            return response.data.response;
-        }
-        else{
-            throw "incorrect name";
-        }
+        const instance = instanceFunc(token);
+        var response=await instance.post(`${apiFiles}${folderId}/${method.file}`,{
+            "title": title
+        }); 
+        return response.data.response;
     } catch (error) {
         exceptionResponse(error);
     }
 };
 
-var deleteFileOrFolder = async function(fileId, folderId, token)
+var createFolder = async function(parentId, title, token)
 {
     try {
-        let changeUrl;
-        if (fileId != undefined && folderId === undefined){
-            changeUrl= `${apiFiles}${method.file}${fileId}`;
-        } else if (folderId != undefined && fileId === undefined){
-            changeUrl= `${apiFiles}${method.folder}${folderId}`;
-        } else{
-            throw "Something went wrong...";
-        }
+        const instance = instanceFunc(token);
+        var response = await instance.post(`${apiFiles}${method.folder}${parentId}`,{
+            "title": title
+        }); 
+        return response.data.response;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var deleteFile = async function(fileId, token)
+{
+    try {
         const instance= await instanceFunc(token);
-        var response=await instance.delete(changeUrl,{
+        var response=await instance.delete(`${apiFiles}${method.file}${fileId}`,{
             "deleteAfter": true,
             "immediately": true
         }); 
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var deleteFolder = async function(folderId, token)
+{
+    try {
+        const instance= await instanceFunc(token);
+        var response=await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
+            "deleteAfter": true,
+            "immediately": true
+        }); 
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var copyFile = async function(folderId, files, token)
+{
+    try {
+        const instance=await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.copy}`,{
+            "destFolderId": folderId,
+            "folderIds": [],
+            "fileIds": [files],
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var copyFolder = async function(folderId, folders, token)
+{
+    try {
+        const instance=await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.copy}`,{
+            "destFolderId": folderId,
+            "folderIds": [folders],
+            "fileIds": [],
+            "conflictResolveType": "Skip",
+            "deleteAfter": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var moveFile = async function(folderId, files, token)
+{
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.move}`,{
+            "destFolderId": folderId,
+            "folderIds": [],
+            "fileIds":[files],
+            "resolveType": "Skip",
+            "holdResult": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var moveFolder = async function(folderId, folders, token)
+{
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.move}`,{
+            "destFolderId": folderId,
+            "folderIds": [folders],
+            "fileIds":[],
+            "resolveType": "Skip",
+            "holdResult": true
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var renameFile = async function(fileId, newName, token)
+{
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
+            "title": newName
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var renameFolder = async function(folderId, newName, token)
+{
+    try {
+        const instance = await instanceFunc(token);
+        var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
+            "title": newName
+        });
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var rewritingFile = async function(folderId, title, content, token)
+{
+    try {
+        const encode_title = encodeURIComponent(`${title}`);
+        const instance = instanceFunc(token,undefined,undefined,content);
+        var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
     } catch (error) {
         exceptionResponse(error);
     }
@@ -175,6 +278,7 @@ var getFileDownloadUrl = async function(fileId, token)
 };
 
 //не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .txt соответсвенно не работает
+//#region createFiletxt
 /*var createFiletxt = async function(folderId, title, token)
 {
     try {
@@ -192,31 +296,11 @@ var getFileDownloadUrl = async function(fileId, token)
     } catch (error) {
         exceptionResponse(error);
     }
-    //#region old code
-    request.post(
-        {
-            method: 'POST',
-            url: `${domen}${api}${apiFiles}${folderId}${method.text}`,
-            headers: getHeader('application/json', token),
-            form: {
-                "title": title,
-                "content": ' '
-            }
-        }, (err, response, body) => {
-            exceptionResponse(err, body, (err) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    callback(null, JSON.parse(body).response);
-                }
-            });
-        }
-    );
-    //#endregion
 };*/
+//#endregion
 
 //не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .html соответсвенно не работает
+//#region createFilehtml
 /*var createFilehtml = async function(folderId, title, token)
 {
     try {
@@ -234,121 +318,8 @@ var getFileDownloadUrl = async function(fileId, token)
     } catch (error) {
         exceptionResponse(error);
     }
-    //#region old code
-    request.post(
-        {
-            method: 'POST',
-            url: `${domen}${api}${apiFiles}${folderId}${method.html}`,
-            headers: getHeader('application/json', token),
-            form: {
-                "title": title,
-                "content": ' '
-            }
-        }, (err, response, body) => {
-            exceptionResponse(err, body, (err) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    callback(null, JSON.parse(body).response);
-                }
-            });
-        }
-    );
-    //#endregion
 };*/
-
-//спросить как тестить. Что эта функция что старая не рабочие, либо я не знаю как проверить этот метод
-var rewritingFile = async function(folderId, title, content, token)
-{
-    try {
-        const encode_title = await encodeURIComponent(`${title}`);
-        const instance = await instanceFunc(token,undefined,undefined,content);
-        var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
-    } catch (error) {
-        exceptionResponse(error);
-    }
-    //instance.data=content;
-    //#region old code
-    /*request.post(
-        {
-            method: 'POST',
-            url: `${domen}${api}${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`,
-            headers: getHeader('application/json', token),
-            body: content
-        }, (err, response, body) => {
-            exceptionResponse(err, body, (err) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    callback();
-                }
-            });
-        }
-    );*/
-    //#endregion
-};
-
-var copyFileOrFolder = async function(folderId, files, folders, token)
-{
-    try {
-        const instance=await instanceFunc(token);
-        var response = await instance.put(`${apiFiles}${method.copy}`,{
-            "destFolderId": folderId,
-            "folderIds": [folders],
-            "fileIds": [files],
-            "conflictResolveType": "Skip",
-            "deleteAfter": true
-        });
-    } catch (error) {
-        exceptionResponse(error);
-    }
-};
-
-var moveFileOrFolder = async function(folderId, files, folders, token)
-{
-    try {
-        const instance = await instanceFunc(token);
-        var response = await instance.put(`${apiFiles}${method.move}`,{
-            "destFolderId": folderId,
-            "folderIds": [folders],
-            "fileIds":[files],
-            "resolveType": "Skip",
-            "holdResult": true
-        });
-    } catch (error) {
-        exceptionResponse(error);
-    }
-};
-
-var renameFileOrFolder = async function(fileId, folderId, newName, token)
-{
-    try {
-        let changeMethod = null;
-        let changeId = null;
-        const instance = await instanceFunc(token);
-        if(fileId != undefined && folderId === undefined){
-            changeMethod = method.file;
-            changeId = fileId;
-        } else if (folderId != undefined && fileId === undefined){
-            changeMethod = method.folder;
-            changeId = folderId;
-        } else{
-            throw "Где-то неправильное условие";
-        }
-        if(await isCorrectName(newName)){
-            var response = await instance.put(`${apiFiles}${changeMethod}${changeId}`,{
-                "title": newName
-            });
-        }
-        else{
-            throw "incorrect folder name";
-        }
-    } catch (error) {
-        exceptionResponse(error);
-    }
-};
+//#endregion
 
 module.exports = {
     getStructDirectory,
@@ -357,9 +328,14 @@ module.exports = {
     //createFiletxt,
     //createFilehtml,
     requestAuth,
-    moveFileOrFolder,
-    copyFileOrFolder,
-    renameFileOrFolder,
-    createFileOrFolder,
-    deleteFileOrFolder
+    createFile,
+    createFolder,
+    deleteFile,
+    deleteFolder,
+    copyFile,
+    copyFolder,
+    moveFile,
+    moveFolder,
+    renameFile,
+    renameFolder
 };
