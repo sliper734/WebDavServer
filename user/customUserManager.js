@@ -29,6 +29,15 @@ class customUserManager extends webdav.SimpleUserManager
                 callback(webdav.Errors.UserNotFound);
             }
             //#region old code
+            /*(async () =>{
+                try {
+                    var token = await requestAuth(username, password);
+                    this.storeUser.setUser(username, password, token);
+                    callback(null, this.storeUser.getUser(username));
+                } catch (error) {
+                    callback(webdav.Errors.UserNotFound);
+                }
+            })();*/
             /*requestAuth(username, password, (err, token) => {
                 if(err){
                     callback(webdav.Errors.UserNotFound)

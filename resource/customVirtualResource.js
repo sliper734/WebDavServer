@@ -2,7 +2,6 @@ const webdav = require('webdav-server').v2;
 const {
     getStructDirectory,
     getFileDownloadUrl,
-    //createFiletxt,
     rewritingFile,
     createFile,
     createFolder,
@@ -14,6 +13,7 @@ const {
     moveFolder,
     renameFile,
     renameFolder
+    //createFiletxt
     //createFilehtml
 } = require('../server/requestAPI.js');
 const {exceptionResponse} = require('../helper/helper.js');
@@ -42,6 +42,7 @@ class CustomVirtualResources
             }
             return structRoot;
         } catch (error) {
+            return webdav.Errors.ResourceNotFound;
             //#region er
             /*if(structRoot.folders.length == 0){
                 callback(webdav.Errors.ResourceNotFound, null);
@@ -126,7 +127,7 @@ class CustomVirtualResources
         }
     }
 
-    async create(path, ctx, callback){
+    async create(path, ctx){
 
         const user = ctx.context.user;
         let {element, parentFolder} = await parse.parsePath(path);
@@ -136,9 +137,8 @@ class CustomVirtualResources
             try {
                 var createdObj1 = await createFolder(parentId, element, user.token);
                 this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
-                callback();
             } catch (error) {
-                callback(error);
+                return new exceptions(error);
             }
         }
         else if(ctx.type.isFile){
@@ -148,16 +148,15 @@ class CustomVirtualResources
                     try {
                         var createdObj = await createFile(parentId, element, user.token);
                         this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                        callback();
                     } catch (error) {
-                        callback(error);
+                        return new exceptions(error);
                     }
                     break;
             }
         }
     }
 
-    delete(path, ctx, callback){
+    delete(path, ctx){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
@@ -168,9 +167,8 @@ class CustomVirtualResources
                     await deleteFolder(el.id, user.token);
                     this.structСache.dropFolderObject(parentFolder, user.username, el);
                     this.structСache.dropPath(path, user.username);
-                    callback(null);
                 } catch (error) {
-                    callback(error);
+                    return new exceptions(error);
                 }
             }
         });
@@ -180,9 +178,8 @@ class CustomVirtualResources
                 try {
                     await deleteFile(el.id, user.token);
                     this.structСache.dropFileObject(parentFolder, user.username, el);
-                    callback(null);
                 } catch (error) {
-                    callback(error);
+                    return new exceptions(error);
                 }
             }
         });
@@ -283,7 +280,7 @@ class CustomVirtualResources
                 }
             }
             catch{
-                var rotFolder=await this.getRootFolder(user);
+                var rootFolder=await this.getRootFolder(user);
                 try {
                     this.structСache.setStruct('/', user.username, rootFolder);
                     this.readDir(path, ctx, callback);
@@ -347,10 +344,12 @@ class CustomVirtualResources
 
         this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
             if(element == el.title){
-                var streamFile= await getFileDownloadUrl(el.id,user.token);
                 try {
+                    var streamFile = await getFileDownloadUrl(el.id,user.token);
+                    //return streamFile;
                     callback(null,streamFile);
                 } catch (error) {
+                    //return new exceptions(error);
                     callback(error,null);
                 }
             //#region old code
@@ -367,7 +366,7 @@ class CustomVirtualResources
         });
     }
 
-    writeFile(path, ctx, callback){
+    async writeFile(path, ctx, callback){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
@@ -376,7 +375,7 @@ class CustomVirtualResources
         const content = [];
         const stream = new streamWrite(content);
 
-        stream.on('finish', () => {
+        await stream.on('finish', () => {
             this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
                 if(element == el.title){
                     try {
@@ -398,7 +397,7 @@ class CustomVirtualResources
         callback(null, stream);
     }
 
-    copy(pathFrom, pathTo, ctx, callback){
+    copy(pathFrom, pathTo, ctx/*, callback*/){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(pathFrom);
@@ -410,9 +409,11 @@ class CustomVirtualResources
                 if(element == el.title){
                     try {
                         await copyFolder(folderId, el.id, user.token);
-                        callback(null, true);
+                        return true;
+                        //callback(null, true);
                     } catch (error) {
-                        callback(error, null);
+                        return new exceptions(error);
+                        //callback(error, null);
                     }
                 }
             });
@@ -420,9 +421,11 @@ class CustomVirtualResources
                 if(element == el.title){
                     try {
                         await copyFile(folderId, el.id, user.token);
-                        callback(null, true);
+                        return true;
+                        //callback(null, true);
                     } catch (error) {
-                        callback(error, null);
+                        return new exceptions(error);
+                        //callback(error, null);
                     }
                 }
             });
@@ -430,16 +433,17 @@ class CustomVirtualResources
         else{
             this.readDir(pathTo, ctx, (err, st) => {
                 if(err){
-                    callback(err, null);
+                    return new exceptions(err);
+                    //callback(err, null);
                 }
                 else{
-                    this.copy(pathFrom, pathTo, ctx, callback);
+                    this.copy(pathFrom, pathTo, ctx/*, callback*/);
                 }
             });
         }
     }
 
-    rename(path, newName, ctx, callback){
+    rename(path, newName, ctx){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(path);
@@ -449,9 +453,9 @@ class CustomVirtualResources
                 try {
                     await renameFolder(el.id, newName, user.token);
                     this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
-                    callback(null, true);
+                    return true;
                 } catch (error) {
-                    callback(error, null);
+                    return new exceptions(error);
                 }
             }
         });
@@ -460,15 +464,15 @@ class CustomVirtualResources
                 try {
                     await renameFile(el.id, newName, user.token);
                     this.structСache.renameFileObject(element, newName, parentFolder, user.username);
-                    callback(null, true);
+                    return true;
                 } catch (error) {
-                    callback(err, null);
+                    return new exceptions(error);
                 }
             }
         });
     }
 
-    move(pathFrom, pathTo, ctx, callback){
+    move(pathFrom, pathTo, ctx){
         
         pathTo = parse.parsePathTo(pathTo);
         let {element: elementFrom, parentFolder: parentFolderFrom} = parse.parsePath(pathFrom);
@@ -481,14 +485,12 @@ class CustomVirtualResources
         }
 
         if(isRename){
-           this.rename(pathFrom, elementTo, ctx, (err, rename) => {
-               if(err){
-                   callback(err, rename);
-               }
-               else{
-                callback(null, rename);
-               }
-           });
+            try {
+                const rename = this.rename(pathFrom, elementTo, ctx);
+                return rename;
+            } catch (error) {
+                return new exceptions(error);
+            }
         }
         else{
             if(this.structСache.getStruct(pathTo, user.username)){
@@ -498,9 +500,9 @@ class CustomVirtualResources
                         try {
                             await moveFolder(folderId, el.id, user.token);
                             this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
-                            callback(null, true);
+                            return true;
                         } catch (error) {
-                            callback(error, null);
+                            return new exceptions(error);
                         }
                     }
                 });
@@ -509,9 +511,9 @@ class CustomVirtualResources
                         try {
                             await moveFile(folderId, el.id, user.token);
                             this.structСache.dropFileObject(parentFolderFrom, user.username, el);
-                            callback(null, true);
+                            return true;
                         } catch (error) {
-                            callback(error, null);
+                            return new exceptions(error);
                         }
                     }
                 });
@@ -519,10 +521,10 @@ class CustomVirtualResources
             else{
                 this.readDir(pathTo, ctx, (err, st) => {
                     if(err){
-                        callback(err, null);
+                        return new exceptions(err);
                     }
                     else{
-                        this.move(pathFrom, pathTo, ctx, callback);
+                        this.move(pathFrom, pathTo, ctx);
                     }
                 });
             }

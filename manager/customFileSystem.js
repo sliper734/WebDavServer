@@ -29,60 +29,77 @@ class customFileSystem extends webdav.FileSystem
         });
     }
 
-    _create(path, ctx, callback){
+    async _create(path, ctx, callback){
         const sPath = path.toString();
-
-        this.manageResource.create(sPath, ctx, (err) => {
+//#region old code
+        /*this.manageResource.create(sPath, ctx, (err) => {
             if(err){
                 callback(err);
             }
             callback();
-        });
+        });*/
+        //#endregion
+        try {
+            await this.manageResource.create(sPath, ctx);
+            callback();
+        } catch (error) {
+            callback(error);
+        }
     }
 
-    _delete(path, ctx, callback){
+    async _delete(path, ctx, callback){
         const sPath = path.toString();
-
-        this.manageResource.delete(sPath, ctx, (err) => {
+        //#region old code
+        /*this.manageResource.delete(sPath, ctx, (err) => {
             if(err){
                 callback(err);
             }
             callback();
-        })
+        });*/
+        //#endregion
+        try {
+            await this.manageResource.delete(sPath, ctx);
+            callback();
+        } catch (error) {
+            callback(error);
+        }
     }
 
-    _move(pathFrom, pathTo, ctx, callback){
+    async _move(pathFrom, pathTo, ctx, callback){
         if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
             delete pathTo.paths[pathTo.paths.length - 1];
         }
         const sPathFrom = pathFrom.toString();
         const sPathTo = pathTo.toString();
-
-        this.manageResource.move(sPathFrom, sPathTo, ctx, (err, isMove) => {
+        try {
+            const isMove = await this.manageResource.move(sPathFrom, sPathTo, ctx);
+            callback(null, isMove);
+        } catch (error) {
+            callback(error, isMove);
+        }
+        /*this.manageResource.move(sPathFrom, sPathTo, ctx, (err, isMove) => {
             if(err){
                 callback(err, isMove);
             }
             else{
                 callback(null, isMove);
             }
-        });
+        });*/
     }
 
-    _copy(pathFrom, pathTo, ctx, callback){
+    async _copy(pathFrom, pathTo, ctx, callback){
         if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
             delete pathTo.paths[pathTo.paths.length - 1];
         }
         const sPathFrom = pathFrom.toString();
         const sPathTo = pathTo.toString();
 
-        this.manageResource.copy(sPathFrom, sPathTo, ctx, (err, isCopy) => {
-            if(err){
-                callback(err, isCopy);
-            }
-            else{
-                callback(null, isCopy);
-            }
-        });
+        try {
+            const isCopy = await this.manageResource.copy(sPathFrom, sPathTo, ctx);
+            callback (null, isCopy);
+        } catch (error) {
+            callback(error, isCopy);
+        }
     }
 
     _size(path, ctx, callback){
@@ -104,6 +121,7 @@ class customFileSystem extends webdav.FileSystem
                 callback(null, streamWrite);
             }
         });
+
     }
 
     _openReadStream(path, ctx, callback){
@@ -117,6 +135,12 @@ class customFileSystem extends webdav.FileSystem
                 callback(null, streamRead);
             }
         });
+        /*try {
+            streamRead = await this.manageResource.downloadFile(sPath, ctx);
+            callback(null, streamRead);
+        } catch (error) {
+            callback(error, null);
+        }*/
     }
 
     _type(path, ctx, callback) {

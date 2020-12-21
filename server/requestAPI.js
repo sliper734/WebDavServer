@@ -22,8 +22,8 @@ function instanceFunc(token=null, header='application/json',url=`${domen}${api}`
 var requestAuth = async function(username, password)
 {
     try {
-        const instance=await instanceFunc();
-        var response=await instance.post(`${apiAuth}`,{
+        const instance = instanceFunc();
+        var response = await instance.post(`${apiAuth}`,{
             "userName": username,
             "password": password
         });
@@ -58,8 +58,8 @@ var requestAuth = async function(username, password)
 var getStructDirectory = async function(folderId, token)
 {
     try {
-        const instance=await instanceFunc(token);
-        var response=await instance.get(`${apiFiles}${folderId}`);
+        const instance = instanceFunc(token);
+        var response = await instance.get(`${apiFiles}${folderId}`);
         return response.data.response;
     } catch (error) {
         exceptionResponse(error);
@@ -87,7 +87,7 @@ var createFile = async function(folderId, title, token)
 {
     try {
         const instance = instanceFunc(token);
-        var response=await instance.post(`${apiFiles}${folderId}/${method.file}`,{
+        var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
             "title": title
         }); 
         return response.data.response;
@@ -112,8 +112,8 @@ var createFolder = async function(parentId, title, token)
 var deleteFile = async function(fileId, token)
 {
     try {
-        const instance= await instanceFunc(token);
-        var response=await instance.delete(`${apiFiles}${method.file}${fileId}`,{
+        const instance = instanceFunc(token);
+        var response = await instance.delete(`${apiFiles}${method.file}${fileId}`,{
             "deleteAfter": true,
             "immediately": true
         }); 
@@ -125,8 +125,8 @@ var deleteFile = async function(fileId, token)
 var deleteFolder = async function(folderId, token)
 {
     try {
-        const instance= await instanceFunc(token);
-        var response=await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
+        const instance = instanceFunc(token);
+        var response = await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
             "deleteAfter": true,
             "immediately": true
         }); 
@@ -138,7 +138,7 @@ var deleteFolder = async function(folderId, token)
 var copyFile = async function(folderId, files, token)
 {
     try {
-        const instance=await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.copy}`,{
             "destFolderId": folderId,
             "folderIds": [],
@@ -154,7 +154,7 @@ var copyFile = async function(folderId, files, token)
 var copyFolder = async function(folderId, folders, token)
 {
     try {
-        const instance=await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.copy}`,{
             "destFolderId": folderId,
             "folderIds": [folders],
@@ -170,7 +170,7 @@ var copyFolder = async function(folderId, folders, token)
 var moveFile = async function(folderId, files, token)
 {
     try {
-        const instance = await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.move}`,{
             "destFolderId": folderId,
             "folderIds": [],
@@ -186,7 +186,7 @@ var moveFile = async function(folderId, files, token)
 var moveFolder = async function(folderId, folders, token)
 {
     try {
-        const instance = await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.move}`,{
             "destFolderId": folderId,
             "folderIds": [folders],
@@ -202,7 +202,7 @@ var moveFolder = async function(folderId, folders, token)
 var renameFile = async function(fileId, newName, token)
 {
     try {
-        const instance = await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
             "title": newName
         });
@@ -214,7 +214,7 @@ var renameFile = async function(fileId, newName, token)
 var renameFolder = async function(folderId, newName, token)
 {
     try {
-        const instance = await instanceFunc(token);
+        const instance = instanceFunc(token);
         var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
             "title": newName
         });
@@ -232,25 +232,41 @@ var rewritingFile = async function(folderId, title, content, token)
     } catch (error) {
         exceptionResponse(error);
     }
+    //#region old code
+    /*const encode_title = encodeURIComponent(`${title}`);
+    request.post(
+        {
+            method: 'POST',
+            url: `${domen}${api}${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`,
+            headers: getHeader('application/json', token),
+            body: content
+        }
+    )*/
+    //#endregion
 };
 
 //РАЗОБРАТЬСЯ!
 var getFileDownloadUrl = async function(fileId, token)
 {
-    const instance= await instanceFunc(token);
-    var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`);
-    let streamFile=await request.get(
-        {
-            url:response.data.response.document.url,
-            headers: getHeader('application/octet-stream', token)
-        }
-    );
-    streamFile.end();
-    //#region пока не понял как изменить этот момент(let streamFile...) пытался менятьна это
-    //const instanceStreamFile= await instanceFunc(token,'application/octet-stream','');
-    //var streamFile= await instanceStreamFile.get(response.data.response.document.url);
-    //#endregion
-    return streamFile;
+    try {
+        const instance = instanceFunc(token);
+        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`);
+        var streamFile = await request.get(
+            {
+                url:response.data.response.document.url,
+                headers: getHeader('application/octet-stream', token)
+            }
+        );
+        streamFile.end();
+        //#region пока не понял как изменить этот момент(let streamFile...) пытался менятьна это
+        //const instanceStreamFile= await instanceFunc(token,'application/octet-stream','');
+        //var streamFile= await instanceStreamFile.get(response.data.response.document.url);
+        //#endregion
+        return streamFile;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+
     //#region old code
     /*request.get(
         {
