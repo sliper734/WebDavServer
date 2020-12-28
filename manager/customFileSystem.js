@@ -23,10 +23,16 @@ class customFileSystem extends webdav.FileSystem
     _fastExistCheck(ctx, path, callback){
 
         const sPath = path.toString();
-
-        this.manageResource.fastExistCheck(sPath, ctx, (exist) => {
+        try {
+            var exist = this.manageResource.fastExistCheck(sPath, ctx);
             callback(exist);
-        });
+        } catch (error) {
+            var a=1;
+        }
+
+        /*this.manageResource.fastExistCheck(sPath, ctx, (exist) => {
+            callback(exist);
+        });*/
     }
 
     async _create(path, ctx, callback){
@@ -65,14 +71,15 @@ class customFileSystem extends webdav.FileSystem
         }
     }
 
-    async _move(pathFrom, pathTo, ctx, callback){
+    _move(pathFrom, pathTo, ctx, callback){
         if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
             delete pathTo.paths[pathTo.paths.length - 1];
         }
         const sPathFrom = pathFrom.toString();
         const sPathTo = pathTo.toString();
+        var isMove = false;
         try {
-            const isMove = await this.manageResource.move(sPathFrom, sPathTo, ctx);
+            isMove = this.manageResource.move(sPathFrom, sPathTo, ctx);
             callback(null, isMove);
         } catch (error) {
             callback(error, isMove);
@@ -159,11 +166,25 @@ class customFileSystem extends webdav.FileSystem
         });
     }
 
-    _readDir(path, ctx, callback){
+    async _readDir(path, ctx, callback){
         const sPath = path.toString();
         let elemOfDir = [];
 
-        this.manageResource.readDir(sPath, ctx, (err, struct) => {
+        try {
+            var customReadDirectory = await this.manageResource.readDir(sPath, ctx);
+            customReadDirectory.folders.forEach(el => {
+                elemOfDir.push(el.title);
+            });
+            customReadDirectory.files.forEach(el => {
+                elemOfDir.push(el.title);
+            });
+            callback(null, elemOfDir);
+        } catch (error) {
+            callback(error);
+        }
+        
+
+        /*this.manageResource.readDir(sPath, ctx, (err, struct) => {
             if(err){
                 callback(err);
             }
@@ -176,7 +197,7 @@ class customFileSystem extends webdav.FileSystem
                 });
                 callback(null, elemOfDir);
             }
-        });
+        });*/
     }
 }
 
