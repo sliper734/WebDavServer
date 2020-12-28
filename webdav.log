@@ -4214,3 +4214,9 @@
 {"level":"error","message":"Error JSONparse response from api TypeError: Cannot read property 'status' of undefined","timestamp":"2020-12-28 18:36:48"}
 {"level":"error","message":"TypeError: Cannot read property 'status' of undefined","timestamp":"2020-12-28 18:36:48"}
 {"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-28 18:36:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com OPTIONS http://127.0.0.1:1900/ > 200 OK","timestamp":"2020-12-28 18:50:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-28 18:50:31"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/ > 207 Multi-Status","timestamp":"2020-12-28 18:50:38"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-28 18:50:44"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-28 18:50:48"}
+{"level":"info","message":">> medvedev.sergey@onlyoffice.com PROPFIND http://127.0.0.1:1900/%d0%9c%d0%be%d0%b8%20%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d1%8b/ > 207 Multi-Status","timestamp":"2020-12-28 18:51:01"}
