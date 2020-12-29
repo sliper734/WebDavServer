@@ -74,7 +74,7 @@ class CustomVirtualResources
         //#endregion
     }
 
-    fastExistCheck(path, ctx){
+    async fastExistCheck(path, ctx){
         if(path == '/'){
             return true;
         }
@@ -98,7 +98,7 @@ class CustomVirtualResources
 
         
         try {
-            var st = this.readDir(parentFolder, {context: ctx});
+            var st = await this.readDir(parentFolder, {context: ctx});
             fileisExist = false;
             this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
                 if(element == el.title){
@@ -172,7 +172,7 @@ class CustomVirtualResources
                     this.structСache.dropFolderObject(parentFolder, user.username, el);
                     this.structСache.dropPath(path, user.username);
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -182,7 +182,7 @@ class CustomVirtualResources
                     await deleteFile(el.id, user.token);
                     this.structСache.dropFileObject(parentFolder, user.username, el);
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -199,7 +199,7 @@ class CustomVirtualResources
                 return this.structСache.getStruct(path,user.username);
                 //callback(null,this.structСache.getStruct(path,user.username));
             } catch (error) {
-                return new exceptions(webdav.Errors.ResourceNotFound);
+                return new Error(webdav.Errors.ResourceNotFound);
                 //callback(webdav.Errors.ResourceNotFound,null);
             }
             //#region old code
@@ -219,22 +219,22 @@ class CustomVirtualResources
         try{
             if(!this.structСache.getStruct(parentFolder, user.username)){
                 try {
-                    this.readDirRecursion(parentFolder, ctx);
+                    await this.readDirRecursion(parentFolder, ctx);
                     if(!this.structСache.getStruct(parentFolder, user.username)){
                         this.readDir(path, ctx);
                         //////////////////////////////////////////
                     }
                     else{
-                        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
+                        this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
                             if(element == el.title){
                                 let folderId = el.id;
                                 try {
-                                    var structDirectory=await getStructDirectory(folderId,user.token);
+                                    var structDirectory = getStructDirectory(folderId,user.token);
                                     this.structСache.setStruct(path, user.username, structDirectory);
                                     return this.structСache.getStruct(path, user.username);
                                     //callback(null, this.structСache.getStruct(path, user.username));
                                 } catch (error) {
-                                    return new exceptions(webdav.Errors.ResourceNotFound);
+                                    return new Error(webdav.Errors.ResourceNotFound);
                                     //callback(webdav.Errors.ResourceNotFound, null);
                                 }
                             }
@@ -244,46 +244,39 @@ class CustomVirtualResources
                     return error;
                 }
             }
-                this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
-                    if(element == el.title){
-                        let folderId = el.id;
-                        if(this.structСache.structIsExpire(path, parentFolder, user.username)){
+
+            const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+            for (var i=0;i<folders.length;i++)
+            {
+                const el = folders[i];
+                if(element == el.title){
+                    let folderId = el.id;
+                    if(this.structСache.structIsExpire(path, parentFolder, user.username)){
+                        return this.structСache.getStruct(path, user.username);
+                        //callback(null, this.structСache.getStruct(path, user.username));
+                    }
+                    else {
+                        try {
+                            var structDirectory = await getStructDirectory(folderId, user.token);
+                            this.structСache.setStruct(path, user.username, structDirectory);
                             return this.structСache.getStruct(path, user.username);
                             //callback(null, this.structСache.getStruct(path, user.username));
-                        }
-                        else {
-                            try {
-                                var structDirectory = getStructDirectory(folderId, user.token);
-                                this.structСache.setStruct(path, user.username, structDirectory);
-                                return this.structСache.getStruct(path, user.username)
-                                //callback(null, this.structСache.getStruct(path, user.username));
-                            } catch (error) {
-                                return new exceptions(webdav.Errors.ResourceNotFound);
-                                //callback(webdav.Errors.ResourceNotFound, null);
-                            }
-                            //#region old code
-                            /*getStructDirectory(folderId, user.token, (err, structDir) => {
-                                if(err){
-                                    callback(webdav.Errors.ResourceNotFound, null);
-                                }
-                                else{
-                                    this.structСache.setStruct(path, user.username, structDir);
-                                    callback(null, this.structСache.getStruct(path, user.username));
-                                }
-                            });*/
-                            //#endregion
+                        } catch (error) {
+                            return new Error(webdav.Errors.ResourceNotFound);
+                            //callback(webdav.Errors.ResourceNotFound, null);
                         }
                     }
-                });
+                }
+            }
         }
-        catch{
+        catch(error1){
             var rootFolder = await this.getRootFolder(user);
             try {
                 this.structСache.setStruct('/', user.username, rootFolder);
                 this.readDir(path, ctx);
                 ///////////////////////
             } catch (error) {
-                return new exceptions(error);
+                return new Error(error);
                 //callback(error, null);
             }
             //#region old code
@@ -300,16 +293,21 @@ class CustomVirtualResources
         }
     }
 
-    readDirRecursion(path, ctx/*, callback*/){
+    async readDirRecursion(path, ctx/*, callback*/){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        if(!this.structСache.getStruct(parentFolder, user.username)){
-            return this.readDirRecursion(parentFolder, ctx/*, callback*/);
+        if(!this.structСache.getStruct(parentFolder, user.username) && path != parentFolder){
+            return await this.readDirRecursion(parentFolder, ctx/*, callback*/);
         }
+            await this.readDir(parentFolder, ctx);
+        
         //else{
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(element == el.title){
                 let folderId = el.id;
                 try {
@@ -317,23 +315,11 @@ class CustomVirtualResources
                     this.structСache.setStruct(path, user.username, structDirectory);
                     //callback();
                 } catch (error) {
-                    return new exceptions(webdav.Errors.ResourceNotFound);
+                    return new Error(webdav.Errors.ResourceNotFound);
                     //callback(webdav.Errors.ResourceNotFound);
                 }
-                //#region old code
-                /*getStructDirectory(folderId, user.token, (err, structDir) => {
-                    if(err){
-                        callback(webdav.Errors.ResourceNotFound);
-                    }
-                    else{
-                        this.structСache.setStruct(path, user.username, structDir);
-                        callback();
-                    }
-                });*/
-                //#endregion
             }
-        });
-        //}
+        }
     }
 
     downloadFile(path, ctx, callback){
@@ -407,7 +393,7 @@ class CustomVirtualResources
                 this.readDir(pathTo, ctx);
                 this.copy(pathFrom, pathTo, ctx/*, callback*/);
             } catch (error) {
-                return new exceptions(err);
+                return new Error(err);
             }
             //this.readDir(pathTo, ctx, (err, st) => {
             //    if(err){
@@ -426,7 +412,7 @@ class CustomVirtualResources
                     await copyFolder(folderId, el.id, user.token);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -436,7 +422,7 @@ class CustomVirtualResources
                     await copyFile(folderId, el.id, user.token);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -454,7 +440,7 @@ class CustomVirtualResources
                     this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -465,7 +451,7 @@ class CustomVirtualResources
                     this.structСache.renameFileObject(element, newName, parentFolder, user.username);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -488,7 +474,7 @@ class CustomVirtualResources
                 const rename = this.rename(pathFrom, elementTo, ctx);
                 return rename;
             } catch (error) {
-                return new exceptions(error);
+                return new Error(error);
             }
         }
         if(!this.structСache.getStruct(pathTo, user.username)){
@@ -496,7 +482,7 @@ class CustomVirtualResources
                 this.readDir(pathTo, ctx);
                 this.move(pathFrom, pathTo, ctx);
             } catch (error) {
-                return new exceptions(error);
+                return new Error(error);
             }
             /*this.readDir(pathTo, ctx, (err, st) => {
                 if(err){
@@ -515,7 +501,7 @@ class CustomVirtualResources
                     this.structСache.dropFolderObject(parentFolderFrom, user.username, el);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });
@@ -526,7 +512,7 @@ class CustomVirtualResources
                     this.structСache.dropFileObject(parentFolderFrom, user.username, el);
                     return true;
                 } catch (error) {
-                    return new exceptions(error);
+                    return new Error(error);
                 }
             }
         });

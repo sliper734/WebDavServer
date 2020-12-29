@@ -22,13 +22,16 @@ class customFileSystem extends webdav.FileSystem
 
     _fastExistCheck(ctx, path, callback){
 
-        const sPath = path.toString();
-        try {
-            var exist = this.manageResource.fastExistCheck(sPath, ctx);
-            callback(exist);
-        } catch (error) {
-            var a=1;
-        }
+        (async () => {
+            const sPath = path.toString();
+            try {
+                var exist = await this.manageResource.fastExistCheck(sPath, ctx);
+                callback(exist);
+            } catch (error) {
+                var a=1;
+            }
+          })();
+
 
         /*this.manageResource.fastExistCheck(sPath, ctx, (exist) => {
             callback(exist);
@@ -166,22 +169,27 @@ class customFileSystem extends webdav.FileSystem
         });
     }
 
-    async _readDir(path, ctx, callback){
-        const sPath = path.toString();
-        let elemOfDir = [];
+    _readDir(path, ctx, callback){
 
-        try {
-            var customReadDirectory = await this.manageResource.readDir(sPath, ctx);
-            customReadDirectory.folders.forEach(el => {
-                elemOfDir.push(el.title);
-            });
-            customReadDirectory.files.forEach(el => {
-                elemOfDir.push(el.title);
-            });
-            callback(null, elemOfDir);
-        } catch (error) {
-            callback(error);
-        }
+    (async () => {
+            const sPath = path.toString();
+            let elemOfDir = [];
+
+            try {
+                var customReadDirectory = await this.manageResource.readDir(sPath, ctx);
+                customReadDirectory.folders.forEach(el => {
+                    elemOfDir.push(el.title);
+                });
+                customReadDirectory.files.forEach(el => {
+                    elemOfDir.push(el.title);
+                });
+                callback(null, elemOfDir);
+            } catch (error) {
+                callback(error);
+            }
+        })();
+
+
         
 
         /*this.manageResource.readDir(sPath, ctx, (err, struct) => {
