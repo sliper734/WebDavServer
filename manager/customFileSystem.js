@@ -21,7 +21,6 @@ class customFileSystem extends webdav.FileSystem
     }
 
     _fastExistCheck(ctx, path, callback){
-
         (async () => {
             const sPath = path.toString();
             try {
@@ -30,91 +29,68 @@ class customFileSystem extends webdav.FileSystem
             } catch (error) {
                 var a=1;
             }
-          })();
-
-
-        /*this.manageResource.fastExistCheck(sPath, ctx, (exist) => {
-            callback(exist);
-        });*/
+        })();
     }
 
-    async _create(path, ctx, callback){
-        const sPath = path.toString();
-//#region old code
-        /*this.manageResource.create(sPath, ctx, (err) => {
-            if(err){
-                callback(err);
+    _create(path, ctx, callback){
+        (async () => {
+            const sPath = path.toString();
+            try {
+                await this.manageResource.create(sPath, ctx);
+                callback();
+            } catch (error) {
+                callback(error);
             }
-            callback();
-        });*/
-        //#endregion
-        try {
-            await this.manageResource.create(sPath, ctx);
-            callback();
-        } catch (error) {
-            callback(error);
-        }
+        })();
     }
 
-    async _delete(path, ctx, callback){
-        const sPath = path.toString();
-        //#region old code
-        /*this.manageResource.delete(sPath, ctx, (err) => {
-            if(err){
-                callback(err);
+    _delete(path, ctx, callback){
+        (async () => {
+            const sPath = path.toString();
+            try {
+                await this.manageResource.delete(sPath, ctx);
+                callback();
+            } catch (error) {
+                callback(error);
             }
-            callback();
-        });*/
-        //#endregion
-        try {
-            await this.manageResource.delete(sPath, ctx);
-            callback();
-        } catch (error) {
-            callback(error);
-        }
+        })();
     }
 
     _move(pathFrom, pathTo, ctx, callback){
-        if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
-            delete pathTo.paths[pathTo.paths.length - 1];
-        }
-        const sPathFrom = pathFrom.toString();
-        const sPathTo = pathTo.toString();
-        var isMove = false;
-        try {
-            isMove = this.manageResource.move(sPathFrom, sPathTo, ctx);
-            callback(null, isMove);
-        } catch (error) {
-            callback(error, isMove);
-        }
-        /*this.manageResource.move(sPathFrom, sPathTo, ctx, (err, isMove) => {
-            if(err){
-                callback(err, isMove);
+        (async () => {
+            if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
+                delete pathTo.paths[pathTo.paths.length - 1];
             }
-            else{
+            const sPathFrom = pathFrom.toString();
+            const sPathTo = pathTo.toString();
+            var isMove = false;
+            try {
+                isMove = this.manageResource.move(sPathFrom, sPathTo, ctx);
                 callback(null, isMove);
+            } catch (error) {
+                callback(error, isMove);
             }
-        });*/
+        })();
     }
 
-    async _copy(pathFrom, pathTo, ctx, callback){
-        if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
-            delete pathTo.paths[pathTo.paths.length - 1];
-        }
-        const sPathFrom = pathFrom.toString();
-        const sPathTo = pathTo.toString();
-
-        try {
-            const isCopy = await this.manageResource.copy(sPathFrom, sPathTo, ctx);
-            callback (null, isCopy);
-        } catch (error) {
-            callback(error, isCopy);
-        }
+    _copy(pathFrom, pathTo, ctx, callback){
+        (async () => {
+            if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
+                delete pathTo.paths[pathTo.paths.length - 1];
+            }
+            const sPathFrom = pathFrom.toString();
+            const sPathTo = pathTo.toString();
+            try {
+                const isCopy = await this.manageResource.copy(sPathFrom, sPathTo, ctx);
+                callback (null, isCopy);
+            } catch (error) {
+                callback(error, isCopy);
+            }
+        })();
     }
 
     _size(path, ctx, callback){
         const sPath = path.toString();
-
         this.manageResource.getSize(sPath, ctx, (size) => {
             callback(null, size);
         });
@@ -122,7 +98,6 @@ class customFileSystem extends webdav.FileSystem
 
     _openWriteStream(path, ctx, callback){
         const sPath = path.toString();
-
         this.manageResource.writeFile(sPath, ctx, (err, streamWrite) => {
             if(err){
                 callback(err, null);
@@ -131,7 +106,6 @@ class customFileSystem extends webdav.FileSystem
                 callback(null, streamWrite);
             }
         });
-
     }
 
     _openReadStream(path, ctx, callback){
@@ -170,8 +144,7 @@ class customFileSystem extends webdav.FileSystem
     }
 
     _readDir(path, ctx, callback){
-
-    (async () => {
+        (async () => {
             const sPath = path.toString();
             let elemOfDir = [];
 
@@ -188,24 +161,6 @@ class customFileSystem extends webdav.FileSystem
                 callback(error);
             }
         })();
-
-
-        
-
-        /*this.manageResource.readDir(sPath, ctx, (err, struct) => {
-            if(err){
-                callback(err);
-            }
-            else{
-                struct.folders.forEach(el => {
-                    elemOfDir.push(el.title);
-                });
-                struct.files.forEach(el => {
-                    elemOfDir.push(el.title);
-                });
-                callback(null, elemOfDir);
-            }
-        });*/
     }
 }
 

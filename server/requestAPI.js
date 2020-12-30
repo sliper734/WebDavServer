@@ -31,28 +31,6 @@ var requestAuth = async function(username, password)
     } catch (error) {
         exceptionResponse(error);
     }
-    //#region old code
-    /*request.post(
-        {
-            method: 'POST',
-            url: `${domen}${api}${apiAuth}`,
-            headers: getHeader('application/json'),
-            form: {
-                "userName": username,
-                "password": password
-            }
-        }, (err, response, body) => {
-            exceptionResponse(err, body, (err) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    callback(null, JSON.parse(body).response.token);
-                }
-            });
-        }
-    );*/
-    //#endregion
 };
 
 var getStructDirectory = async function(folderId, token)
@@ -64,23 +42,6 @@ var getStructDirectory = async function(folderId, token)
     } catch (error) {
         exceptionResponse(error);
     }
-    //#region old code
-    /*request.get(
-        {
-            url: `${domen}${api}${apiFiles}${folderId}`,
-            headers: getHeader('application/json', token),
-        }, (err, response, body) => {
-            exceptionResponse(err, body, (err) => {
-                if(err){
-                    callback(err);
-                }
-                else{
-                    callback(null, JSON.parse(body).response);
-                }
-            });
-        }
-    );*/
-    //#endregion
 };
 
 var createFile = async function(folderId, title, token)

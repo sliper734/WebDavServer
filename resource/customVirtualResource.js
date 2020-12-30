@@ -43,35 +43,7 @@ class CustomVirtualResources
             return structRoot;
         } catch (error) {
             return webdav.Errors.ResourceNotFound;
-            //#region er
-            /*if(structRoot.folders.length == 0){
-                callback(webdav.Errors.ResourceNotFound, null);
-            }
-            else{
-                callback(null, structRoot);
-            }*/
-            //#endregion
         }
-        //#region old code
-        /*getStructDirectory(method.pathRootDirectory, user.token, (err, structDir) => {
-            if(err){
-                if(structRoot.folders.length == 0){
-                    callback(webdav.Errors.ResourceNotFound, null);
-                }
-                else{
-                    callback(null, structRoot);
-                }
-            }
-            else{
-                for(var i=0;i<structDir.length;i++)
-                {
-                    structRoot.folders.push(structDir[i].current);
-                }
-                
-                callback(null, structRoot);
-            }
-        });*/
-        //#endregion
     }
 
     async fastExistCheck(path, ctx){
@@ -95,8 +67,6 @@ class CustomVirtualResources
             });
             return fileisExist;
         }
-
-        
         try {
             var st = await this.readDir(parentFolder, {context: ctx});
             fileisExist = false;
@@ -114,29 +84,6 @@ class CustomVirtualResources
         } catch (error) {
             return false;
         }
-        /*this.readDir(parentFolder, {context: ctx}, (err, st) => {
-            if(err){
-                callback(false);
-            }
-            else{
-                fileisExist = false;
-                this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
-                    if(element == el.title){
-                        fileisExist = true;
-                        callback(true);
-                    }
-                });
-                this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
-                    if(element == el.title){
-                        fileisExist = true;
-                        callback(true);
-                    }
-                });
-                if(!fileisExist){
-                    callback(false);
-                }
-            }
-        });*/
     }
 
     async create(path, ctx){
@@ -188,7 +135,7 @@ class CustomVirtualResources
         });
     }
 
-    async readDir(path, ctx/*, callback*/){
+    async readDir(path, ctx){
 
         const user = ctx.context.user;
         
@@ -197,22 +144,9 @@ class CustomVirtualResources
             try {
                 this.structСache.setStruct(path,user.username,rootFolder);
                 return this.structСache.getStruct(path,user.username);
-                //callback(null,this.structСache.getStruct(path,user.username));
             } catch (error) {
                 return new Error(webdav.Errors.ResourceNotFound);
-                //callback(webdav.Errors.ResourceNotFound,null);
             }
-            //#region old code
-            /*this.getRootFolder(user, (err, structDir) => {
-                if(err){
-                    callback(webdav.Errors.ResourceNotFound, null);
-                }
-                else{
-                    this.structСache.setStruct(path, user.username, structDir);
-                    callback(null, this.structСache.getStruct(path, user.username));
-                }
-            });*/
-            //#endregion
         }
         const {element, parentFolder} = parse.parsePath(path);
 
@@ -221,24 +155,24 @@ class CustomVirtualResources
                 try {
                     await this.readDirRecursion(parentFolder, ctx);
                     if(!this.structСache.getStruct(parentFolder, user.username)){
-                        this.readDir(path, ctx);
-                        //////////////////////////////////////////
+                        await this.readDir(path, ctx);
                     }
                     else{
-                        this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+                        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+                        for(var i = 0;i<folders.length;i++)
+                        {
+                            const el = folders[i];
                             if(element == el.title){
                                 let folderId = el.id;
                                 try {
                                     var structDirectory = getStructDirectory(folderId,user.token);
                                     this.structСache.setStruct(path, user.username, structDirectory);
                                     return this.structСache.getStruct(path, user.username);
-                                    //callback(null, this.structСache.getStruct(path, user.username));
                                 } catch (error) {
                                     return new Error(webdav.Errors.ResourceNotFound);
-                                    //callback(webdav.Errors.ResourceNotFound, null);
                                 }
                             }
-                        });
+                        }
                     }
                 } catch (error) {
                     return error;
@@ -253,19 +187,14 @@ class CustomVirtualResources
                     let folderId = el.id;
                     if(this.structСache.structIsExpire(path, parentFolder, user.username)){
                         return this.structСache.getStruct(path, user.username);
-                        //callback(null, this.structСache.getStruct(path, user.username));
                     }
-                    else {
                         try {
                             var structDirectory = await getStructDirectory(folderId, user.token);
                             this.structСache.setStruct(path, user.username, structDirectory);
                             return this.structСache.getStruct(path, user.username);
-                            //callback(null, this.structСache.getStruct(path, user.username));
                         } catch (error) {
                             return new Error(webdav.Errors.ResourceNotFound);
-                            //callback(webdav.Errors.ResourceNotFound, null);
                         }
-                    }
                 }
             }
         }
@@ -273,37 +202,22 @@ class CustomVirtualResources
             var rootFolder = await this.getRootFolder(user);
             try {
                 this.structСache.setStruct('/', user.username, rootFolder);
-                this.readDir(path, ctx);
-                ///////////////////////
+                await this.readDir(path, ctx);
             } catch (error) {
                 return new Error(error);
-                //callback(error, null);
             }
-            //#region old code
-            /*this.getRootFolder(user, (err, st) => {
-                if(err){
-                    callback(err, null);
-                }
-                else{
-                    this.structСache.setStruct('/', user.username, st);
-                    this.readDir(path, ctx, callback);
-                }
-            });*/
-            //#endregion
         }
     }
 
-    async readDirRecursion(path, ctx/*, callback*/){
+    async readDirRecursion(path, ctx){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
         if(!this.structСache.getStruct(parentFolder, user.username) && path != parentFolder){
-            return await this.readDirRecursion(parentFolder, ctx/*, callback*/);
+            return await this.readDirRecursion(parentFolder, ctx);
         }
-            await this.readDir(parentFolder, ctx);
-        
-        //else{
+        await this.readDir(parentFolder, ctx);
         const folders = this.structСache.getStruct(parentFolder, user.username).folders;
         for(var i=0;i<folders.length;i++)
         {
@@ -313,10 +227,8 @@ class CustomVirtualResources
                 try {
                     var structDirectory = await this.getStructDirectory(folderId,user.token);
                     this.structСache.setStruct(path, user.username, structDirectory);
-                    //callback();
                 } catch (error) {
                     return new Error(webdav.Errors.ResourceNotFound);
-                    //callback(webdav.Errors.ResourceNotFound);
                 }
             }
         }
@@ -382,7 +294,7 @@ class CustomVirtualResources
         callback(null, stream);
     }
 
-    copy(pathFrom, pathTo, ctx/*, callback*/){
+    copy(pathFrom, pathTo, ctx){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(pathFrom);
@@ -391,19 +303,10 @@ class CustomVirtualResources
         if(!this.structСache.getStruct(pathTo, user.username)){
             try {
                 this.readDir(pathTo, ctx);
-                this.copy(pathFrom, pathTo, ctx/*, callback*/);
+                this.copy(pathFrom, pathTo, ctx);
             } catch (error) {
                 return new Error(err);
             }
-            //this.readDir(pathTo, ctx, (err, st) => {
-            //    if(err){
-            //        return new exceptions(err);
-            //        //callback(err, null);
-            //    }
-            //    else{
-            //        this.copy(pathFrom, pathTo, ctx/*, callback*/);
-            //    }
-            //});
         }
         const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
         this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
