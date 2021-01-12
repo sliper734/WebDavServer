@@ -50,36 +50,47 @@ class CustomVirtualResources
         if(path == '/'){
             return true;
         }
-        
         const user = ctx.user;
         const {element, parentFolder} = parse.parsePath(path);
         let fileisExist = false;
         if(this.structСache.getStruct(parentFolder, user.username)){
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+            const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+            for(var i=0;i<folders.length;i++)
+            {
+                const el=folders[i];
                 if(element == el.title){
                     fileisExist = true;
                 }
-            });
-            this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+            }
+            const files = this.structСache.getStruct(parentFolder, user.username).files;
+            for(var i=0;i<files.length;i++)
+            {
+                const el=files[i];
                 if(element == el.title){
                     fileisExist = true;
                 }
-            });
+            }
             return fileisExist;
         }
         try {
             var st = await this.readDir(parentFolder, {context: ctx});
             fileisExist = false;
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+            const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+            for(var i=0;i<folders.length;i++)
+            {
+                const el=folders[i];
                 if(element == el.title){
                     fileisExist = true;
                 }
-            });
-            this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+            }
+            const files = this.structСache.getStruct(parentFolder, user.username).files;
+            for(var i=0;i<files.length;i++)
+            {
+                const el=files[i];
                 if(element == el.title){
                     fileisExist = true;
                 }
-            });
+            }
             return fileisExist;
         } catch (error) {
             return false;
@@ -98,21 +109,23 @@ class CustomVirtualResources
         }
         if(ctx.type.isFile){
             element = parse.isExst(element);
-            switch(parse.parseFileExst(element)){
-                case 'OFFICE_DOCX_PPTX_XLSX':
+            /*switch(parse.parseFileExst(element)){
+                case 'OFFICE_DOCX_PPTX_XLSX':*/
                     var createdObj = await createFile(parentId, element, user.token);
                     this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                    break;
-            }
+                    //break;
+            //}
         }
     }
 
-    delete(path, ctx){
-
+    async delete(path, ctx){
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(element == el.title){
                 try {
                     await deleteFolder(el.id, user.token);
@@ -122,8 +135,11 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
-        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+        }
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(element == el.title){
                 try {
                     await deleteFile(el.id, user.token);
@@ -132,7 +148,7 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
+        }
     }
 
     async readDir(path, ctx){
@@ -234,67 +250,74 @@ class CustomVirtualResources
         }
     }
 
-    downloadFile(path, ctx, callback){
+    async downloadFile(path, ctx){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(element == el.title){
                 try {
                     var streamFile = await getFileDownloadUrl(el.id,user.token);
-                    //return streamFile;
-                    callback(null,streamFile);
+                    return streamFile;
                 } catch (error) {
-                    //return new exceptions(error);
-                    callback(error,null);
+                    return new Error(error);
                 }
-            //#region old code
-                /*getFileDownloadUrl(el.id, user.token, (err, streamFile) => {
-                    if(err){
-                        callback(err, null);
-                    }
-                    else{
-                        callback(null, streamFile);
-                    }
-                });*/
-               //#endregion 
             }
-        });
+        }
     }
 
-    async writeFile(path, ctx, callback){
+    async writeFile(path, ctx/*, callback*/){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         let folderId = this.structСache.getStruct(parentFolder, user.username).current.id;
 
-        const content = [];
+        const content = ["test"];
         const stream = new streamWrite(content);
 
-        await stream.on('finish', () => {
-            this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+        await stream.on('finish', async() => {
+            const files = this.structСache.getStruct(parentFolder, user.username).files;
+            for(var i=0;i<files.length;i++)
+            {
+                const el=files[i];
                 if(element == el.title){
                     try {
                         await rewritingFile(folderId,el.title,content,user.token);
-                        //не знаю что засовывать
                     } catch (error) {
-                        callback(error, null);
+                        return new Error(error);
+                        //callback(error, null);
                     }
-                    //#region old code
-                    /*rewritingFile(folderId, el.title, content, user.token, (err) => {
-                        if(err){
-                            callback(err, null);
-                        }
-                    });*/
-                    //#endregion
                 }
-            });
+            }
+            //#region 
+            //this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+            //    if(element == el.title){
+            //        try {
+            //            await rewritingFile(folderId,el.title,content,user.token);
+            //            //не знаю что засовывать
+            //        } catch (error) {
+            //            callback(error, null);
+            //        }
+            //        //#region old code
+            //        /*rewritingFile(folderId, el.title, content, user.token, (err) => {
+            //            if(err){
+            //                callback(err, null);
+            //            }
+            //        });*/
+            //        //#endregion
+            //    }
+            //});
+            //#endregion
         });
-        callback(null, stream);
+        return stream;
+        //callback(null, stream);
     }
 
-    copy(pathFrom, pathTo, ctx){
+    async copy(pathFrom, pathTo, ctx){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(pathFrom);
@@ -309,7 +332,10 @@ class CustomVirtualResources
             }
         }
         const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(element == el.title){
                 try {
                     await copyFolder(folderId, el.id, user.token);
@@ -318,8 +344,11 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
-        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+        }
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(element == el.title){
                 try {
                     await copyFile(folderId, el.id, user.token);
@@ -328,15 +357,18 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
+        }
     }
 
-    rename(path, newName, ctx){
+    async rename(path, newName, ctx){
 
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(path);
 
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach(async (el) => {
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(element == el.title){
                 try {
                     await renameFolder(el.id, newName, user.token);
@@ -346,8 +378,11 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
-        this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
+        }
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(element == el.title){
                 try {
                     await renameFile(el.id, newName, user.token);
@@ -357,10 +392,10 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
+        }
     }
 
-    move(pathFrom, pathTo, ctx){
+    async move(pathFrom, pathTo, ctx){
         
         pathTo = parse.parsePathTo(pathTo);
         let {element: elementFrom, parentFolder: parentFolderFrom} = parse.parsePath(pathFrom);
@@ -382,7 +417,7 @@ class CustomVirtualResources
         }
         if(!this.structСache.getStruct(pathTo, user.username)){
             try {
-                this.readDir(pathTo, ctx);
+                const prpr = await this.readDir(pathTo, ctx);
                 this.move(pathFrom, pathTo, ctx);
             } catch (error) {
                 return new Error(error);
@@ -397,7 +432,11 @@ class CustomVirtualResources
             });*/
         }
         const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
-        this.structСache.getStruct(parentFolderFrom, user.username).folders.forEach((el) => {
+        
+        const folders = this.structСache.getStruct(parentFolderFrom, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(elementFrom == el.title){
                 try {
                     moveFolder(folderId, el.id, user.token);
@@ -407,8 +446,12 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
-        this.structСache.getStruct(parentFolderFrom, user.username).files.forEach((el) => {
+        }
+
+        const files = this.structСache.getStruct(parentFolderFrom, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(elementFrom == el.title){
                 try {
                     moveFile(folderId, el.id, user.token);
@@ -418,68 +461,86 @@ class CustomVirtualResources
                     return new Error(error);
                 }
             }
-        });
+        }
     }
 
-    getType(path, ctx, callback){
+    getType(path, ctx){
 
         const user = ctx.context.user;
 
         if(path == '/'){
-            callback(webdav.ResourceType.Directory);
+            return webdav.ResourceType.Directory;
         }
-        else{
-            const {element, parentFolder} = parse.parsePath(path);
-            
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
-                if(element == el.title){
-                    callback(webdav.ResourceType.File);
-                }
-            });
-            this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
-                if(element == el.title){
-                    callback(webdav.ResourceType.Directory);
-                }
-            });
+        const {element, parentFolder} = parse.parsePath(path);
+        
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
+            if(element == el.title){
+                return webdav.ResourceType.Directory;
+            }
+        }
+
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
+            if(element == el.title){
+                return webdav.ResourceType.File;
+            }
         }
     }
 
-    getSize(path, ctx, callback){
+    getSize(path, ctx){
 
         const {element, parentFolder} = parse.parsePath(path);
         const user = ctx.context.user;
 
-        this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
             if(element == el.title){
-                callback(el.pureContentLength);
+                return null;
             }
-        });
-        this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
+        }
+
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
             if(element == el.title){
-                callback();
+                return el.pureContentLength;
             }
-        });
+        }
     }
 
-    getlastModifiedDate(path, ctx, callback){
+    getlastModifiedDate(path, ctx){
 
-        if(path != '/'){
-            const {element, parentFolder} = parse.parsePath(path);
-            const user = ctx.context.user;
-
-            this.structСache.getStruct(parentFolder, user.username).files.forEach((el) => {
-            if(element == el.title){
-                callback(parse.parseDate(el.updated));
-            }
-            });
-            this.structСache.getStruct(parentFolder, user.username).folders.forEach((el) => {
-            if(element == el.title){
-                callback(parse.parseDate(el.updated));
-            }
-            });
+        if(path == '/')
+        {
+            return new Date(0, 0, 0, 0, 0, 0);
         }
-        else{
-            callback(new Date(0, 0, 0, 0, 0, 0));
+        const {element, parentFolder} = parse.parsePath(path);
+        const user = ctx.context.user;
+
+        const folders = this.structСache.getStruct(parentFolder, user.username).folders;
+        for(var i=0;i<folders.length;i++)
+        {
+            const el=folders[i];
+            if(element == el.title){
+                return parse.parseDate(el.updated);
+            }
+        }
+
+        const files = this.structСache.getStruct(parentFolder, user.username).files;
+        for(var i=0;i<files.length;i++)
+        {
+            const el=files[i];
+            if(element == el.title){
+                return parse.parseDate(el.updated);
+            }
         }
     }
 }

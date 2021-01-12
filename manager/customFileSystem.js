@@ -39,7 +39,7 @@ class customFileSystem extends webdav.FileSystem
                 await this.manageResource.create(sPath, ctx);
                 callback();
             } catch (error) {
-                callback(error);
+                callback(new Error('text error'));
             }
         })();
     }
@@ -65,7 +65,7 @@ class customFileSystem extends webdav.FileSystem
             const sPathTo = pathTo.toString();
             var isMove = false;
             try {
-                isMove = this.manageResource.move(sPathFrom, sPathTo, ctx);
+                isMove = await this.manageResource.move(sPathFrom, sPathTo, ctx);
                 callback(null, isMove);
             } catch (error) {
                 callback(error, isMove);
@@ -91,56 +91,59 @@ class customFileSystem extends webdav.FileSystem
 
     _size(path, ctx, callback){
         const sPath = path.toString();
-        this.manageResource.getSize(sPath, ctx, (size) => {
+        (async () => {
+            const size = await this.manageResource.getSize(sPath, ctx);
             callback(null, size);
-        });
+        })();
     }
 
     _openWriteStream(path, ctx, callback){
         const sPath = path.toString();
-        this.manageResource.writeFile(sPath, ctx, (err, streamWrite) => {
+        /*this.manageResource.writeFile(sPath, ctx, (err, streamWrite) => {
             if(err){
                 callback(err, null);
             }
             else{
                 callback(null, streamWrite);
             }
-        });
+        });*/
+        (async () => {
+            try {
+                const streamWrite = await this.manageResource.writeFile(sPath, ctx);
+                callback(null, streamWrite);
+            } catch (error) {
+                callback(error, null);
+            }
+        })();
     }
 
     _openReadStream(path, ctx, callback){
         const sPath = path.toString();
-
-        this.manageResource.downloadFile(sPath, ctx, (err, streamRead) => {
-            if(err){
-                callback(err, null);
-            }
-            else{
+        (async () => {
+            try {
+                const streamRead = await this.manageResource.downloadFile(sPath, ctx);
                 callback(null, streamRead);
+            } catch (error) {
+                callback(error, null);
             }
-        });
-        /*try {
-            streamRead = await this.manageResource.downloadFile(sPath, ctx);
-            callback(null, streamRead);
-        } catch (error) {
-            callback(error, null);
-        }*/
+        })();
     }
 
     _type(path, ctx, callback) {
         const sPath = path.toString();
-
-        this.manageResource.getType(sPath, ctx, (type) => {
-                callback(null, type);
-        });
+        (async () => {
+            const type = await this.manageResource.getType(sPath, ctx);
+            callback(null, type);
+        })();
     }
 
     _lastModifiedDate(path, ctx, callback){
         const sPath = path.toString();
 
-        this.manageResource.getlastModifiedDate(sPath, ctx, (date) => {
+        (async () => {
+            const date = await this.manageResource.getlastModifiedDate(sPath, ctx);
             callback(null, date);
-        });
+        })();
     }
 
     _readDir(path, ctx, callback){

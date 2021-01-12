@@ -17,6 +17,7 @@ var exceptionResponse = function(error,content)
         const statusCode = error.response.status;
         if(error){
             logger.log('warn', error.response.data.error.message);
+            throw error;
         }
         else if(!content){
             logger.log('warn', webdav.Error.Forbidden);
@@ -29,7 +30,9 @@ var exceptionResponse = function(error,content)
     } catch (e) {
         logger.log('error', `Error JSONparse response from api ${e}`);
         logger.log('error', `${e}`);
+        throw e;
     }
+    
 };
 //#region old code
 /*var exceptionResponse1 = function(err, body, callback){
