@@ -9,14 +9,14 @@ class customUserManager extends webdav.SimpleUserManager
         this.storeUser = new customUserLayout();
     }
 
-    async getUserByNamePassword(username, password, callback){
+    async getUserByNamePassword(username, password, ctx, callback){
 
         if(this.storeUser.getUser(username) && this.storeUser.checkExpireUser(username)){
             callback(null, this.storeUser.getUser(username));
         }
         else{
             try {
-                var token = await requestAuth(username,password);
+                var token = await requestAuth(username, password, ctx);
                 //не знаю как исправить этот костыль
                 if(token===undefined){
                     throw webdav.Errors.UserNotFound;

@@ -276,7 +276,7 @@ class CustomVirtualResources
         const {element, parentFolder} = parse.parsePath(path);
         let folderId = this.structСache.getStruct(parentFolder, user.username).current.id;
 
-        const content = ["test"];
+        const content = [];
         const stream = new streamWrite(content);
 
         await stream.on('finish', async() => {

@@ -2,12 +2,14 @@ var request = require('request');
 var axios = require('axios');
 const {getHeader, exceptionResponse} = require('../helper/helper.js');
 const {
-    domen,
+    //domen,
+    OnlyOfficePort,
     api,
     apiFiles,
     apiAuth,
     method
 } = require('./config.js');
+var domen = null;
 
 function instanceFunc(token=null, header='application/json',url=`${domen}${api}`,content)
 {
@@ -19,8 +21,16 @@ function instanceFunc(token=null, header='application/json',url=`${domen}${api}`
     });
 }
 
-var requestAuth = async function(username, password)
+var requestAuth = async function(username, password, ctx)
 {
+    const hostStr = ctx.headers.host;
+    var httProtocol = "";
+    if (ctx.server.options.https===null){
+        httProtocol = "http://";
+    } else {
+        httProtocol = "https://";
+    }
+    domen = httProtocol + hostStr.split(":")[0] + OnlyOfficePort;
     try {
         const instance = instanceFunc();
         var response = await instance.post(`${apiAuth}`,{

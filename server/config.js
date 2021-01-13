@@ -14,7 +14,10 @@ module.exports = {
   cleanTrashInterval: 900000,
 
   // Adress of community server OnlyOffice */
-  domen: 'http://127.0.0.1:8092/',
+  domen: 'http://localhost:8092/',
+
+  // Port of community server OnlyOffice */
+  OnlyOfficePort: ":8092/",
 
   // Api constant
   api: 'api/2.0/',
