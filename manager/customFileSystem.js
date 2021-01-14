@@ -36,7 +36,7 @@ class customFileSystem extends webdav.FileSystem
         (async () => {
             const sPath = path.toString();
             try {
-                await this.manageResource.create(sPath, ctx);
+                await this.manageResource.create(ctx, sPath);
                 callback();
             } catch (error) {
                 callback(new Error('text error'));
@@ -48,7 +48,7 @@ class customFileSystem extends webdav.FileSystem
         (async () => {
             const sPath = path.toString();
             try {
-                await this.manageResource.delete(sPath, ctx);
+                await this.manageResource.delete(ctx, sPath);
                 callback();
             } catch (error) {
                 callback(error);
@@ -65,7 +65,7 @@ class customFileSystem extends webdav.FileSystem
             const sPathTo = pathTo.toString();
             var isMove = false;
             try {
-                isMove = await this.manageResource.move(sPathFrom, sPathTo, ctx);
+                isMove = await this.manageResource.move(ctx, sPathFrom, sPathTo);
                 callback(null, isMove);
             } catch (error) {
                 callback(error, isMove);
@@ -81,7 +81,7 @@ class customFileSystem extends webdav.FileSystem
             const sPathFrom = pathFrom.toString();
             const sPathTo = pathTo.toString();
             try {
-                const isCopy = await this.manageResource.copy(sPathFrom, sPathTo, ctx);
+                const isCopy = await this.manageResource.copy(ctx, sPathFrom, sPathTo);
                 callback (null, isCopy);
             } catch (error) {
                 callback(error, isCopy);
@@ -152,7 +152,7 @@ class customFileSystem extends webdav.FileSystem
             let elemOfDir = [];
 
             try {
-                var customReadDirectory = await this.manageResource.readDir(sPath, ctx);
+                var customReadDirectory = await this.manageResource.readDir(ctx, sPath);
                 customReadDirectory.folders.forEach(el => {
                     elemOfDir.push(el.title);
                 });

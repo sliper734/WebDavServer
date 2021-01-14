@@ -1,6 +1,8 @@
 const webdav = require('webdav-server').v2;
 const FileSystem = require('../manager/customFileSystem');
 const customUserManager = require('../user/customUserManager');
+const customHTTPBasicAuthentication = require('../user/authentication/customHTTPBasicAuthentication');
+const fs = require('fs');
 const {
     portListener,
     cleanTrashInterval} = require('./config.js');
@@ -11,8 +13,12 @@ const userManager = new customUserManager();
 const server = new webdav.WebDAVServer({
     port: portListener,
     requireAuthentification: true,
-    httpAuthentication: new webdav.HTTPBasicAuthentication(userManager),
-    rootFileSystem: new FileSystem()
+    httpAuthentication: new customHTTPBasicAuthentication(userManager),
+    rootFileSystem: new FileSystem(),
+    https: {
+        pfx: fs.readFileSync('C:\\test.pfx'),
+        passphrase: 'YourPassword'
+    }
 });
 
 setInterval(function(){userManager.storeUser.cleanTrashUsers(function(users){

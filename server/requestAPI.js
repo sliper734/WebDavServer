@@ -2,37 +2,45 @@ var request = require('request');
 var axios = require('axios');
 const {getHeader, exceptionResponse} = require('../helper/helper.js');
 const {
-    //domen,
+    domen,
     OnlyOfficePort,
     api,
     apiFiles,
     apiAuth,
     method
 } = require('./config.js');
-var domen = null;
 
-function instanceFunc(token=null, header='application/json',url=`${domen}${api}`,content)
+
+function instanceFunc(ctx, token=null, header='application/json',url=`${domen}${api}`,content)
 {
+    var qweqweqwe = ctx.headers.host;
+    var domain = null;
+    if (ctx=== undefined){
+        domain = "http://localhost:8092/";
+    } else{
+        const hostStr = ctx.headers.host;
+        var httProtocol = "";
+        if (ctx.server.options.https===null){
+            httProtocol = "http://";
+        } else {
+            httProtocol = "http://";
+        }
+        domain = httProtocol + hostStr.split(":")[0] + OnlyOfficePort;
+    }
+
     return axios.create({
-        baseURL: url,
+        baseURL: `${domain}${api}`,
         timeout: 1000,
         headers: getHeader(header,token),
         data:content
     });
 }
 
-var requestAuth = async function(username, password, ctx)
+var requestAuth = async function(ctx, username, password)
 {
-    const hostStr = ctx.headers.host;
-    var httProtocol = "";
-    if (ctx.server.options.https===null){
-        httProtocol = "http://";
-    } else {
-        httProtocol = "https://";
-    }
-    domen = httProtocol + hostStr.split(":")[0] + OnlyOfficePort;
+
     try {
-        const instance = instanceFunc();
+        const instance = instanceFunc(ctx);
         var response = await instance.post(`${apiAuth}`,{
             "userName": username,
             "password": password
@@ -43,10 +51,10 @@ var requestAuth = async function(username, password, ctx)
     }
 };
 
-var getStructDirectory = async function(folderId, token)
+var getStructDirectory = async function(ctx, folderId, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.get(`${apiFiles}${folderId}`);
         return response.data.response;
     } catch (error) {
@@ -54,10 +62,10 @@ var getStructDirectory = async function(folderId, token)
     }
 };
 
-var createFile = async function(folderId, title, token)
+var createFile = async function(ctx, folderId, title, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
             "title": title
         }); 
@@ -67,10 +75,10 @@ var createFile = async function(folderId, title, token)
     }
 };
 
-var createFolder = async function(parentId, title, token)
+var createFolder = async function(ctx, parentId, title, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.post(`${apiFiles}${method.folder}${parentId}`,{
             "title": title
         }); 
@@ -80,10 +88,10 @@ var createFolder = async function(parentId, title, token)
     }
 };
 
-var deleteFile = async function(fileId, token)
+var deleteFile = async function(ctx, fileId, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.delete(`${apiFiles}${method.file}${fileId}`,{
             "deleteAfter": true,
             "immediately": true
@@ -93,10 +101,10 @@ var deleteFile = async function(fileId, token)
     }
 };
 
-var deleteFolder = async function(folderId, token)
+var deleteFolder = async function(ctx, folderId, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.delete(`${apiFiles}${method.folder}${folderId}`,{
             "deleteAfter": true,
             "immediately": true
@@ -106,10 +114,10 @@ var deleteFolder = async function(folderId, token)
     }
 };
 
-var copyFile = async function(folderId, files, token)
+var copyFile = async function(ctx, folderId, files, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.copy}`,{
             "destFolderId": folderId,
             "folderIds": [],
@@ -122,10 +130,10 @@ var copyFile = async function(folderId, files, token)
     }
 };
 
-var copyFolder = async function(folderId, folders, token)
+var copyFolder = async function(ctx, folderId, folders, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.copy}`,{
             "destFolderId": folderId,
             "folderIds": [folders],
@@ -138,10 +146,10 @@ var copyFolder = async function(folderId, folders, token)
     }
 };
 
-var moveFile = async function(folderId, files, token)
+var moveFile = async function(ctx, folderId, files, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.move}`,{
             "destFolderId": folderId,
             "folderIds": [],
@@ -154,10 +162,10 @@ var moveFile = async function(folderId, files, token)
     }
 };
 
-var moveFolder = async function(folderId, folders, token)
+var moveFolder = async function(ctx, folderId, folders, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.move}`,{
             "destFolderId": folderId,
             "folderIds": [folders],
@@ -170,10 +178,10 @@ var moveFolder = async function(folderId, folders, token)
     }
 };
 
-var renameFile = async function(fileId, newName, token)
+var renameFile = async function(ctx, fileId, newName, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.file}${fileId}`,{
             "title": newName
         });
@@ -182,10 +190,10 @@ var renameFile = async function(fileId, newName, token)
     }
 };
 
-var renameFolder = async function(folderId, newName, token)
+var renameFolder = async function(ctx, folderId, newName, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(ctx.context, token);
         var response = await instance.put(`${apiFiles}${method.folder}${folderId}`,{
             "title": newName
         });
@@ -198,7 +206,7 @@ var rewritingFile = async function(folderId, title, content, token)
 {
     try {
         const encode_title = encodeURIComponent(`${title}`);
-        const instance = instanceFunc(token,undefined,undefined,content);
+        const instance = instanceFunc(undefined, token, undefined, undefined, content);
         var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
     } catch (error) {
         exceptionResponse(error);
@@ -220,7 +228,7 @@ var rewritingFile = async function(folderId, title, content, token)
 var getFileDownloadUrl = async function(fileId, token)
 {
     try {
-        const instance = instanceFunc(token);
+        const instance = instanceFunc(undefined, token);
         var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`);
         var streamFile = await request.get(
             {
