@@ -16,8 +16,10 @@ module.exports = {
   // Adress of community server OnlyOffice */
   domen: 'http://localhost:8092/',
 
+  isHttps: true,
+
   // Port of community server OnlyOffice */
-  OnlyOfficePort: ":8092/",
+  onlyOfficePort: ":8092/",
 
   // Api constant
   api: 'api/2.0/',
@@ -26,7 +28,7 @@ module.exports = {
   apiAuth: 'authentication.json',
 
   // Sub-method for files/folders operations
-  apiFiles: 'files/',
+  apiFiles: 'Files/',
 
   method: {
 
@@ -55,7 +57,9 @@ module.exports = {
     openedit: '/openedit',
 
     // Write stream in file
-    insert: '/insert?title=',
+    insert: '/insert',
+
+    update: '/saveediting?',
 
     // Property for method 'insert'
     no_createFile: '&createNewIfExist=false',

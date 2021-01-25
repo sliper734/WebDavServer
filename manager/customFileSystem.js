@@ -121,7 +121,7 @@ class customFileSystem extends webdav.FileSystem
         const sPath = path.toString();
         (async () => {
             try {
-                const streamRead = await this.manageResource.downloadFile(sPath, ctx);
+                const streamRead = await this.manageResource.downloadFile(ctx, sPath);
                 callback(null, streamRead);
             } catch (error) {
                 callback(error, null);

@@ -12,10 +12,11 @@ const {
     moveFile,
     moveFolder,
     renameFile,
-    renameFolder
-    //createFiletxt
-    //createFilehtml
+    renameFolder,
+    createFiletxt,
+    createFilehtml
 } = require('../server/requestAPI.js');
+const FormData = require("form-data");
 const {exceptionResponse} = require('../helper/helper.js');
 const {method} = require('../server/config.js');
 const streamWrite = require('../helper/Writable.js');
@@ -109,12 +110,20 @@ class CustomVirtualResources
         }
         if(ctx.type.isFile){
             element = parse.isExst(element);
-            /*switch(parse.parseFileExst(element)){
-                case 'OFFICE_DOCX_PPTX_XLSX':*/
+            switch(parse.parseFileExst(element)){
+                case 'OFFICE_DOCX_PPTX_XLSX':
                     var createdObj = await createFile(ctx, parentId, element, user.token);
                     this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                    //break;
-            //}
+                    break;
+                case 'txt':
+                    var createdObj = await createFiletxt(ctx, parentId, element, user.token);
+                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    break;
+                case 'html':
+                    var createdObj = await createFilehtml(ctx, parentId, element, user.token);
+                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    break;
+            }
         }
     }
 
@@ -250,7 +259,7 @@ class CustomVirtualResources
         }
     }
 
-    async downloadFile(path, ctx){
+    async downloadFile(ctx, path){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
@@ -261,7 +270,7 @@ class CustomVirtualResources
             const el=files[i];
             if(element == el.title){
                 try {
-                    var streamFile = await getFileDownloadUrl(el.id,user.token);
+                    var streamFile = await getFileDownloadUrl(ctx, el.id, user.token);
                     return streamFile;
                 } catch (error) {
                     return new Error(error);
@@ -270,7 +279,7 @@ class CustomVirtualResources
         }
     }
 
-    async writeFile(path, ctx/*, callback*/){
+    async writeFile(path, ctx){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
@@ -279,42 +288,26 @@ class CustomVirtualResources
         const content = [];
         const stream = new streamWrite(content);
 
-        await stream.on('finish', async() => {
+        await stream.on('finish', (async() => {
             const files = this.structСache.getStruct(parentFolder, user.username).files;
             for(var i=0;i<files.length;i++)
             {
                 const el=files[i];
                 if(element == el.title){
                     try {
-                        await rewritingFile(folderId,el.title,content,user.token);
+                        const form_data = new FormData();
+                        form_data.append("file", stream, {filename: el.title, contentType:"text/plain"});
+                        form_data.append("title", el.title);
+                        form_data.append("CreateNewIfExist", 'false');
+                        form_data.append("KeepConvertStatus", 'false');
+                        await rewritingFile(ctx, folderId, el.title, form_data, user.token);
                     } catch (error) {
                         return new Error(error);
-                        //callback(error, null);
                     }
                 }
             }
-            //#region 
-            //this.structСache.getStruct(parentFolder, user.username).files.forEach(async (el) => {
-            //    if(element == el.title){
-            //        try {
-            //            await rewritingFile(folderId,el.title,content,user.token);
-            //            //не знаю что засовывать
-            //        } catch (error) {
-            //            callback(error, null);
-            //        }
-            //        //#region old code
-            //        /*rewritingFile(folderId, el.title, content, user.token, (err) => {
-            //            if(err){
-            //                callback(err, null);
-            //            }
-            //        });*/
-            //        //#endregion
-            //    }
-            //});
-            //#endregion
         });
         return stream;
-        //callback(null, stream);
     }
 
     async copy(ctx, pathFrom, pathTo){

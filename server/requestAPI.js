@@ -2,32 +2,24 @@ var request = require('request');
 var axios = require('axios');
 const {getHeader, exceptionResponse} = require('../helper/helper.js');
 const {
-    domen,
-    OnlyOfficePort,
+    onlyOfficePort,
     api,
     apiFiles,
     apiAuth,
-    method
+    method,
+    isHttps
 } = require('./config.js');
 
 
-function instanceFunc(ctx, token=null, header='application/json',url=`${domen}${api}`,content)
+function instanceFunc(ctx, token=null, header='application/json', content)
 {
-    var qweqweqwe = ctx.headers.host;
     var domain = null;
-    if (ctx=== undefined){
-        domain = "http://localhost:8092/";
-    } else{
+    if (isHttps){
         const hostStr = ctx.headers.host;
-        var httProtocol = "";
-        if (ctx.server.options.https===null){
-            httProtocol = "http://";
-        } else {
-            httProtocol = "http://";
-        }
-        domain = httProtocol + hostStr.split(":")[0] + OnlyOfficePort;
+        var httProtocol = "http://";
+        domain = httProtocol + hostStr.split(":")[0] + onlyOfficePort;
     }
-
+    
     return axios.create({
         baseURL: `${domain}${api}`,
         timeout: 1000,
@@ -202,46 +194,42 @@ var renameFolder = async function(ctx, folderId, newName, token)
     }
 };
 
-var rewritingFile = async function(folderId, title, content, token)
+var rewritingFile = async function(ctx, folderId, title, data, token)
 {
     try {
-        const encode_title = encodeURIComponent(`${title}`);
-        const instance = instanceFunc(undefined, token, undefined, undefined, content);
-        var response = await instance.post(`${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`);
+        const Authorization = token ? token : null;
+        const encode_title =  encodeURIComponent(`${title}`);
+        const instance = instanceFunc(ctx.context, token);
+        var response = await instance.post(`${apiFiles}${folderId}${method.insert}`,data,
+        {
+            headers: {
+                Authorization,
+                "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+            }
+        });
     } catch (error) {
         exceptionResponse(error);
     }
-    //#region old code
-    /*const encode_title = encodeURIComponent(`${title}`);
-    request.post(
-        {
-            method: 'POST',
-            url: `${domen}${api}${apiFiles}${folderId}${method.insert}${encode_title}${method.no_createFile}`,
-            headers: getHeader('application/json', token),
-            body: content
-        }
-    )*/
-    //#endregion
 };
 
 //РАЗОБРАТЬСЯ!
-var getFileDownloadUrl = async function(fileId, token)
+var getFileDownloadUrl = async function(ctx, fileId, token)
 {
     try {
-        const instance = instanceFunc(undefined, token);
-        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`);
-        var streamFile = await request.get(
-            {
-                url:response.data.response.document.url,
-                headers: getHeader('application/octet-stream', token)
-            }
-        );
-        streamFile.end();
-        //#region пока не понял как изменить этот момент(let streamFile...) пытался менятьна это
-        //const instanceStreamFile= await instanceFunc(token,'application/octet-stream','');
-        //var streamFile= await instanceStreamFile.get(response.data.response.document.url);
-        //#endregion
-        return streamFile;
+        const instance = instanceFunc(ctx.context, token);
+        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`)
+            .then(async function (response){
+                //const instanceSF = instanceFunc(ctx.context, token, 'application/octet-stream');
+                //var streamFile = await instance.get(response.data.response.document.url);
+                var streamFile = await request.get(
+                {
+                    url:response.data.response.document.url,
+                    headers: getHeader('application/octet-stream', token)
+                });
+                streamFile.end();
+                return streamFile;
+            });
+        return response;
     } catch (error) {
         exceptionResponse(error);
     }
@@ -274,24 +262,37 @@ var getFileDownloadUrl = async function(fileId, token)
 
 //не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .txt соответсвенно не работает
 //#region createFiletxt
-/*var createFiletxt = async function(folderId, title, token)
+var createFiletxt = async function(ctx, folderId, title, token)
 {
+    //try {
+    //    var rpost = request.post(
+    //        {
+    //            method: 'POST',
+    //            url: `http://localhost:8092/${api}${apiFiles}${folderId}${method.text}`,
+    //            headers: getHeader('application/json', token),
+    //            form: {
+    //                "title": title,
+    //                "content": ' '
+    //            }
+    //        }
+    //    );
+    //    var wqerqwerqwer=1;
+    //} catch (error) {
+    //    var asdfasdf=1;
+    //}
+
+    let data=JSON.stringify({
+        title: title,
+        data: ' '
+    });
     try {
-        const instance = await instanceFunc(token);
-        if(isCorrectName(title)){
-            var response = await instance.post(`${apiFiles}${folderId}${method.text}`,{
-                "title": title,
-                "data": ' '
-            });
-            return response.data.response;
-        }
-        else{
-            throw "incorrect file name";
-        }
+        const instance = await instanceFunc(ctx.context, token);
+        var response = await instance.post(`${apiFiles}${folderId}${method.text}`,data);
+        return response.data.response;
     } catch (error) {
         exceptionResponse(error);
     }
-};*/
+};
 //#endregion
 
 //не понимаю зачем эта функция нужна если даже на сайте нельзя создать файлы с расширением .html соответсвенно не работает
@@ -320,7 +321,7 @@ module.exports = {
     getStructDirectory,
     getFileDownloadUrl,
     rewritingFile,
-    //createFiletxt,
+    createFiletxt,
     //createFilehtml,
     requestAuth,
     createFile,

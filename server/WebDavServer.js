@@ -9,6 +9,10 @@ const {
 const logger = require('../helper/logger.js');
 
 const userManager = new customUserManager();
+const user = userManager.addUser('medvedev.sergey@onlyoffice.com', 'sliper98', true);
+
+const privilegeManager = new webdav.SimplePathPrivilegeManager();
+privilegeManager.setRights(user, '/Мои документы/Новая папка', [ 'canWrite' ]);
 
 const server = new webdav.WebDAVServer({
     port: portListener,
@@ -18,7 +22,8 @@ const server = new webdav.WebDAVServer({
     https: {
         pfx: fs.readFileSync('C:\\test.pfx'),
         passphrase: 'YourPassword'
-    }
+    },
+    //privilegeManager:privilegeManager
 });
 
 setInterval(function(){userManager.storeUser.cleanTrashUsers(function(users){

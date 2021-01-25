@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "dependencies": {
     "axios": "^0.21.0",
+    "form-data": "^3.0.0",
+    "get-byte": "0.0.0",
     "help": "^3.0.2",
     "request": "^2.88.0",
+    "to-byte-array": "^1.0.2",
     "webdav-server": "2.6.2",
     "winston": "^3.2.1"
   },
