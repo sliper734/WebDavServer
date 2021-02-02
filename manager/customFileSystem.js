@@ -24,6 +24,7 @@ class customFileSystem extends webdav.FileSystem
         (async () => {
             const sPath = path.toString();
             try {
+                //опережает сохранение на сервер
                 var exist = await this.manageResource.fastExistCheck(sPath, ctx);
                 callback(exist);
             } catch (error) {
@@ -99,14 +100,6 @@ class customFileSystem extends webdav.FileSystem
 
     _openWriteStream(path, ctx, callback){
         const sPath = path.toString();
-        /*this.manageResource.writeFile(sPath, ctx, (err, streamWrite) => {
-            if(err){
-                callback(err, null);
-            }
-            else{
-                callback(null, streamWrite);
-            }
-        });*/
         (async () => {
             try {
                 const streamWrite = await this.manageResource.writeFile(sPath, ctx);
