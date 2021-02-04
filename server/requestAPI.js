@@ -44,11 +44,13 @@ var requestAuth = async function(ctx, username, password)
 
 var addRealTitle = function(response, folderId){
     if (folderId != '@root'){
-        for(let i = 0; i<response.data.response.files.length; i++){
-            response.data.response.files[i]['realTitle'] = response.data.response.files[i].title;
+        let structFile = response.data.response.files;
+        for(let i = 0; i < structFile.length; i++){
+            response.data.response.files[i]['realTitle'] = structFile[i].title;
         }
-        for(let i = 0; i<response.data.response.folders.length; i++){
-            response.data.response.folders[i]['realTitle'] = response.data.response.folders[i].title;
+        let structFolder = response.data.response.folders;
+        for(let i = 0; i < structFolder.length; i++){
+            response.data.response.folders[i]['realTitle'] = structFolder[i].title;
         }
         return response;
     } else{
@@ -57,97 +59,64 @@ var addRealTitle = function(response, folderId){
 };
 
 var checkDuplicateNames = function(response){
-    for(let i = 0; i<response.data.response.files.length; i++){
-        if (response.data.response.files.filter(item => item.title == response.data.response.files[i].title).length >1){
-            return false;
+    let structFile = response.data.response.files;
+    for(let i = 0; i < structFile.length; i++){
+        for(let j = i; j < structFile.length; j++){
+            if((i!=j)&&(structFile[i].title == structFile[j].title)){
+                return false;
+            }
         }
-        //for(let j = 0; j<response.data.response.files.length;j++){
-        //    if((i!=j)&&(response.data.response.files[i].title==response.data.response.files[j].title)){
-        //        return false;
-        //    }
-        //}
     }
-    for(let i = 0; i<response.data.response.folders.length; i++){
-        if (response.data.response.folders.filter(item => item.title == response.data.response.folders[i].title).length >1){
-            return false;
+    let structFolder = response.data.response.folders;
+    for(let i = 0; i < structFolder.length; i++){
+        for(let j = i; j < structFolder.length; j++){
+            if((i!=j)&&(structFolder[i].title == structFolder[j].title)){
+                return false;
+            }
         }
-        //for(let j = 0; j<response.data.response.folders.length;j++){
-        //    if((i!=j)&&(response.data.response.folders[i].title==response.data.response.folders[j].title)){
-        //        return false;
-        //    }
-        //}
     }
     return true;
 };
 
+ 
+
 var localRename = function(response, folderId){
-//#region 
-    /*if (folderId != '@root'){
-        let i=0;
-        for(i; i<response.data.response.files.length; i++){
-            let c=1;
-            let j =0;
-            //for(let j = 0; j<files.length;j++){
-                
-                while (response.data.response.files.filter(file => file.title == response.data.response.files[i].title).length != 1){
-                    console.log("был "+response.data.response.files[i].title+"i"+i);
-                    console.log("был "+response.data.response.files[j].title+"j"+j);
-                    if((i!=j)&&(response.data.response.files[i].title == response.data.response.files[j].title)){
-                        const title = response.data.response.files[j].title.split(".");
-                        response.data.response.files[j].title=title[0]+`(${c}).`+title[1];
-                        c++;
-                    }
-                    console.log("стал "+response.data.response.files[i].title+"i"+i);
-                    console.log("стал "+response.data.response.files[j].title+"j"+j);
-                    if(j == (response.data.response.files.length-1)){
-                        j=0;
-                    }
-                    if(j != (response.data.response.files.length-1)){
-                        j++;
-                    }
-                    
-                }
-                
-            //}
-        }
-        for(let i = 0; i<response.data.response.folders.length; i++){
-            let c=1;
-            for(let j = 0; j<response.data.response.folders.length;j++){
-                if((i!=j)&&(response.data.response.folders[i].title == response.data.response.folders[j].title)){
-                    response.data.response.folders[j].title += `(${c})`;
-                    c++;
-                }
-            }
-        }
-    }*/
-    //#endregion
-//#region 
     if (folderId != '@root'){
         if(!checkDuplicateNames(response)){
-            for(let i = 0; i<response.data.response.files.length; i++){
+            let structFile = response.data.response.files;
+            for(let i = 0; i < structFile.length; i++){
                 let c=1;
-                for(let j = 0; j<response.data.response.files.length;j++){
-                    if((i!=j)&&(response.data.response.files[i].title==response.data.response.files[j].title)){
-                        //n[0].split(')')[0].split('(')[1]
-                        const title = response.data.response.files[j].title.split(".");
-                        if (response.data.response.files[j].realTitle == response.data.response.files[j].title){
-                            response.data.response.files[j].title=title[0]+`(${c}).`+title[1];
+                for(let j = i; j < structFile.length;j++){
+                    if((i != j)&&(structFile[i].title == structFile[j].title)){
+                        const title = structFile[j].title;
+                        const splitedTitle = title.split(".");
+                        const realTitle = structFile[j].realTitle;
+                        if (realTitle == title){
+                            response.data.response.files[j].title = splitedTitle[0]+`(${c}).`+ splitedTitle[1];
                             c++;
                         } else {
-                            let reversTitle = response.data.response.files[j].title.split("").reverse().join("");
+                            let reversTitle = title.split("").reverse().join("");
                             let num = reversTitle.split(")",2)[1].split("(")[0].split("").reverse().join("");
-                            response.data.response.files[j].realTitle = title[0]+`(${Number(num)+1}).`+title[1];
-                            response.data.response.files[j].realTitle = title[0]+`(${num+1}).`+title[1];
+                            response.data.response.files[j].title = realTitle.split(".")[0] + `(${Number(num)+1}).` + splitedTitle[1];
                         }
                     }
                 }
             }
-            for(let i = 0; i<response.data.response.folders.length; i++){
+            let structFolders = response.data.response.folders;
+            for(let i = 0; i < structFolders.length; i++){
                 let c=1;
-                for(let j = 0; j<response.data.response.folders.length;j++){
-                    if((i!=j)&&(response.data.response.folders[i].title==response.data.response.folders[j].title)){
-                        response.data.response.folders[j].title += `(${c})`;
-                        c++;
+                for(let j = i; j < structFolders.length;j++){
+                    if((i != j)&&(structFolders[i].title == structFolders[j].title)){
+                        const title = structFolders[j].title;
+                        const realTitle = structFolders[j].realTitle;
+                        if (realTitle == title){
+                            response.data.response.folders[j].title = title +`(${c})`;
+                            c++;
+                        } else {
+                            let reversTitle = title.split("").reverse().join("");
+                            let num = reversTitle.split(")",2)[1].split("(")[0].split("").reverse().join("");
+                            response.data.response.folders[j].title = realTitle.split(".")[0] +`(${Number(num)+1})`;
+                        }
                     }
                 }
             }
@@ -158,7 +127,6 @@ var localRename = function(response, folderId){
     } else{
         return response;
     }
-    //#endregion
 };
 
 var getStructDirectory = async function(ctx, folderId, token)
@@ -167,11 +135,6 @@ var getStructDirectory = async function(ctx, folderId, token)
     try {
         const instance = instanceFunc(ctx.context, token);
         var response = await instance.get(`${apiFiles}${folderId}`);
-        //response.data.response[0].files[0]['fakeName']='fakename';
-        //delete response.data.response[0].files[0].fakeName;
-        //var str ="Hello world(1)(15).docx";
-        //var qweqwe = str.split("").reverse().join("");
-        //var asd = qweqwe.split(")",2)[1].split("(")[0].split("").reverse().join("");
         response = addRealTitle(response, folderId);
         response = localRename(response, folderId);
         return response.data.response;

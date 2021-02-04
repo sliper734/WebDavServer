@@ -21,16 +21,28 @@ class customFileSystem extends webdav.FileSystem
     }
 
     _fastExistCheck(ctx, path, callback){
-        (async () => {
-            const sPath = path.toString();
-            try {
-                //опережает сохранение на сервер
-                var exist = await this.manageResource.fastExistCheck(sPath, ctx);
+        const sPath = path.toString();
+        try {
+            var exist = this.manageResource.fastExistCheck(sPath, ctx);
+            if(exist){
                 callback(exist);
-            } catch (error) {
-                var a=1;
+                return;
             }
-        })();
+
+           (async() =>{
+            try {
+                await this.readDir({context: ctx}, parentFolder);
+                struct = this.structСache.getStruct(parentFolder, user.username);
+                if (this.findFile(struct, element) || this.findFolder(struct, element)){
+                    callback(true);
+                }
+            } catch (error) {
+                callback(false);
+            }
+           })(); 
+        } catch (error) {
+            var a=1;
+        }
     }
 
     _create(path, ctx, callback){
@@ -91,23 +103,19 @@ class customFileSystem extends webdav.FileSystem
     }
 
     _size(path, ctx, callback){
-        const sPath = path.toString();
-        (async () => {
-            const size = await this.manageResource.getSize(sPath, ctx);
-            callback(null, size);
-        })();
+        const sPath = path.toString();        
+        const size = this.manageResource.getSize(sPath, ctx);
+        callback(null, size);
     }
 
     _openWriteStream(path, ctx, callback){
         const sPath = path.toString();
-        (async () => {
-            try {
-                const streamWrite = await this.manageResource.writeFile(sPath, ctx);
-                callback(null, streamWrite);
-            } catch (error) {
-                callback(error, null);
-            }
-        })();
+        try {
+            const streamWrite = this.manageResource.writeFile(sPath, ctx);
+            callback(null, streamWrite);
+        } catch (error) {
+            callback(error, null);
+        }
     }
 
     _openReadStream(path, ctx, callback){
@@ -124,19 +132,14 @@ class customFileSystem extends webdav.FileSystem
 
     _type(path, ctx, callback) {
         const sPath = path.toString();
-        (async () => {
-            const type = await this.manageResource.getType(sPath, ctx);
-            callback(null, type);
-        })();
+        const type = this.manageResource.getType(sPath, ctx);
+        callback(null, type);
     }
 
     _lastModifiedDate(path, ctx, callback){
         const sPath = path.toString();
-
-        (async () => {
-            const date = await this.manageResource.getlastModifiedDate(sPath, ctx);
-            callback(null, date);
-        })();
+        const date = this.manageResource.getlastModifiedDate(sPath, ctx);
+        callback(null, date);
     }
 
     _readDir(path, ctx, callback){

@@ -72,16 +72,6 @@ class CustomVirtualResources
             }
             return false;
         }
-        try {
-            await this.readDir({context: ctx}, parentFolder);
-            struct = this.structСache.getStruct(parentFolder, user.username);
-            if (this.findFile(struct, element) || this.findFolder(struct, element)){
-                return true;
-            }
-            return false;
-        } catch (error) {
-            return false;
-        }
     }
 
     async create(ctx, path){
@@ -233,7 +223,7 @@ class CustomVirtualResources
         }
     }
 
-    async writeFile(path, ctx){
+    writeFile(path, ctx){
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
@@ -248,11 +238,11 @@ class CustomVirtualResources
                 if (file){
                     try {
                         const form_data = new FormData();
-                        form_data.append("file", stream, {filename: file.title, contentType:"text/plain"});
-                        form_data.append("title", file.title);
+                        form_data.append("file", stream, {filename: file.realTitle, contentType:"text/plain"});
+                        form_data.append("title", file.realTitle);
                         form_data.append("CreateNewIfExist", 'false');
                         form_data.append("KeepConvertStatus", 'false');
-                        await rewritingFile(ctx, folderId, file.title, form_data, user.token);
+                        await rewritingFile(ctx, folderId, file.realTitle, form_data, user.token);
                     } catch (error) {
                         return new Error(error);
                     }

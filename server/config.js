@@ -59,7 +59,9 @@ module.exports = {
     // Write stream in file
     insert: '/insert',
 
-    update: '/saveediting?',
+    update: '/update',
+
+    saveediting: '/saveediting',
 
     // Property for method 'insert'
     no_createFile: '&createNewIfExist=false',
