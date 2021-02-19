@@ -7,7 +7,7 @@ class customUserLayout{
     }
 
     setUser(username, password, token){
-        this.storage.set(username, new customSimpleUser('', true, false, username, password, token, new Date));
+        this.storage.set(username, new customSimpleUser('', false, false, username, password, token, new Date));
     }
 
     getUser(username){

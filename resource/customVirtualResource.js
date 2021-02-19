@@ -47,10 +47,6 @@ class CustomVirtualResources
         }
     }
 
-    renameShared(structDir){
-        
-    }
-
     findFolder(struct, element){
         return struct.folders.find(folder => folder.title == element);
     }
@@ -59,7 +55,7 @@ class CustomVirtualResources
         return struct.files.find(file => file.title == element);
     }
 
-    async fastExistCheck(path, ctx){
+    fastExistCheck(path, ctx){
         if(path == '/'){
             return true;
         }
@@ -367,11 +363,11 @@ class CustomVirtualResources
     getType(path, ctx){
 
         const user = ctx.context.user;
+        const {element, parentFolder} = parse.parsePath(path);
 
-        if(path == '/'){
+        if(parentFolder == '/'){
             return webdav.ResourceType.Directory;
         }
-        const {element, parentFolder} = parse.parsePath(path);
         const struct = this.structСache.getStruct(parentFolder, user.username);
         const folder = this.findFolder(struct, element);
         if(folder){
