@@ -46,12 +46,20 @@ class CustomVirtualResources
         }
     }
 
-    findFolder(struct, element){
-        return struct.folders.find(folder => folder.title == element);
+    findFolder(struct, element){ 
+        try {
+            return struct.folders.find(folder => folder.title == element);
+        } catch (error) {
+            return false;   
+        }
     }
 
     findFile(struct, element){
-        return struct.files.find(file => file.title == element);
+        try {
+            return struct.files.find(file => file.title == element);
+        } catch (error) {
+            return false;
+        }
     }
 
     fastExistCheck(path, ctx){

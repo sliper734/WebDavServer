@@ -209,7 +209,7 @@ class customFileSystem extends webdav.FileSystem
         if (sPath == '/'){
             if(id == 2 || id ==7){
                 ctx.context.server.privilegeManager.setRights(user, sPath + title, ['all']);
-            } else {
+            } else{
                 ctx.context.server.privilegeManager.setRights(user, sPath + title, ['canRead']);
             }
         } else switch(access){
@@ -217,7 +217,7 @@ class customFileSystem extends webdav.FileSystem
                 ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
                 break;
             case 1:
-                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
+                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['canRead', 'canWriteContent','canWriteProperties']);
                 break;
             case 2:
                 ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['canRead']);
