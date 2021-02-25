@@ -17,7 +17,6 @@ const {
     createFilehtml
 } = require('../server/requestAPI.js');
 const FormData = require("form-data");
-const {exceptionResponse} = require('../helper/helper.js');
 const {method} = require('../server/config.js');
 const streamWrite = require('../helper/Writable.js');
 const SimpleStruct = require('./SimpleStruct.js');
@@ -239,6 +238,16 @@ class CustomVirtualResources
                         form_data.append("CreateNewIfExist", 'false');
                         form_data.append("KeepConvertStatus", 'false');
                         await rewritingFile(ctx, folderId, file.realTitle, form_data, user.token);
+                        //const form_data = new FormData();
+                        /*form_data.append("File", stream, {filename: file.realTitle, contentType:"text/plain"});
+                        form_data.append("Encrypted", false);
+                        form_data.append("Forcesave", true);*/
+                        /*form_data.append("FileExtension", fileExst);
+                        form_data.append("DownloadUri", "");
+                        form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
+                        form_data.append("Doc", "");
+                        form_data.append("Forcesave", 'true');
+                        await rewritingFile(ctx, file.id, file.realTitle, form_data, user.token);*/
                     } catch (error) {
                         return new Error(error);
                     }
@@ -330,7 +339,7 @@ class CustomVirtualResources
         }
         if(!this.structСache.getStruct(pathTo, user.username)){
             try {
-                const prpr = await this.readDir(ctx, pathTo);
+                await this.readDir(ctx, pathTo);
                 this.move(ctx, pathFrom, pathTo);
             } catch (error) {
                 return new Error(error);

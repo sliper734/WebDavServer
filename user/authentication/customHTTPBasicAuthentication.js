@@ -1,5 +1,4 @@
 const webdav = require('webdav-server').v2;
-const customUserManager = require('../customUserManager');
 
 class customHTTPBasicAuthentication extends webdav.HTTPBasicAuthentication
 {

@@ -1,5 +1,4 @@
 const webdav = require('webdav-server').v2;
-const request = require('request');
 const VirtualResources = require('../resource/customVirtualResource');
 const promise_1 = require('webdav-server/lib/helper/v2/promise');
 const StandardMethods_1 = require('webdav-server/lib/manager/v2/fileSystem/StandardMethods');
@@ -25,14 +24,12 @@ class customFileSystem extends webdav.FileSystem
 
     _fastExistCheck(ctx, path, callback){
         const sPath = path.toString();
-        try {
-            var exist = this.manageResource.fastExistCheck(sPath, ctx);
-            if(exist){
-                callback(exist);
-                return;
-            }
-
-           (async() =>{
+        var exist = this.manageResource.fastExistCheck(sPath, ctx);
+        if(exist){
+            callback(exist);
+            return;
+        }
+        (async() =>{
             try {
                 await this.readDir({context: ctx}, parentFolder);
                 struct = this.structСache.getStruct(parentFolder, user.username);
@@ -42,10 +39,7 @@ class customFileSystem extends webdav.FileSystem
             } catch (error) {
                 callback(false);
             }
-           })(); 
-        } catch (error) {
-            var a=1;
-        }
+        })();
     }
 
     _create(path, ctx, callback){
@@ -152,7 +146,7 @@ class customFileSystem extends webdav.FileSystem
                 });
             });
         });
-    };
+    }
 
     _copy(pathFrom, pathTo, ctx, callback){
         (async () => {
@@ -210,27 +204,25 @@ class customFileSystem extends webdav.FileSystem
         callback(null, date);
     }
 
-    addPrivilege(sPath, title, access, user, ctx)
+    addPrivilege(ctx, sPath, title, id, access, user)
     {
-        if(sPath == '/'){
-            ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
-            return;
-        }
-        if(sPath != "/"){
-            if (access == 0){
-                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
-                return;
+        if (sPath == '/'){
+            if(id == 2 || id ==7){
+                ctx.context.server.privilegeManager.setRights(user, sPath + title, ['all']);
+            } else {
+                ctx.context.server.privilegeManager.setRights(user, sPath + title, ['canRead']);
             }
-            if(access == 1){
+        } else switch(access){
+            case 0:
                 ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
-                return;
-            }
-            if (access == 2){
+                break;
+            case 1:
+                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
+                break;
+            case 2:
                 ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['canRead']);
-                return;
-            }
+                break;
         }
-
     }
 
     _readDir(path, ctx, callback){
@@ -241,12 +233,12 @@ class customFileSystem extends webdav.FileSystem
             try {
                 var customReadDirectory = await this.manageResource.readDir(ctx, sPath);
                 customReadDirectory.folders.forEach(el => {
-                    this.addPrivilege(sPath, el.title, el.access, ctx.context.user, ctx);
                     elemOfDir.push(el.title);
+                    this.addPrivilege(ctx, sPath, el.title, el.id, el.access, ctx.context.user);
                 });
                 customReadDirectory.files.forEach(el => {
-                    this.addPrivilege(sPath, el.title, el.access, ctx.context.user, ctx);
                     elemOfDir.push(el.title);
+                    this.addPrivilege(ctx, sPath, el.title, el.id, el.access, ctx.context.user);
                 });
                 callback(null, elemOfDir);
             } catch (error) {
