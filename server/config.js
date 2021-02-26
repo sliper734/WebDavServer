@@ -28,7 +28,7 @@ module.exports = {
   apiAuth: 'authentication.json',
 
   // Sub-method for files/folders operations
-  apiFiles: 'Files/',
+  apiFiles: 'files/',
 
   method: {
 

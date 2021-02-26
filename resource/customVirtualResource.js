@@ -227,7 +227,6 @@ class CustomVirtualResources
     }
 
     writeFile(path, ctx){
-
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         const content = [];
@@ -235,27 +234,17 @@ class CustomVirtualResources
         if(ctx.mode !== "mustCreate"){
             stream.on('finish', (async() => {
                 const struct = this.structСache.getStruct(parentFolder, user.username);
-                const folderId = struct.current.id;
                 if(!stream.contents.length) return;
                 const file = this.findFile(struct, element);
                 if (file){
                     try {
                         const form_data = new FormData();
-                        form_data.append("file", stream, {filename: file.realTitle, contentType:"text/plain"});
-                        form_data.append("title", file.realTitle);
-                        form_data.append("CreateNewIfExist", 'false');
-                        form_data.append("KeepConvertStatus", 'false');
-                        await rewritingFile(ctx, folderId, file.realTitle, form_data, user.token);
-                        //const form_data = new FormData();
-                        /*form_data.append("File", stream, {filename: file.realTitle, contentType:"text/plain"});
-                        form_data.append("Encrypted", false);
-                        form_data.append("Forcesave", true);*/
-                        /*form_data.append("FileExtension", fileExst);
+                        form_data.append("FileExtension", file.fileExst);
                         form_data.append("DownloadUri", "");
                         form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
                         form_data.append("Doc", "");
                         form_data.append("Forcesave", 'true');
-                        await rewritingFile(ctx, file.id, file.realTitle, form_data, user.token);*/
+                        await rewritingFile(ctx, file.id, form_data, user.token);
                     } catch (error) {
                         return new Error(error);
                     }

@@ -4,13 +4,14 @@ const promise_1 = require('webdav-server/lib/helper/v2/promise');
 const StandardMethods_1 = require('webdav-server/lib/manager/v2/fileSystem/StandardMethods');
 const Errors_1 = require("webdav-server/lib/Errors");
 const Path_1 = require("webdav-server/lib/manager/v2/Path");
+const LocalLockManager = require('../helper/LocalLockManager');
 
 class customFileSystem extends webdav.FileSystem
 {
     constructor(){
         super();
         this.props = new webdav.LocalPropertyManager();
-        this.locks = new webdav.LocalLockManager();
+        this.locks = new LocalLockManager();
         this.manageResource = new VirtualResources();
     }
 

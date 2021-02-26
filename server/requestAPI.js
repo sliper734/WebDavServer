@@ -201,12 +201,12 @@ var renameFolder = async function(ctx, folderId, newName, token)
     }
 };
 
-var rewritingFile = async function(ctx, folderId, title, data, token)
+var rewritingFile = async function(ctx, fileId, data, token)
 {
     try {
         const Authorization = token ? token : null;
         const instance = instanceFunc(ctx.context, token);
-        await instance.post(`${apiFiles}${folderId}${method.insert}`,data,
+        await instance.put(`${apiFiles}${method.file}${fileId}${method.saveediting}`,data,
         {
             headers: {
                 Authorization,
@@ -216,36 +216,6 @@ var rewritingFile = async function(ctx, folderId, title, data, token)
     } catch (error) {
         exceptionResponse(error);
     }
-    /*try {
-        const Authorization = token ? token : null;
-        const encode_title =  encodeURIComponent(`${title}`);
-        const instance = instanceFunc(ctx.context, token);
-        var response = await instance.post(`${apiFiles}${method.file}${fileId}${method.saveediting}`,data,
-        {
-            headers: {
-                Authorization,
-                "Content-Type": `multipart/form-data; boundary=${data._boundary}`
-            }
-        });
-        const a =1;
-    } catch (error) {
-        exceptionResponse(error);
-    }*/
-    /*try {
-        const Authorization = token ? token : null;
-        const encode_title =  encodeURIComponent(`${title}`);
-        const instance = instanceFunc(ctx.context, token);
-        var response = await instance.post(`${apiFiles}${fileId}${method.update}`,data,
-        {
-            headers: {
-                Authorization,
-                "Content-Type": `multipart/form-data; boundary=${data._boundary}`
-            }
-        });
-        const a =1;
-    } catch (error) {
-        exceptionResponse(error);
-    }*/
 };
 
 var getFileDownloadUrl = async function(ctx, fileId, token)
