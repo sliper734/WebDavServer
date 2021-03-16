@@ -64,6 +64,7 @@ var createFile = async function(ctx, folderId, title, token)
         var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
             "title": title
         }); 
+        response.data.response['realTitle'] = response.data.response.title;
         return response.data.response;
     } catch (error) {
         exceptionResponse(error);

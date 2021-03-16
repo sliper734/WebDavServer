@@ -81,11 +81,13 @@ class CustomVirtualResources
 
         const user = ctx.context.user;
         let {element, parentFolder} = await parse.parsePath(path);
-        const parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
+        var parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
+        
             
         if(ctx.type.isDirectory){
             var createdObj1 = await createFolder(ctx, parentId, element, user.token);
             this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
+            this.readDir(ctx, path);
         }
         if(ctx.type.isFile){
             element = parse.isExst(element);
@@ -227,6 +229,10 @@ class CustomVirtualResources
     }
 
     writeFile(path, ctx){
+        const MinDocx = 6998;
+        const MinPptx = 33511;
+        const MinXlsx = 6437;
+        const fileSize = this.getSize(path, ctx);
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         const content = [];
@@ -243,7 +249,7 @@ class CustomVirtualResources
                         form_data.append("DownloadUri", "");
                         form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
                         form_data.append("Doc", "");
-                        form_data.append("Forcesave", 'true');
+                        form_data.append("Forcesave", 'false');
                         await rewritingFile(ctx, file.id, form_data, user.token);
                     } catch (error) {
                         return new Error(error);
@@ -299,6 +305,7 @@ class CustomVirtualResources
             try {
                 await renameFolder(ctx, folder.id, newName, user.token);
                 this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
+                folder.realTitle = newName;
                 return true;
             } catch (error) {
                 return new Error(error);
@@ -309,6 +316,7 @@ class CustomVirtualResources
             try {
                 await renameFile(ctx, file.id, newName, user.token);
                 this.structСache.renameFileObject(element, newName, parentFolder, user.username);
+                file.realTitle = newName;
                 return true;
             } catch (error) {
                 return new Error(error);
@@ -349,6 +357,7 @@ class CustomVirtualResources
             try {
                 moveFolder(ctx, folderId, folder.id, user.token);
                 this.structСache.dropFolderObject(parentFolderFrom, user.username, folder);
+                this.readDir(ctx, pathTo);
                 return true;
             } catch (error) {
                 return new Error(error);

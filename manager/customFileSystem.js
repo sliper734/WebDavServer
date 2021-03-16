@@ -205,10 +205,10 @@ class customFileSystem extends webdav.FileSystem
         callback(null, date);
     }
 
-    addPrivilege(ctx, sPath, title, id, access, user)
+    addPrivilege(ctx, sPath, title, parentId, access, user, rootFolderType)
     {
-        if (sPath == '/'){
-            if(id == 2 || id ==7){
+        if (parentId == 0){
+            if(rootFolderType == 1 || rootFolderType == 5){
                 ctx.context.server.privilegeManager.setRights(user, sPath + title, ['all']);
             } else{
                 ctx.context.server.privilegeManager.setRights(user, sPath + title, ['canRead']);
@@ -235,11 +235,11 @@ class customFileSystem extends webdav.FileSystem
                 var customReadDirectory = await this.manageResource.readDir(ctx, sPath);
                 customReadDirectory.folders.forEach(el => {
                     elemOfDir.push(el.title);
-                    this.addPrivilege(ctx, sPath, el.title, el.id, el.access, ctx.context.user);
+                    this.addPrivilege(ctx, sPath, el.title, el.parentId, el.access, ctx.context.user, el.rootFolderType);
                 });
                 customReadDirectory.files.forEach(el => {
                     elemOfDir.push(el.title);
-                    this.addPrivilege(ctx, sPath, el.title, el.id, el.access, ctx.context.user);
+                    this.addPrivilege(ctx, sPath, el.title, el.parentId, el.access, ctx.context.user);
                 });
                 callback(null, elemOfDir);
             } catch (error) {
