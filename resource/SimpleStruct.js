@@ -86,30 +86,39 @@ class SimpleStruct
 
     checkRename(elementFrom, elementTo, parentFolderFrom, parentFolderTo, user){
 
+        if (parentFolderFrom != parentFolderTo) return false;
         let elementFromIsExist = false;
         let elementToIsExist = false;
-        this.struct[user.username][parentFolderFrom].files.forEach((el) => {
+        let structFrom = this.struct[user.username][parentFolderFrom];
+        let structTo = this.struct[user.username][parentFolderTo];
+        structFrom.files.forEach((el) => {
             if(elementFrom == el.title){
                 elementFromIsExist = true;
             }
         });
-        this.struct[user.username][parentFolderFrom].folders.forEach((el) => {
-            if(elementFrom == el.title){
-                elementFromIsExist = true;
-            }
-        });
-        this.struct[user.username][parentFolderTo].files.forEach((el) => {
+        if(!elementFromIsExist ){
+            structFrom.folders.forEach((el) => {
+                if(elementFrom == el.title){
+                    elementFromIsExist = true;
+                }
+            });
+        }
+        if(!elementFromIsExist) return false;
+
+        structTo.files.forEach((el) => {
             if(elementTo == el.title){
                 elementToIsExist = true;
             }
         });
-        this.struct[user.username][parentFolderTo].folders.forEach((el) => {
-            if(elementTo == el.title){
-                elementToIsExist = true;
-            }
-        });
-        const isRename = (elementFromIsExist && !elementToIsExist && (parentFolderFrom == parentFolderTo)) ? true : false;
-        return isRename;
+        if (!elementToIsExist){
+            structTo.folders.forEach((el) => {
+                if(elementTo == el.title){
+                    elementToIsExist = true;
+                }
+            });
+        }
+        if (!elementToIsExist) return true;
+        return true;
     }
 
     renameFolderObject(element, newName, parentFolder, username){
@@ -138,7 +147,7 @@ class SimpleStruct
         }
         else{
             const difference = 1000;
-            const notExpire = (new Date - this.struct[username].lastUpdate) < difference ? true : false;
+            const notExpire = (new Date - this.struct[username].lastUpdate) < difference;
             return notExpire;
         }
     }

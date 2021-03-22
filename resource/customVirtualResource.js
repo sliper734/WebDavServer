@@ -92,16 +92,20 @@ class CustomVirtualResources
         if(ctx.type.isFile){
             element = parse.isExst(element);
             switch(parse.parseFileExst(element)){
-                case 'OFFICE_DOCX_PPTX_XLSX':
-                    var createdObj = await createFile(ctx, parentId, element, user.token);
-                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                    break;
+                //case 'OFFICE_DOCX_PPTX_XLSX':
+                //    var createdObj = await createFile(ctx, parentId, element, user.token);
+                //    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                //    break;
                 case 'txt':
                     var createdObj = await createFiletxt(ctx, parentId, element, user.token);
                     this.structСache.setFileObject(parentFolder, user.username, createdObj);
                     break;
                 case 'html':
                     var createdObj = await createFilehtml(ctx, parentId, element, user.token);
+                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    break;
+                default:
+                    var createdObj = await createFile(ctx, parentId, element, user.token);
                     this.structСache.setFileObject(parentFolder, user.username, createdObj);
                     break;
             }
@@ -205,7 +209,7 @@ class CustomVirtualResources
         const folder = this.structСache.getStruct(parentFolder, user.username);
         if (folder){
             try {
-                var structDirectory = await this.getStructDirectory(ctx, folder.id, user.token);
+                var structDirectory = await getStructDirectory(ctx, folder.current.id, user.token);
                 this.structСache.setStruct(path, user.username, structDirectory);
             } catch (error) {
                 return new Error(webdav.Errors.ResourceNotFound);
@@ -342,15 +346,15 @@ class CustomVirtualResources
                 return new Error(error);
             }
         }
-        if(!this.structСache.getStruct(pathTo, user.username)){
+        if(!this.structСache.getStruct(parentFolderTo, user.username)){
             try {
-                await this.readDir(ctx, pathTo);
+                await this.readDir(ctx, parentFolderTo);
                 this.move(ctx, pathFrom, pathTo);
             } catch (error) {
                 return new Error(error);
             }
         }
-        const folderId = this.structСache.getStruct(pathTo, user.username).current.id;
+        const folderId = this.structСache.getStruct(parentFolderTo, user.username).current.id;
         const structFrom = this.structСache.getStruct(parentFolderFrom, user.username);
         const folder = this.findFolder(structFrom, elementFrom);
         if (folder){

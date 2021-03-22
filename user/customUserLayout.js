@@ -6,8 +6,8 @@ class customUserLayout{
         this.storage = new Map();
     }
 
-    setUser(username, password, token){
-        this.storage.set(username, new customSimpleUser('', false, false, username, password, token, new Date));
+    setUser(username, token, uid){
+        this.storage.set(username, new customSimpleUser(uid, false, false, username, token, new Date));
     }
 
     getUser(username){

@@ -1,5 +1,5 @@
 const webdav = require('webdav-server').v2;
-const {requestAuth} = require('../server/requestAPI.js');
+const {requestAuth, requestUser} = require('../server/requestAPI.js');
 const customUserLayout = require('./customUserLayout.js');
 
 class customUserManager extends webdav.SimpleUserManager
@@ -9,8 +9,8 @@ class customUserManager extends webdav.SimpleUserManager
         this.storeUser = new customUserLayout();
     }
     
-    addUser(name, password, token) {
-        this.storeUser.setUser(name, password, token);
+    addUser(name, token, uid) {
+        this.storeUser.setUser(name, token, uid);
         const user = this.storeUser.getUser(name);
         this.users[name] = user;
         return user;
@@ -20,12 +20,14 @@ class customUserManager extends webdav.SimpleUserManager
         try {
             if (!this.storeUser.getUser(username)){
                 var token = await requestAuth(ctx, username, password);
-                const user = this.addUser(username, password, token, false);
+                //var uid = await requestUser(ctx, token);
+                var uid = "";
+                const user = this.addUser(username, token, uid);
                 ctx.server.privilegeManager.setRights(user, '/', [ 'canRead' ]);
             }
             if(this.storeUser.getUser(username) && !this.storeUser.checkExpireUser(username)){
                 var token = await requestAuth(ctx, username, password);
-                this.storeUser.setUser(username, password, token);
+                this.storeUser.setUser(username, token, this.storeUser.getUser(username).uid);
             }
             callback(null, this.storeUser.getUser(username));
         } catch (error) {

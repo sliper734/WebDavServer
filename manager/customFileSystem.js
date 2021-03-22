@@ -69,9 +69,6 @@ class customFileSystem extends webdav.FileSystem
 
     _move(pathFrom, pathTo, ctx, callback){
         (async () => {
-            if(pathFrom.paths[pathFrom.paths.length - 1] == pathTo.paths[pathTo.paths.length - 1]){
-                delete pathTo.paths[pathTo.paths.length - 1];
-            }
             const sPathFrom = pathFrom.toString();
             const sPathTo = pathTo.toString();
             var isMove = false;
@@ -206,24 +203,32 @@ class customFileSystem extends webdav.FileSystem
     }
 
     addPrivilege(ctx, sPath, title, parentId, access, user, rootFolderType)
-    {
+    { 
+        let path = "";
+        let privilageList = "";
         if (parentId == 0){
             if(rootFolderType == 1 || rootFolderType == 5){
-                ctx.context.server.privilegeManager.setRights(user, sPath + title, ['all']);
+                path = sPath + title;
+                privilageList = ['all'];
             } else{
-                ctx.context.server.privilegeManager.setRights(user, sPath + title, ['canRead']);
+                path = sPath + title;
+                privilageList = ['canRead'];
             }
         } else switch(access){
             case 0:
-                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['all']);
+                path = sPath + '/' + title;
+                privilageList = ['all'];
                 break;
             case 1:
-                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['canRead', 'canWriteContent','canWriteProperties']);
+                path = sPath + '/' + title;
+                privilageList = ['canRead', 'canWriteContent','canWriteProperties'];
                 break;
             case 2:
-                ctx.context.server.privilegeManager.setRights(user, sPath + '/' + title, ['canRead']);
+                path = sPath + '/' + title;
+                privilageList = ['canRead'];
                 break;
         }
+        ctx.context.server.privilegeManager.setRights(user, path, privilageList);
     }
 
     _readDir(path, ctx, callback){

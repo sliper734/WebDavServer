@@ -30,7 +30,6 @@ function instanceFunc(ctx, token=null, header='application/json')
 
 var requestAuth = async function(ctx, username, password)
 {
-
     try {
         const instance = instanceFunc(ctx);
         var response = await instance.post(`${apiAuth}`,{
@@ -38,6 +37,19 @@ var requestAuth = async function(ctx, username, password)
             "password": password
         });
         return response.data.response.token;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var requestUser = async function(ctx, token)
+{
+    try {
+
+        //http://localhost:8092/api/2.0/people/@self
+        const instance = instanceFunc(ctx, token);
+        var response = await instance.post("people/@self.json");
+        return response.data.response.id;
     } catch (error) {
         exceptionResponse(error);
     }
@@ -274,6 +286,7 @@ module.exports = {
     createFiletxt,
     createFilehtml,
     requestAuth,
+    requestUser,
     createFile,
     createFolder,
     deleteFile,
