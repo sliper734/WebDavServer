@@ -20,8 +20,8 @@ class customUserManager extends webdav.SimpleUserManager
         try {
             if (!this.storeUser.getUser(username)){
                 var token = await requestAuth(ctx, username, password);
-                //var uid = await requestUser(ctx, token);
-                var uid = "";
+                var uid = await requestUser(ctx, token);
+                //var uid = "";
                 const user = this.addUser(username, token, uid);
                 ctx.server.privilegeManager.setRights(user, '/', [ 'canRead' ]);
             }

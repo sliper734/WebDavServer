@@ -12,6 +12,15 @@ var getHeader = function(contentType, token){
     });
 };
 
+var getHeaderPeople = function(token){
+    const Accept = 'text/html,application/xhtml+xml,application/xml';
+    const Authorization = token ? token : null;
+    return({
+        Accept,
+        Authorization
+    });
+};
+
 var exceptionResponse = function(error,content)
 {
     try {
@@ -38,5 +47,6 @@ var exceptionResponse = function(error,content)
 
 module.exports = {
     getHeader,
+    getHeaderPeople,
     exceptionResponse
 };

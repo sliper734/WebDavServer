@@ -14,7 +14,7 @@ module.exports = {
   cleanTrashInterval: 900000,
 
   // Adress of community server OnlyOffice */
-  domen: 'http://localhost:8092/',
+  domen: 'http://localhost:80/',
 
   isHttps: true,
 
@@ -71,6 +71,8 @@ module.exports = {
 
     // Method move for files or folders
     move: 'fileops/move',
+
+    bulkdownload:'fileops/bulkdownload',
 
     upload: '/upload'
   }

@@ -1,6 +1,7 @@
 const webdav = require('webdav-server').v2;
 const {
     getStructDirectory,
+    getFileDownload,
     getFileDownloadUrl,
     rewritingFile,
     createFile,
@@ -68,7 +69,7 @@ class CustomVirtualResources
         }
         const user = ctx.user;
         const {element, parentFolder} = parse.parsePath(path);
-        let struct = this.structСache.getStruct(parentFolder, user.username);
+        let struct = this.structСache.getStruct(parentFolder, user.uid);
         if(struct){
             if (this.findFile(struct, element) || this.findFolder(struct, element)){
                 return true;
@@ -79,54 +80,56 @@ class CustomVirtualResources
 
     async create(ctx, path){
 
+        console.log("CREATE "+path);
         const user = ctx.context.user;
         let {element, parentFolder} = await parse.parsePath(path);
-        var parentId = this.structСache.getStruct(parentFolder, user.username).current.id;
+        var parentId = this.structСache.getStruct(parentFolder, user.uid).current.id;
         
             
         if(ctx.type.isDirectory){
             var createdObj1 = await createFolder(ctx, parentId, element, user.token);
-            this.structСache.setFolderObject(parentFolder, user.username, createdObj1);
+            this.structСache.setFolderObject(parentFolder, user.uid, createdObj1);
             this.readDir(ctx, path);
         }
         if(ctx.type.isFile){
             element = parse.isExst(element);
             switch(parse.parseFileExst(element)){
-                //case 'OFFICE_DOCX_PPTX_XLSX':
-                //    var createdObj = await createFile(ctx, parentId, element, user.token);
-                //    this.structСache.setFileObject(parentFolder, user.username, createdObj);
-                //    break;
+                case 'OFFICE_DOCX_PPTX_XLSX':
+                    var createdObj = await createFile(ctx, parentId, element, user.token, false);
+                    this.structСache.setFileObject(parentFolder, user.uid, createdObj);
+                    break;
                 case 'txt':
                     var createdObj = await createFiletxt(ctx, parentId, element, user.token);
-                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    this.structСache.setFileObject(parentFolder, user.uid, createdObj);
                     break;
                 case 'html':
                     var createdObj = await createFilehtml(ctx, parentId, element, user.token);
-                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    this.structСache.setFileObject(parentFolder, user.uid, createdObj);
                     break;
                 default:
-                    var createdObj = await createFile(ctx, parentId, element, user.token);
-                    this.structСache.setFileObject(parentFolder, user.username, createdObj);
+                    var createdObj = await createFile(ctx, parentId, element, user.token, true);
+                    this.structСache.setFileObject(parentFolder, user.uid, createdObj);
                     break;
             }
         }
     }
 
     async delete(ctx, path){
+        console.log("DELETE "+path);
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
-        const struct = this.structСache.getStruct(parentFolder, user.username);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
         try {
             const folder = this.findFolder(struct, element);
             if (folder){
                 await deleteFolder(ctx, folder.id, user.token);
-                this.structСache.dropFileObject(parentFolder, user.username, folder);
-                this.structСache.dropPath(path, user.username);
+                this.structСache.dropFileObject(parentFolder, user.uid, folder);
+                this.structСache.dropPath(path, user.uid);
             }
             const file = this.findFile(struct, element);
             if (file){
                 await deleteFile(ctx, file.id, user.token);
-                this.structСache.dropFileObject(parentFolder, user.username, file);
+                this.structСache.dropFileObject(parentFolder, user.uid, file);
             }
         } catch (error) {
             return new Error(error);
@@ -140,8 +143,8 @@ class CustomVirtualResources
         if(path == '/'){
             var rootFolder = await this.getRootFolder(ctx, user);
             try {
-                this.structСache.setStruct(path,user.username,rootFolder);
-                return this.structСache.getStruct(path,user.username);
+                this.structСache.setStruct(path,user.uid,rootFolder);
+                return this.structСache.getStruct(path,user.uid);
             } catch (error) {
                 return new Error(webdav.Errors.ResourceNotFound);
             }
@@ -149,19 +152,19 @@ class CustomVirtualResources
         const {element, parentFolder} = parse.parsePath(path);
 
         try{
-            if(!this.structСache.getStruct(parentFolder, user.username)){
+            if(!this.structСache.getStruct(parentFolder, user.uid)){
                 try {
                     await this.readDirRecursion(ctx, parentFolder);
-                    if(!this.structСache.getStruct(parentFolder, user.username)){
+                    if(!this.structСache.getStruct(parentFolder, user.uid)){
                         await this.readDir(ctx, path);
                     }
                     else{
-                        const folder = this.findFolder(this.structСache.getStruct(parentFolder,username), element);
+                        const folder = this.findFolder(this.structСache.getStruct(parentFolder,user.uid), element);
                         if (folder){
                             try {
                                 const structDirectory = getStructDirectory(ctx, folder.id, user.token);
-                                this.structСache.setStruct(path, user.username, structDirectory);
-                                return this.structСache.getStruct(path, user.username);
+                                this.structСache.setStruct(path, user.uid, structDirectory);
+                                return this.structСache.getStruct(path, user.uid);
                             } catch (error) {
                                 return new Error(webdav.Errors.ResourceNotFound);
                             }
@@ -172,15 +175,15 @@ class CustomVirtualResources
                 }
             }
 
-            const folder = this.findFolder(this.structСache.getStruct(parentFolder, user.username), element);
+            const folder = this.findFolder(this.structСache.getStruct(parentFolder, user.uid), element);
             if (folder){
-                if (this.structСache.structIsExpire(path, parentFolder, user.username)){
-                    return this.structСache.getStruct(path, user.username);
+                if (this.structСache.structIsExpire(path, parentFolder, user.uid)){
+                    return this.structСache.getStruct(path, user.uid);
                 }
                 try {
                     var structDirectory = await getStructDirectory(ctx, folder.id, user.token);
-                    this.structСache.setStruct(path, user.username, structDirectory);
-                    return this.structСache.getStruct(path, user.username);
+                    this.structСache.setStruct(path, user.uid, structDirectory);
+                    return this.structСache.getStruct(path, user.uid);
                 } catch (error) {
                     return new Error(webdav.Errors.ResourceNotFound);
                 }
@@ -189,7 +192,7 @@ class CustomVirtualResources
         catch(error1){
             var rootFolder = await this.getRootFolder(ctx, user);
             try {
-                this.structСache.setStruct('/', user.username, rootFolder);
+                this.structСache.setStruct('/', user.uid, rootFolder);
                 await this.readDir(ctx, path);
             } catch (error) {
                 return new Error(error);
@@ -202,15 +205,15 @@ class CustomVirtualResources
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
 
-        if(!this.structСache.getStruct(parentFolder, user.username) && path != parentFolder){
+        if(!this.structСache.getStruct(parentFolder, user.uid) && path != parentFolder){
             return await this.readDirRecursion(ctx, parentFolder);
         }
         await this.readDir(ctx, parentFolder);
-        const folder = this.structСache.getStruct(parentFolder, user.username);
+        const folder = this.structСache.getStruct(parentFolder, user.uid);
         if (folder){
             try {
                 var structDirectory = await getStructDirectory(ctx, folder.current.id, user.token);
-                this.structСache.setStruct(path, user.username, structDirectory);
+                this.structСache.setStruct(path, user.uid, structDirectory);
             } catch (error) {
                 return new Error(webdav.Errors.ResourceNotFound);
             }
@@ -218,13 +221,13 @@ class CustomVirtualResources
     }
 
     async downloadFile(ctx, path){
-
+        console.log("DOWNLOADFILE "+path);
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
-        const file = this.findFile(this.structСache.getStruct(parentFolder, user.username),element);
+        const file = this.findFile(this.structСache.getStruct(parentFolder, user.uid),element);
         if (file){
             try {
-                var streamFile = await getFileDownloadUrl(ctx, file.id, user.token);
+                var streamFile = await getFileDownload(ctx, file.id, user.token);
                 return streamFile;
             } catch (error) {
                 return new Error(error);
@@ -233,6 +236,7 @@ class CustomVirtualResources
     }
 
     writeFile(path, ctx){
+        console.log("WRITEFILESTART "+ctx.mode+" "+path);
         const MinDocx = 6998;
         const MinPptx = 33511;
         const MinXlsx = 6437;
@@ -241,9 +245,10 @@ class CustomVirtualResources
         const {element, parentFolder} = parse.parsePath(path);
         const content = [];
         const stream = new streamWrite(content);
-        if(ctx.mode !== "mustCreate"){
+        //if(ctx.mode !== "mustCreate"){
+            console.log("WRITEFILENEXT "+path);
             stream.on('finish', (async() => {
-                const struct = this.structСache.getStruct(parentFolder, user.username);
+                const struct = this.structСache.getStruct(parentFolder, user.uid);
                 if(!stream.contents.length) return;
                 const file = this.findFile(struct, element);
                 if (file){
@@ -260,7 +265,7 @@ class CustomVirtualResources
                     }
                 }
             }));
-        }
+        //}
         return stream;
     }
 
@@ -268,7 +273,7 @@ class CustomVirtualResources
         const user = ctx.context.user;
         let {element, parentFolder} = parse.parsePath(pathFrom);
         pathTo = parse.parsePathTo(pathTo);
-        const structTo = this.structСache.getStruct(pathTo, user.username);
+        const structTo = this.structСache.getStruct(pathTo, user.uid);
         if(!structTo){
             try {
                 this.readDir(ctx, pathTo);
@@ -278,7 +283,7 @@ class CustomVirtualResources
             }
         }
         const folderId = structTo.current.id;
-        const structFrom = this.structСache.getStruct(parentFolder, user.username);
+        const structFrom = this.structСache.getStruct(parentFolder, user.uid);
         const folder = this.findFolder(structFrom, element);
         if (folder){
             try {
@@ -303,12 +308,12 @@ class CustomVirtualResources
 
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
-        const struct = this.structСache.getStruct(parentFolder, user.username);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
         const folder = this.findFolder(struct, element);
         if (folder){
             try {
                 await renameFolder(ctx, folder.id, newName, user.token);
-                this.structСache.renameFolderObject(element, newName, parentFolder, user.username);
+                this.structСache.renameFolderObject(element, newName, parentFolder, user.uid);
                 folder.realTitle = newName;
                 return true;
             } catch (error) {
@@ -319,7 +324,7 @@ class CustomVirtualResources
         if (file){
             try {
                 await renameFile(ctx, file.id, newName, user.token);
-                this.structСache.renameFileObject(element, newName, parentFolder, user.username);
+                this.structСache.renameFileObject(element, newName, parentFolder, user.uid);
                 file.realTitle = newName;
                 return true;
             } catch (error) {
@@ -346,7 +351,7 @@ class CustomVirtualResources
                 return new Error(error);
             }
         }
-        if(!this.structСache.getStruct(parentFolderTo, user.username)){
+        if(!this.structСache.getStruct(parentFolderTo, user.uid)){
             try {
                 await this.readDir(ctx, parentFolderTo);
                 this.move(ctx, pathFrom, pathTo);
@@ -354,13 +359,13 @@ class CustomVirtualResources
                 return new Error(error);
             }
         }
-        const folderId = this.structСache.getStruct(parentFolderTo, user.username).current.id;
-        const structFrom = this.structСache.getStruct(parentFolderFrom, user.username);
+        const folderId = this.structСache.getStruct(parentFolderTo, user.uid).current.id;
+        const structFrom = this.structСache.getStruct(parentFolderFrom, user.uid);
         const folder = this.findFolder(structFrom, elementFrom);
         if (folder){
             try {
                 moveFolder(ctx, folderId, folder.id, user.token);
-                this.structСache.dropFolderObject(parentFolderFrom, user.username, folder);
+                this.structСache.dropFolderObject(parentFolderFrom, user.uid, folder);
                 this.readDir(ctx, pathTo);
                 return true;
             } catch (error) {
@@ -371,7 +376,7 @@ class CustomVirtualResources
         if (file){
             try {
                 moveFile(ctx,folderId, file.id, user.token);
-                this.structСache.dropFileObject(parentFolderFrom, user.username, file);
+                this.structСache.dropFileObject(parentFolderFrom, user.uid, file);
                 return true;
             } catch (error) {
                 return new Error(error);
@@ -387,7 +392,7 @@ class CustomVirtualResources
         if(parentFolder == '/'){
             return webdav.ResourceType.Directory;
         }
-        const struct = this.structСache.getStruct(parentFolder, user.username);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
         const folder = this.findFolder(struct, element);
         if(folder){
             return webdav.ResourceType.Directory;
@@ -402,7 +407,7 @@ class CustomVirtualResources
 
         const {element, parentFolder} = parse.parsePath(path);
         const user = ctx.context.user;
-        const struct = this.structСache.getStruct(parentFolder, user.username);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
         const folder = this.findFolder(struct, element);
         if (folder){
             return null;
@@ -421,7 +426,7 @@ class CustomVirtualResources
         }
         const {element, parentFolder} = parse.parsePath(path);
         const user = ctx.context.user;
-        const struct = this.structСache.getStruct(parentFolder, user.username);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
         const folder = this.findFolder(struct, element);
         if (folder){
             return parse.parseDate(folder.updated);

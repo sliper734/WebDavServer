@@ -33,7 +33,7 @@ class customFileSystem extends webdav.FileSystem
         (async() =>{
             try {
                 await this.readDir({context: ctx}, parentFolder);
-                struct = this.structСache.getStruct(parentFolder, user.username);
+                struct = this.structСache.getStruct(parentFolder, user.uid);
                 if (this.findFile(struct, element) || this.findFolder(struct, element)){
                     callback(true);
                 }

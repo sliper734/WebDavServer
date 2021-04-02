@@ -1,6 +1,6 @@
 const request = require('request');
 const axios = require('axios');
-const {getHeader, exceptionResponse} = require('../helper/helper.js');
+const {getHeader, getHeaderPeople, exceptionResponse} = require('../helper/helper.js');
 const {
     onlyOfficePort,
     api,
@@ -12,7 +12,7 @@ const {
 const renamingDuplicateElements = require('../helper/renamingDuplicateElements.js');
 
 
-function instanceFunc(ctx, token=null, header='application/json')
+function instanceFunc(ctx, token=null, header='application/json', service ='asc.files')
 {
     var domain = null;
     if (isHttps){
@@ -20,12 +20,21 @@ function instanceFunc(ctx, token=null, header='application/json')
         var httProtocol = "http://";
         domain = httProtocol + hostStr.split(":")[0] + onlyOfficePort;
     }
+    switch(service){
+        case 'asc.files':
+            return axios.create({
+                baseURL: `${domain}${api}`,
+                timeout: 30000,
+                headers: getHeader(header,token)
+            });
+        case 'asc.people':
+            return axios.create({
+                baseURL: `${domain}${api}`,
+                timeout: 30000,
+                headers: getHeaderPeople(token)
+            });
+    }
     
-    return axios.create({
-        baseURL: `${domain}${api}`,
-        timeout: 30000,
-        headers: getHeader(header,token)
-    });
 }
 
 var requestAuth = async function(ctx, username, password)
@@ -45,10 +54,9 @@ var requestAuth = async function(ctx, username, password)
 var requestUser = async function(ctx, token)
 {
     try {
-
         //http://localhost:8092/api/2.0/people/@self
-        const instance = instanceFunc(ctx, token);
-        var response = await instance.post("people/@self.json");
+        const instance = instanceFunc(ctx, token, undefined, 'asc.people');
+        var response = await instance.get("people/@self.json");
         return response.data.response.id;
     } catch (error) {
         exceptionResponse(error);
@@ -69,12 +77,13 @@ var getStructDirectory = async function(ctx, folderId, token)
     }
 };
 
-var createFile = async function(ctx, folderId, title, token)
+var createFile = async function(ctx, folderId, title, token, enableExternalExt)
 {
     try {
         const instance = instanceFunc(ctx.context, token);
         var response = await instance.post(`${apiFiles}${folderId}/${method.file}`,{
-            "title": title
+            "title": title,
+            "EnableExternalExt": enableExternalExt
         }); 
         response.data.response['realTitle'] = response.data.response.title;
         return response.data.response;
@@ -281,6 +290,7 @@ var createFilehtml = async function(ctx, folderId, title, token)
 
 module.exports = {
     getStructDirectory,
+    getFileDownload,
     getFileDownloadUrl,
     rewritingFile,
     createFiletxt,
