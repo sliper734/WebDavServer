@@ -73,7 +73,11 @@ module.exports = {
     move: 'fileops/move',
 
     bulkdownload:'fileops/bulkdownload',
+    
+    getpresigneduri:'/getpresigneduri',
 
-    upload: '/upload'
+    upload: '/upload',
+    
+    createSession: '/create_session'
   }
 }

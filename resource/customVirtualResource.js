@@ -1,10 +1,12 @@
 const webdav = require('webdav-server').v2;
 const {
     getStructDirectory,
-    getFileDownload,
+    createSession,
+    getPresignedUri,
     getFileDownloadUrl,
     rewritingFile,
     createFile,
+    chunkedUploader,
     createFolder,
     deleteFile,
     deleteFolder,
@@ -123,13 +125,14 @@ class CustomVirtualResources
             const folder = this.findFolder(struct, element);
             if (folder){
                 await deleteFolder(ctx, folder.id, user.token);
-                this.structСache.dropFileObject(parentFolder, user.uid, folder);
+                this.structСache.dropFolderObject(parentFolder, user.uid, folder);
                 this.structСache.dropPath(path, user.uid);
             }
             const file = this.findFile(struct, element);
             if (file){
                 await deleteFile(ctx, file.id, user.token);
                 this.structСache.dropFileObject(parentFolder, user.uid, file);
+                this.structСache.dropPath(path, user.uid);
             }
         } catch (error) {
             return new Error(error);
@@ -221,13 +224,15 @@ class CustomVirtualResources
     }
 
     async downloadFile(ctx, path){
+        //"http://localhost:8085/web-apps/apps/api/documents/api.js"
         console.log("DOWNLOADFILE "+path);
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         const file = this.findFile(this.structСache.getStruct(parentFolder, user.uid),element);
         if (file){
             try {
-                var streamFile = await getFileDownload(ctx, file.id, user.token);
+                var uri = await getPresignedUri(ctx, file.id, user.token);
+                var streamFile = await getFileDownloadUrl(user.token, uri);
                 return streamFile;
             } catch (error) {
                 return new Error(error);
@@ -253,13 +258,62 @@ class CustomVirtualResources
                 const file = this.findFile(struct, element);
                 if (file){
                     try {
-                        const form_data = new FormData();
-                        form_data.append("FileExtension", file.fileExst);
-                        form_data.append("DownloadUri", "");
-                        form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
-                        form_data.append("Doc", "");
-                        form_data.append("Forcesave", 'false');
-                        await rewritingFile(ctx, file.id, form_data, user.token);
+                        if (stream.contents.length <= 3){
+                            const form_data = new FormData();
+                            form_data.append("FileExtension", file.fileExst);
+                            form_data.append("DownloadUri", "");
+                            form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
+                            form_data.append("Doc", "");
+                            form_data.append("Forcesave", 'false');
+                            await rewritingFile(ctx, file.id, form_data, user.token);
+                        }
+                        if (stream.contents.length > 3){
+                            let contLength=0;
+                            for(var i=0;stream.contents.length > i;i++)
+                            {
+                                contLength = stream.contents[i].length + contLength;
+                            }
+                            const data={
+                                "FileName": file.realTitle,
+                                "FileSize": contLength,
+                                "RelativePath": ""
+                            }
+                            const location = await createSession(ctx, struct.current.id, data, user.token);
+                            let j = 0;
+                            let bufLength=0;
+                            for(let i=0;stream.contents.length > i; i++)
+                            {
+                                bufLength += stream.contents[i].length;
+                            }
+                            for(let i=0;bufLength > i; i++)
+                            {
+                                if (((i % 1047552 == 0 && i / 1047552 >= 1) || (bufLength - i) == 1) && i != 0){//max1048377
+                                    var chunk = stream.read(i).slice(j,i);
+                                    const form_data = new FormData();
+                                    form_data.append("file", chunk,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
+                                    'Content-Type': 'application/octet-stream'})
+                                    await chunkedUploader(ctx, form_data, location, user.token);
+                                    console.dir(i+"  "+chunk);
+                                    j=i;
+                                }
+                            }
+                                
+                            //for(let i=0; stream.contents.length > i; i++)//127
+                            //{
+                            //    const form_data = new FormData();
+                            //    form_data.append("file", stream.contents[i], {filename: file.realTitle, contentType:"text/plain"})
+                            //    await chunkedUploader(ctx, form_data, location);
+                            //    /*chunk.push(stream.contents[i]);
+                            //    if ((i % 126 == 0 || (stream.contents.length - i) == 1) && i != 0){
+                            //        const form_data = new FormData();
+                            //        form_data.append("file", chunk, {filename: file.realTitle, contentType:"text/plain"})
+                            //        await chunkedUploader(ctx, new Blob(chunk), location);
+                            //        console.log("длинна:"+stream.contents.length+" i="+i);
+                            //        chunk.splice(0,chunk.length);
+                            //    }*/
+                            //}
+                        }
+                        //await rewritingFile(ctx, file.id, form_data, user.token);
                     } catch (error) {
                         return new Error(error);
                     }

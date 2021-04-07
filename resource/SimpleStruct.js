@@ -63,7 +63,7 @@ class SimpleStruct
         this.struct[uid][Folder].files.forEach(el => {
             if(el.id == file.id){
                 const id = this.struct[uid][Folder].files.indexOf(el);
-                delete this.struct[uid][Folder].files[id];
+                this.struct[uid][Folder].files.splice(id,1);
                 this.struct[uid].lastUpdate = new Date;
             }
         });
@@ -73,15 +73,17 @@ class SimpleStruct
         this.struct[uid][Folder].folders.forEach(el => {
             if(el.id == folder.id){
                 const id = this.struct[uid][Folder].folders.indexOf(el);
-                delete this.struct[uid][Folder].folders[id];
+                this.struct[uid][Folder].folders.splice(id,1);
                 this.struct[uid].lastUpdate = new Date;
             }
         });
     }
 
     dropPath(path, uid){
-        delete this.struct[uid][path];
-        this.struct[uid].lastUpdate = new Date;
+        if (this.struct[uid].indexOf(path)){
+            this.struct[uid].splice(this.struct[uid].indexOf(path),1);
+            this.struct[uid].lastUpdate = new Date;
+        }
     }
 
     checkRename(elementFrom, elementTo, parentFolderFrom, parentFolderTo, user){

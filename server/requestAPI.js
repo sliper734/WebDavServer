@@ -240,21 +240,54 @@ var rewritingFile = async function(ctx, fileId, data, token)
     }
 };
 
-var getFileDownloadUrl = async function(ctx, fileId, token)
+var createSession = async function(ctx, folderId, formData, token){
+    try {
+        const instance = instanceFunc(ctx.context, token)
+        const response = await instance.post(`${apiFiles}${folderId}${method.upload}${method.createSession}`,formData);
+        return response.data.response.data.location;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+}
+
+var chunkedUploader = async function(ctx, data, url, token)
+{
+    try {
+        const Authorization = token ? token : null;
+        var response = await axios.post(url, data, {
+            headers: {
+                Accept: 'application/json, text/plain, */*',
+                Authorization,
+                "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+            }
+        });
+        const a = 1;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+}
+
+var getPresignedUri = async function(ctx, fileId, token)
 {
     try {
         const instance = instanceFunc(ctx.context, token);
-        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.openedit}`)
-            .then(async function (response){
-                var streamFile = await request.get(
-                {
-                    url:response.data.response.document.url,
-                    headers: getHeader('application/octet-stream', token)
-                });
-                streamFile.end();
-                return streamFile;
-            });
-        return response;
+        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.getpresigneduri}`)
+        return response.data.response;
+    } catch (error) {
+        exceptionResponse(error);
+    }
+};
+
+var getFileDownloadUrl = async function(token, uri)
+{
+    try {
+        var streamFile = await request.get(
+        {
+            url:uri,
+            headers: getHeader('application/octet-stream', token)
+        });
+        streamFile.end();
+        return streamFile;
     } catch (error) {
         exceptionResponse(error);
     }
@@ -290,11 +323,13 @@ var createFilehtml = async function(ctx, folderId, title, token)
 
 module.exports = {
     getStructDirectory,
-    getFileDownload,
+    getPresignedUri,
     getFileDownloadUrl,
+    createSession,
     rewritingFile,
     createFiletxt,
     createFilehtml,
+    chunkedUploader,
     requestAuth,
     requestUser,
     createFile,
