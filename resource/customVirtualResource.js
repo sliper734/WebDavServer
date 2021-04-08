@@ -224,15 +224,14 @@ class CustomVirtualResources
     }
 
     async downloadFile(ctx, path){
-        //"http://localhost:8085/web-apps/apps/api/documents/api.js"
         console.log("DOWNLOADFILE "+path);
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         const file = this.findFile(this.structСache.getStruct(parentFolder, user.uid),element);
         if (file){
             try {
-                var uri = await getPresignedUri(ctx, file.id, user.token);
-                var streamFile = await getFileDownloadUrl(user.token, uri);
+                var uri = getPresignedUri(ctx, file.id, user.token);
+                var streamFile = await getFileDownloadUrl(user.token, await uri);
                 return streamFile;
             } catch (error) {
                 return new Error(error);
@@ -258,7 +257,7 @@ class CustomVirtualResources
                 const file = this.findFile(struct, element);
                 if (file){
                     try {
-                        if (stream.contents.length <= 3){
+                        if (stream.contents.length <= 127){
                             const form_data = new FormData();
                             form_data.append("FileExtension", file.fileExst);
                             form_data.append("DownloadUri", "");
@@ -267,7 +266,7 @@ class CustomVirtualResources
                             form_data.append("Forcesave", 'false');
                             await rewritingFile(ctx, file.id, form_data, user.token);
                         }
-                        if (stream.contents.length > 3){
+                        if (stream.contents.length > 127){
                             let contLength=0;
                             for(var i=0;stream.contents.length > i;i++)
                             {
@@ -279,24 +278,56 @@ class CustomVirtualResources
                                 "RelativePath": ""
                             }
                             const location = await createSession(ctx, struct.current.id, data, user.token);
-                            let j = 0;
-                            let bufLength=0;
+                            //let j = 0;
+                            //let bufLength=0;
+                            //for(let i=0;stream.contents.length > i; i++)
+                            //{
+                            //    bufLength += stream.contents[i].length;
+                            //}
+                            let count =0;
+                            var chunk = [];
                             for(let i=0;stream.contents.length > i; i++)
                             {
-                                bufLength += stream.contents[i].length;
-                            }
-                            for(let i=0;bufLength > i; i++)
-                            {
-                                if (((i % 1047552 == 0 && i / 1047552 >= 1) || (bufLength - i) == 1) && i != 0){//max1048377
-                                    var chunk = stream.read(i).slice(j,i);
-                                    const form_data = new FormData();
-                                    form_data.append("file", chunk,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
-                                    'Content-Type': 'application/octet-stream'})
-                                    await chunkedUploader(ctx, form_data, location, user.token);
-                                    console.dir(i+"  "+chunk);
-                                    j=i;
+                                let j =0;
+                                while(stream.contents[i][j]!=undefined){
+                                    chunk.push(stream.contents[i][j]);
+                                    j += 1;
+                                    count += 1;
+                                    if((count % 1047552 ==0 && count / 1047552 >= 1) || (stream.contents[i].length < 8192 && stream.contents[i][j] == undefined)){
+                                        let bufferChunk = Buffer.from(chunk);
+                                        const chunkStream = new streamWrite([bufferChunk]);
+                                        //chunkStream._write(bufferChunk, 'utf-8', function (){});
+                                        //chunkStream.end();
+
+                                        
+                                        /*const readable = new Readable();
+                                        readable.push(bufferChunk);
+                                        readable.push(null);*/
+                                        const contentLength = chunkStream.contents[0].length;
+                                        const form_data = new FormData();
+                                        form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
+                                        'Content-Type': 'application/octet-stream'});
+                                        await chunkedUploader(ctx, form_data, location, user.token, contentLength);
+                                        chunk.length=0;
+                                    }
                                 }
                             }
+                            //for(let i=0;bufLength > i; i++)
+                            //{
+                            //    if (((i % 1047552 == 0 && i / 1047552 >= 1) || (bufLength - i) == 1) && i != 0){//max1048377
+                            //        //var chunk = stream.read(1047552);
+                            //        console.log(stream.contents[i]);
+                            //        var chunk = stream.contents.slice(j,i);
+                            //        var chunkStream = new Readable();
+                            //        chunkStream.push(chunk);
+                            //        const form_data = new FormData();
+                            //        form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
+                            //        'Content-Type': 'application/octet-stream'});
+                            //        await chunkedUploader(ctx, form_data, location, user.token);
+                            //        console.dir(i+"  "+j);
+                            //        j=i;
+                            //    }
+                            //}
                                 
                             //for(let i=0; stream.contents.length > i; i++)//127
                             //{

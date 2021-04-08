@@ -74,7 +74,7 @@ module.exports = {
 
     bulkdownload:'fileops/bulkdownload',
     
-    getpresigneduri:'/getpresigneduri',
+    presigneduri:'/presigneduri',
 
     upload: '/upload',
     

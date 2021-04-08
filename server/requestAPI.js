@@ -243,14 +243,18 @@ var rewritingFile = async function(ctx, fileId, data, token)
 var createSession = async function(ctx, folderId, formData, token){
     try {
         const instance = instanceFunc(ctx.context, token)
-        const response = await instance.post(`${apiFiles}${folderId}${method.upload}${method.createSession}`,formData);
+        const response = await instance.post(`${apiFiles}${folderId}${method.upload}${method.createSession}`,formData,{
+            headers:{
+                Connection: "keep-alive"
+            }
+        });
         return response.data.response.data.location;
     } catch (error) {
         exceptionResponse(error);
     }
 }
 
-var chunkedUploader = async function(ctx, data, url, token)
+var chunkedUploader = async function(ctx, data, url, token, contentLength)
 {
     try {
         const Authorization = token ? token : null;
@@ -258,7 +262,9 @@ var chunkedUploader = async function(ctx, data, url, token)
             headers: {
                 Accept: 'application/json, text/plain, */*',
                 Authorization,
-                "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+                "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+                Connection: 'keep-alive',
+                'Content-Length': contentLength
             }
         });
         const a = 1;
@@ -271,7 +277,7 @@ var getPresignedUri = async function(ctx, fileId, token)
 {
     try {
         const instance = instanceFunc(ctx.context, token);
-        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.getpresigneduri}`)
+        var response = await instance.get(`${apiFiles}${method.file}${fileId}${method.presigneduri}`)
         return response.data.response;
     } catch (error) {
         exceptionResponse(error);
