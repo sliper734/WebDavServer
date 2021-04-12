@@ -248,108 +248,112 @@ class CustomVirtualResources
         const user = ctx.context.user;
         const {element, parentFolder} = parse.parsePath(path);
         const content = [];
-        const stream = new streamWrite(content);
+        const struct = this.structСache.getStruct(parentFolder, user.uid);
+        const file = this.findFile(struct, element);
+        
+        const stream = new streamWrite(content, ctx, file, struct.current.id, user);
         //if(ctx.mode !== "mustCreate"){
             console.log("WRITEFILENEXT "+path);
-            stream.on('finish', (async() => {
-                const struct = this.structСache.getStruct(parentFolder, user.uid);
-                if(!stream.contents.length) return;
-                const file = this.findFile(struct, element);
-                if (file){
-                    try {
-                        if (stream.contents.length <= 127){
-                            const form_data = new FormData();
-                            form_data.append("FileExtension", file.fileExst);
-                            form_data.append("DownloadUri", "");
-                            form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
-                            form_data.append("Doc", "");
-                            form_data.append("Forcesave", 'false');
-                            await rewritingFile(ctx, file.id, form_data, user.token);
-                        }
-                        if (stream.contents.length > 127){
-                            let contLength=0;
-                            for(var i=0;stream.contents.length > i;i++)
-                            {
-                                contLength = stream.contents[i].length + contLength;
-                            }
-                            const data={
-                                "FileName": file.realTitle,
-                                "FileSize": contLength,
-                                "RelativePath": ""
-                            }
-                            const location = await createSession(ctx, struct.current.id, data, user.token);
-                            //let j = 0;
-                            //let bufLength=0;
-                            //for(let i=0;stream.contents.length > i; i++)
-                            //{
-                            //    bufLength += stream.contents[i].length;
-                            //}
-                            let count =0;
-                            var chunk = [];
-                            for(let i=0;stream.contents.length > i; i++)
-                            {
-                                let j =0;
-                                while(stream.contents[i][j]!=undefined){
-                                    chunk.push(stream.contents[i][j]);
-                                    j += 1;
-                                    count += 1;
-                                    if((count % 1047552 ==0 && count / 1047552 >= 1) || (stream.contents[i].length < 8192 && stream.contents[i][j] == undefined)){
-                                        let bufferChunk = Buffer.from(chunk);
-                                        const chunkStream = new streamWrite([bufferChunk]);
-                                        //chunkStream._write(bufferChunk, 'utf-8', function (){});
-                                        //chunkStream.end();
-
-                                        
-                                        /*const readable = new Readable();
-                                        readable.push(bufferChunk);
-                                        readable.push(null);*/
-                                        const contentLength = chunkStream.contents[0].length;
-                                        const form_data = new FormData();
-                                        form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
-                                        'Content-Type': 'application/octet-stream'});
-                                        await chunkedUploader(ctx, form_data, location, user.token, contentLength);
-                                        chunk.length=0;
-                                    }
-                                }
-                            }
-                            //for(let i=0;bufLength > i; i++)
-                            //{
-                            //    if (((i % 1047552 == 0 && i / 1047552 >= 1) || (bufLength - i) == 1) && i != 0){//max1048377
-                            //        //var chunk = stream.read(1047552);
-                            //        console.log(stream.contents[i]);
-                            //        var chunk = stream.contents.slice(j,i);
-                            //        var chunkStream = new Readable();
-                            //        chunkStream.push(chunk);
-                            //        const form_data = new FormData();
-                            //        form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
-                            //        'Content-Type': 'application/octet-stream'});
-                            //        await chunkedUploader(ctx, form_data, location, user.token);
-                            //        console.dir(i+"  "+j);
-                            //        j=i;
-                            //    }
-                            //}
-                                
-                            //for(let i=0; stream.contents.length > i; i++)//127
-                            //{
-                            //    const form_data = new FormData();
-                            //    form_data.append("file", stream.contents[i], {filename: file.realTitle, contentType:"text/plain"})
-                            //    await chunkedUploader(ctx, form_data, location);
-                            //    /*chunk.push(stream.contents[i]);
-                            //    if ((i % 126 == 0 || (stream.contents.length - i) == 1) && i != 0){
-                            //        const form_data = new FormData();
-                            //        form_data.append("file", chunk, {filename: file.realTitle, contentType:"text/plain"})
-                            //        await chunkedUploader(ctx, new Blob(chunk), location);
-                            //        console.log("длинна:"+stream.contents.length+" i="+i);
-                            //        chunk.splice(0,chunk.length);
-                            //    }*/
-                            //}
-                        }
-                        //await rewritingFile(ctx, file.id, form_data, user.token);
-                    } catch (error) {
-                        return new Error(error);
-                    }
-                }
-            }));
+            // readable.on('data'...)
+        //    stream.on('finish', (async() => {
+        //        const struct = this.structСache.getStruct(parentFolder, user.uid);
+        //        if(!stream.contents.length) return;
+        //        const file = this.findFile(struct, element);
+        //        if (file){
+        //            try {
+        //                if (stream.contents.length <= 127){
+        //                    const form_data = new FormData();
+        //                    form_data.append("FileExtension", file.fileExst);
+        //                    form_data.append("DownloadUri", "");
+        //                    form_data.append("Stream", stream, {filename: file.realTitle, contentType:"text/plain"});
+        //                    form_data.append("Doc", "");
+        //                    form_data.append("Forcesave", 'false');
+        //                    await rewritingFile(ctx, file.id, form_data, user.token);
+        //                }
+        //                if (stream.contents.length > 127){
+        //                    let contLength=0;
+        //                    for(var i=0;stream.contents.length > i;i++)
+        //                    {
+        //                        contLength = stream.contents[i].length + contLength;
+        //                    }
+        //                    const data={
+        //                        "FileName": file.realTitle,
+        //                        "FileSize": contLength,
+        //                        "RelativePath": ""
+        //                    }
+        //                    const location = await createSession(ctx, struct.current.id, data, user.token);
+        //                    //let j = 0;
+        //                    //let bufLength=0;
+        //                    //for(let i=0;stream.contents.length > i; i++)
+        //                    //{
+        //                    //    bufLength += stream.contents[i].length;
+        //                    //}
+        //                    let count =0;
+        //                    var chunk = [];
+        //                    for(let i=0;stream.contents.length > i; i++)
+        //                    {
+        //                        let j =0;
+        //                        while(stream.contents[i][j]!=undefined){
+        //                            chunk.push(stream.contents[i][j]);
+        //                            j += 1;
+        //                            count += 1;
+        //                            if((count % 1047552 ==0 && count / 1047552 >= 1) || (stream.contents[i].length < 8192 && stream.contents[i][j] == undefined)){
+        //                                let bufferChunk = Buffer.from(chunk);
+        //                                const chunkStream = new streamWrite([bufferChunk]);
+        //                                //chunkStream._write(bufferChunk, 'utf-8', function (){});
+        //                                //chunkStream.end();
+//
+        //                                
+        //                                /*const readable = new Readable();
+        //                                readable.push(bufferChunk);
+        //                                readable.push(null);*/
+        //                                const contentLength = chunkStream.contents[0].length;
+        //                                const form_data = new FormData();
+        //                                form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
+        //                                'Content-Type': 'application/octet-stream'});
+        //                                await chunkedUploader(ctx, form_data, location, user.token, contentLength);
+        //                                chunk.length=0;
+        //                            }
+        //                        }
+        //                    }
+        //                    //for(let i=0;bufLength > i; i++)
+        //                    //{
+        //                    //    if (((i % 1047552 == 0 && i / 1047552 >= 1) || (bufLength - i) == 1) && i != 0){//max1048377
+        //                    //        //var chunk = stream.read(1047552);
+        //                    //        console.log(stream.contents[i]);
+        //                    //        var chunk = stream.contents.slice(j,i);
+        //                    //        var chunkStream = new Readable();
+        //                    //        chunkStream.push(chunk);
+        //                    //        const form_data = new FormData();
+        //                    //        form_data.append("file", chunkStream,{'Content-Disposition': 'form-data; name="file"; filename="blob"',
+        //                    //        'Content-Type': 'application/octet-stream'});
+        //                    //        await chunkedUploader(ctx, form_data, location, user.token);
+        //                    //        console.dir(i+"  "+j);
+        //                    //        j=i;
+        //                    //    }
+        //                    //}
+        //                        
+        //                    //for(let i=0; stream.contents.length > i; i++)//127
+        //                    //{
+        //                    //    const form_data = new FormData();
+        //                    //    form_data.append("file", stream.contents[i], {filename: file.realTitle, contentType:"text/plain"})
+        //                    //    await chunkedUploader(ctx, form_data, location);
+        //                    //    /*chunk.push(stream.contents[i]);
+        //                    //    if ((i % 126 == 0 || (stream.contents.length - i) == 1) && i != 0){
+        //                    //        const form_data = new FormData();
+        //                    //        form_data.append("file", chunk, {filename: file.realTitle, contentType:"text/plain"})
+        //                    //        await chunkedUploader(ctx, new Blob(chunk), location);
+        //                    //        console.log("длинна:"+stream.contents.length+" i="+i);
+        //                    //        chunk.splice(0,chunk.length);
+        //                    //    }*/
+        //                    //}
+        //                }
+        //                //await rewritingFile(ctx, file.id, form_data, user.token);
+        //            } catch (error) {
+        //                return new Error(error);
+        //            }
+        //        }
+        //    }));
         //}
         return stream;
     }
